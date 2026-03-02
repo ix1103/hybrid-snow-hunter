@@ -55,6 +55,10 @@ export default function ResortDetailModal({
     const aiComment = generateAIAnalysis(resort.name, resort.area, resort.weather);
     const { summary: weekSummary } = generateWeekSummary(resort.weather.forecast);
 
+    const tenkiUrl = resort.tenki_id
+        ? `https://tenki.jp/season/ski/${resort.tenki_id}/`
+        : `https://tenki.jp/search/?keyword=${encodeURIComponent(resort.name + ' スキー場')}`;
+
     const getLevelColor = (score: number) => {
         if (score >= 80) return 'var(--dq-text-gold)';
         if (score >= 60) return 'var(--dq-text-green)';
@@ -294,12 +298,34 @@ export default function ResortDetailModal({
                     {resort.weather.forecast && resort.weather.forecast.length > 0 && (
                         <div style={{ marginBottom: '12px' }}>
                             <div style={{
-                                fontSize: '11px',
-                                color: 'var(--dq-text-gold)',
+                                display: 'flex',
+                                justifyContent: 'space-between',
+                                alignItems: 'center',
                                 marginBottom: '6px',
-                                letterSpacing: '0.1em',
                             }}>
-                                📅 しゅうかんよほう
+                                <div style={{
+                                    fontSize: '11px',
+                                    color: 'var(--dq-text-gold)',
+                                    letterSpacing: '0.1em',
+                                }}>
+                                    📅 しゅうかんよほう
+                                </div>
+                                <a
+                                    href={tenkiUrl}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    style={{
+                                        fontSize: '10px',
+                                        color: 'var(--dq-text-blue)',
+                                        textDecoration: 'none',
+                                        padding: '2px 6px',
+                                        border: '1px solid var(--dq-text-blue)',
+                                        borderRadius: '4px',
+                                        background: 'rgba(102, 187, 255, 0.1)',
+                                    }}
+                                >
+                                    tenki.jpでみる ↗
+                                </a>
                             </div>
                             <div style={{
                                 display: 'flex',
