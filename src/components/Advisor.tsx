@@ -78,21 +78,17 @@ export default function Advisor({ resorts, onFilterChange, currentFilter, onSear
                 padding: '16px',
                 borderRadius: '12px',
             }}>
-                <div style={{
-                    fontSize: '22px',
-                    color: 'var(--dq-text-gold)',
-                    fontWeight: 'bold',
-                    letterSpacing: '0.15em',
-                }} className="dq-glow">
-                    スノコン
-                </div>
-                <div style={{
-                    fontSize: '10px',
-                    color: 'var(--dq-text-dim)',
-                    marginTop: '2px',
-                    letterSpacing: '0.2em',
-                }}>
-                    ～ゆきの ゆうしゃたち～
+                {/* タイトルロゴ画像 */}
+                <div style={{ display: 'flex', justifyContent: 'center' }}>
+                    <img
+                        src="/title-logo.png"
+                        alt="SNOW CONDITION HUNTER"
+                        style={{
+                            width: '90%',
+                            maxWidth: '180px',
+                            objectFit: 'contain',
+                        }}
+                    />
                 </div>
                 {/* スコア情報ボタン */}
                 <button

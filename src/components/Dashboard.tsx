@@ -155,39 +155,18 @@ export default function Dashboard({ initialResorts }: DashboardProps) {
                     alignItems: 'center',
                     gap: '0',
                 }}>
-                    {/* ヒーローイラスト（上部に大きく） */}
-                    <div style={{ marginBottom: '16px' }}>
+                    {/* タイトルロゴ（DQ3風） */}
+                    <div style={{ marginBottom: '16px', display: 'flex', justifyContent: 'center' }}>
                         <img
-                            src="/loading-hero.png"
-                            alt="雪の勇者"
+                            src="/title-logo.png"
+                            alt="SNOW CONDITION HUNTER"
                             style={{
-                                width: '140px',
-                                height: '140px',
+                                width: '100%',
+                                maxWidth: '300px',
                                 objectFit: 'contain',
-                                imageRendering: 'pixelated',
-                                opacity: 0.95,
+                                filter: 'drop-shadow(0px 4px 8px rgba(0,0,0,0.5))',
                             }}
                         />
-                    </div>
-
-                    {/* DQ3風タイトル */}
-                    <div style={{ marginBottom: '16px' }}>
-                        <div style={{
-                            fontSize: '26px',
-                            color: 'var(--dq-text-gold)',
-                            fontWeight: 'bold',
-                            letterSpacing: '0.2em',
-                        }} className="dq-glow">
-                            スノコン
-                        </div>
-                        <div style={{
-                            fontSize: '11px',
-                            color: 'var(--dq-text-dim)',
-                            marginTop: '4px',
-                            letterSpacing: '0.25em',
-                        }}>
-                            ～ゆきの ゆうしゃたち～
-                        </div>
                     </div>
 
                     {/* ドット風区切り線 */}
