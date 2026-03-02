@@ -72,36 +72,38 @@ export default function Advisor({ resorts, onFilterChange, currentFilter, onSear
             style={{ background: 'var(--dq-bg-dark)' }}>
 
             {/* ===== ヘッダー（DQ3タイトル風） ===== */}
-            <div className="dq-window" style={{
-                margin: '12px 12px 0',
+            <div style={{
+                margin: '16px 16px 8px',
                 textAlign: 'center',
-                padding: '16px',
-                borderRadius: '12px',
+                position: 'relative',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
             }}>
                 {/* タイトルロゴ画像 */}
-                <div style={{ display: 'flex', justifyContent: 'center' }}>
-                    <img
-                        src="/title-logo.png"
-                        alt="SNOW CONDITION HUNTER"
-                        style={{
-                            width: '90%',
-                            maxWidth: '180px',
-                            objectFit: 'contain',
-                        }}
-                    />
-                </div>
+                <img
+                    src="/title-logo.png"
+                    alt="SNOW CONDITION HUNTER"
+                    style={{
+                        width: '100%',
+                        maxWidth: '240px', // 枠がない分すこし大きく配置
+                        objectFit: 'contain',
+                        filter: 'drop-shadow(0px 2px 4px rgba(0,0,0,0.4))', // 少し影をつけて浮き立たせる
+                    }}
+                />
+
                 {/* スコア情報ボタン */}
                 <button
                     onClick={() => setShowScoreInfo(true)}
                     style={{
                         position: 'absolute',
-                        top: '12px',
-                        right: '16px',
+                        top: '0px',
+                        right: '-8px',
                         background: 'none',
                         border: 'none',
                         color: 'var(--dq-text-dim)',
                         cursor: 'pointer',
-                        fontSize: '16px',
+                        fontSize: '18px',
                     }}
                     title="スコアの基準について"
                 >
@@ -446,7 +448,7 @@ export default function Advisor({ resorts, onFilterChange, currentFilter, onSear
                         </div>
 
                         <div style={{ fontSize: '12px', color: 'var(--dq-text-dim)', marginBottom: '12px' }}>
-                            スノーボーダーしてんの どくじアルゴリズムで けいさんしています。
+                            どくじアルゴリズムで けいさんしています。
                         </div>
 
                         <hr className="dq-divider" />
