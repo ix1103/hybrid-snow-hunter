@@ -145,57 +145,71 @@ export default function Dashboard({ initialResorts }: DashboardProps) {
         return (
             <div className="flex flex-col items-center justify-center h-screen w-screen dq-fade-in"
                 style={{ background: 'var(--dq-bg)' }}>
-                <div className="dq-window" style={{ maxWidth: '400px', width: '90%', textAlign: 'center' }}>
-                    {/* DQ3風ロゴ */}
-                    <div style={{ marginBottom: '24px' }}>
-                        <div style={{ fontSize: '28px', color: 'var(--dq-text-gold)', fontWeight: 'bold', letterSpacing: '0.15em' }}
-                            className="dq-glow">
+                <div className="dq-window" style={{
+                    maxWidth: '360px',
+                    width: '88%',
+                    textAlign: 'center',
+                    padding: '28px 24px',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    gap: '0',
+                }}>
+                    {/* ヒーローイラスト（上部に大きく） */}
+                    <div style={{ marginBottom: '16px' }}>
+                        <img
+                            src="/loading-hero.png"
+                            alt="雪の勇者"
+                            style={{
+                                width: '140px',
+                                height: '140px',
+                                objectFit: 'contain',
+                                imageRendering: 'pixelated',
+                                opacity: 0.95,
+                            }}
+                        />
+                    </div>
+
+                    {/* DQ3風タイトル */}
+                    <div style={{ marginBottom: '16px' }}>
+                        <div style={{
+                            fontSize: '26px',
+                            color: 'var(--dq-text-gold)',
+                            fontWeight: 'bold',
+                            letterSpacing: '0.2em',
+                        }} className="dq-glow">
                             スノコン
                         </div>
-                        <div style={{ fontSize: '12px', color: 'var(--dq-text-dim)', marginTop: '4px', letterSpacing: '0.2em' }}>
+                        <div style={{
+                            fontSize: '11px',
+                            color: 'var(--dq-text-dim)',
+                            marginTop: '4px',
+                            letterSpacing: '0.25em',
+                        }}>
                             ～ゆきの ゆうしゃたち～
                         </div>
                     </div>
 
-                    {/* ドット風装飾ライン */}
+                    {/* ドット風区切り線 */}
                     <div style={{
-                        margin: '16px auto',
-                        width: '60%',
-                        height: '2px',
-                        background: 'linear-gradient(90deg, transparent, var(--dq-window-border), transparent)'
+                        width: '70%',
+                        height: '1px',
+                        background: 'linear-gradient(90deg, transparent, var(--dq-window-border), transparent)',
+                        marginBottom: '16px',
                     }} />
 
                     {/* ローディングメッセージ */}
                     <div style={{
-                        fontSize: '14px',
+                        fontSize: '13px',
                         color: 'var(--dq-text)',
                         lineHeight: '2',
                     }}>
                         <p className="dq-text-appear" style={{ animationDelay: '0s' }}>
                             ぼうけんのしょを よんでいます
                         </p>
-                        <p className="dq-text-appear" style={{ animationDelay: '0.5s', color: 'var(--dq-text-dim)' }}>
+                        <p className="dq-text-appear" style={{ animationDelay: '0.5s', color: 'var(--dq-text-dim)', fontSize: '12px' }}>
                             かくちの てんきを しらべています<span className="dq-loading-dots"></span>
                         </p>
-                    </div>
-
-                    {/* ヒーローイラスト */}
-                    <div style={{
-                        marginTop: '20px',
-                        display: 'flex',
-                        justifyContent: 'center',
-                    }}>
-                        <img
-                            src="/loading-hero.png"
-                            alt="雪の勇者"
-                            style={{
-                                width: '160px',
-                                height: '160px',
-                                objectFit: 'contain',
-                                imageRendering: 'pixelated',
-                                opacity: 0.9,
-                            }}
-                        />
                     </div>
                 </div>
             </div>

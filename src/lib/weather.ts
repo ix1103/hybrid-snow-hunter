@@ -1,25 +1,28 @@
 import { WeatherData } from './scoring';
 
 export async function fetchResortWeather(lat: number, long: number, elevation?: number): Promise<WeatherData> {
-    // Open-Meteo API URL
-    // elevation を指定すると、その標高での気温補正（約0.7°C/100m）が適用される
-    const elevationParam = elevation ? `&elevation=${elevation}` : '';
-    const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${long}${elevationParam}&current=temperature_2m,wind_speed_10m,weather_code&daily=snowfall_sum,snow_depth_max,weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max&timezone=Asia%2FTokyo&forecast_days=7`;
+    // /api/weather プロキシ経由でOpen-Meteoからデータ取得
+    // Vercelサーバーを経由することでCORSやネットワーク問題を回避
+    const params = new URLSearchParams({
+        lat: String(lat),
+        long: String(long),
+        ...(elevation ? { elevation: String(elevation) } : {}),
+    });
+    const url = `/api/weather?${params.toString()}`;
 
     try {
-        // cache: 'no-store' でブラウザキャッシュを無効化し、常に最新データを取得
         const res = await fetch(url, { cache: 'no-store' });
-        if (!res.ok) throw new Error('Failed to fetch weather');
+        if (!res.ok) throw new Error('Weather API request failed');
 
         const data = await res.json();
 
         const current = data.current;
         const daily = data.daily;
 
-        // Open-Meteo returns snowfall in cm for daily sum
+        // Open-Meteo の降雪量は cm で返される
         const snowfallToday = daily.snowfall_sum ? daily.snowfall_sum[0] : 0;
 
-        // Map daily forecast
+        // 7日間の予報データをマッピング
         const forecast = daily.time.map((time: string, index: number) => ({
             date: time,
             maxTemp: daily.temperature_2m_max[index],
@@ -28,11 +31,12 @@ export async function fetchResortWeather(lat: number, long: number, elevation?: 
             precipitationProb: daily.precipitation_probability_max[index]
         }));
 
-        const snowDepth = daily.snow_depth_max ? Math.round(daily.snow_depth_max[0] * 100) : undefined; // Convert m to cm
+        // 積雪深をmからcmへ変換
+        const snowDepth = daily.snow_depth_max ? Math.round(daily.snow_depth_max[0] * 100) : undefined;
 
         return {
             temp: current.temperature_2m,
-            wind: parseFloat((current.wind_speed_10m / 3.6).toFixed(1)), // Convert km/h to m/s
+            wind: parseFloat((current.wind_speed_10m / 3.6).toFixed(1)), // km/h → m/s
             snowfall_24h: snowfallToday,
             snow_depth: snowDepth,
             weather_code: current.weather_code,
@@ -40,7 +44,7 @@ export async function fetchResortWeather(lat: number, long: number, elevation?: 
         };
     } catch (error) {
         console.error('Weather fetch error:', error);
-        // Return fallback data so the app doesn't crash on API failure
+        // エラー時はフォールバックデータを返してアプリがクラッシュしないようにする
         return {
             temp: 0,
             wind: 0,
