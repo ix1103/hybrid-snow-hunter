@@ -6,13 +6,12 @@ export interface Resort {
   elevation?: number; // ゲレンデ中腹の標高（メートル）
   area: string;
   url?: string;
-  tenki_id?: string; // e.g. "1/1/30421"
 }
 
 export const RESORTS: Resort[] = [
   // --- 北海道 (Hokkaido) ---
-  { id: 'niseko-united', name: 'ニセコユナイテッド', lat: 42.8631, long: 140.7032, elevation: 750, area: '北海道', url: 'https://www.niseko.ne.jp/', tenki_id: '1/1/30421' },
-  { id: 'rusutsu', name: 'ルスツリゾート', lat: 42.7533, long: 140.9069, elevation: 700, area: '北海道', url: 'https://rusutsu.com/', tenki_id: '1/3/30509' },
+  { id: 'niseko-united', name: 'ニセコユナイテッド', lat: 42.8631, long: 140.7032, elevation: 750, area: '北海道', url: 'https://www.niseko.ne.jp/' },
+  { id: 'rusutsu', name: 'ルスツリゾート', lat: 42.7533, long: 140.9069, elevation: 700, area: '北海道', url: 'https://rusutsu.com/' },
   { id: 'furano', name: '富良野スキー場', lat: 43.3242, long: 142.3364, elevation: 700, area: '北海道', url: 'https://www.princehotels.co.jp/ski/furano/' },
   { id: 'kiroro', name: 'キロロスノーワールド', lat: 43.0694, long: 140.9850, elevation: 750, area: '北海道', url: 'https://www.kiroro.co.jp/' },
   { id: 'tomamu', name: '星野リゾート トマム', lat: 43.0628, long: 142.6319, elevation: 900, area: '北海道', url: 'https://www.snowtomamu.jp/winter/' },
@@ -30,7 +29,7 @@ export const RESORTS: Resort[] = [
   { id: 'ntj-geto', name: '夏油高原スキー場', lat: 39.1839, long: 140.9039, elevation: 900, area: '岩手県', url: 'https://www.getokogen.com/' },
   { id: 'hachimantai', name: '八幡平リゾート', lat: 39.8550, long: 140.9567, elevation: 900, area: '岩手県', url: 'https://www.hachimantai.co.jp/' },
   { id: 'iwategen', name: '岩手高原スノーパーク', lat: 39.7556, long: 140.9833, elevation: 800, area: '岩手県', url: 'https://iwatekogen.jp/' },
-  { id: 'zao', name: '山形蔵王温泉スキー場', lat: 38.1611, long: 140.3992, elevation: 1200, area: '山形県', url: 'http://www.zao-ski.or.jp/', tenki_id: '2/7/31046' },
+  { id: 'zao', name: '山形蔵王温泉スキー場', lat: 38.1611, long: 140.3992, elevation: 1200, area: '山形県', url: 'http://www.zao-ski.or.jp/' },
   { id: 'gassan', name: '月山スキー場', lat: 38.5478, long: 140.0306, elevation: 1500, area: '山形県', url: 'https://gassankanko.jp/' },
   { id: 'jangle', name: '黒伏高原スノーパーク', lat: 38.4333, long: 140.5333, elevation: 700, area: '山形県', url: 'https://jangle.co.jp/' },
   { id: 'alts-bandai', name: '星野リゾート ネコマ マウンテン', lat: 37.5925, long: 140.0383, elevation: 1000, area: '福島県', url: 'https://www.nekoma.co.jp/' },
@@ -44,7 +43,7 @@ export const RESORTS: Resort[] = [
   // --- 新潟 (Niigata) [強化] ---
   { id: 'gala-yuzawa', name: 'GALA湯沢', lat: 36.9367, long: 138.7900, elevation: 900, area: '新潟県', url: 'https://gala.co.jp/winter/' },
   { id: 'kagura', name: 'かぐらスキー場', lat: 36.8778, long: 138.7481, elevation: 1400, area: '新潟県', url: 'https://www.princehotels.co.jp/ski/kagura/' },
-  { id: 'naeba', name: '苗場スキー場', lat: 36.7936, long: 138.7831, elevation: 1200, area: '新潟県', url: 'https://www.princehotels.co.jp/ski/naeba/', tenki_id: '3/16/32204' },
+  { id: 'naeba', name: '苗場スキー場', lat: 36.7936, long: 138.7831, elevation: 1200, area: '新潟県', url: 'https://www.princehotels.co.jp/ski/naeba/' },
   { id: 'maiko', name: '舞子スノーリゾート', lat: 36.9936, long: 138.8256, elevation: 700, area: '新潟県', url: 'https://www.maiko-resort.com/' },
   { id: 'kandatsu', name: '神立スノーリゾート', lat: 36.9167, long: 138.8306, elevation: 800, area: '新潟県', url: 'https://www.kandatsu.com/' },
   { id: 'yuzawa-kogen', name: '湯沢高原スキー場', lat: 36.9467, long: 138.8033, elevation: 900, area: '新潟県', url: 'https://www.yuzawakogen.com/' },
@@ -68,7 +67,7 @@ export const RESORTS: Resort[] = [
   { id: 'tainai', name: '胎内スキー場', lat: 38.0333, long: 139.4333, elevation: 400, area: '新潟県', url: 'https://tainai.info/ski/' },
 
   // --- 長野 (Nagano) [強化] ---
-  { id: 'hakuba-happo', name: '白馬八方尾根スキー場', lat: 36.6962, long: 137.8407, elevation: 1400, area: '長野県', url: 'https://www.happo-one.jp/', tenki_id: '3/16/32101' },
+  { id: 'hakuba-happo', name: '白馬八方尾根スキー場', lat: 36.6962, long: 137.8407, elevation: 1400, area: '長野県', url: 'https://www.happo-one.jp/' },
   { id: 'hakuba-goryu', name: 'エイブル白馬五竜', lat: 36.6667, long: 137.8389, elevation: 1200, area: '長野県', url: 'https://www.hakubagoryu.com/' },
   { id: 'tsugaike', name: '栂池高原スキー場', lat: 36.7578, long: 137.8683, elevation: 1200, area: '長野県', url: 'https://www.tsugaike.gr.jp/' },
   { id: 'hakuba-cortina', name: '白馬コルチナ', lat: 36.7869, long: 137.8686, elevation: 1100, area: '長野県', url: 'https://haku-nori.com/' },

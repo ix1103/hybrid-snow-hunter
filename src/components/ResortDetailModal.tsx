@@ -55,9 +55,7 @@ export default function ResortDetailModal({
     const aiComment = generateAIAnalysis(resort.name, resort.area, resort.weather);
     const { summary: weekSummary } = generateWeekSummary(resort.weather.forecast);
 
-    const tenkiUrl = resort.tenki_id
-        ? `https://tenki.jp/season/ski/${resort.tenki_id}/`
-        : `https://tenki.jp/search/?keyword=${encodeURIComponent(resort.name + ' スキー場')}`;
+    const tenkiUrl = `https://tenki.jp/search/?keyword=${encodeURIComponent(resort.name + ' スキー場')}`;
 
     const getLevelColor = (score: number) => {
         if (score >= 80) return 'var(--dq-text-gold)';
