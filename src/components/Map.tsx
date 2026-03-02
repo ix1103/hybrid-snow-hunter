@@ -39,14 +39,12 @@ const getScoreColor = (score: number) => {
     return '#8899bb';                   // グレー（かけだし）
 };
 
-// DQ3風の画像アイコンパス（生成済みの6段階の剣を使用）
+// DQ3風の画像アイコンパス
 const getRankImagePath = (score: number) => {
-    if (score >= 80) return '/sword_silver.png'; // 銀の剣
-    if (score >= 70) return '/sword_steel.png';  // 鋼の剣
-    if (score >= 60) return '/sword_iron.png';   // 鉄の剣
-    if (score >= 50) return '/sword_bronze.png'; // 青銅の剣
-    if (score >= 40) return '/sword_copper.png'; // 銅の剣
-    return '/sword_wood.png';                    // 木の剣
+    if (score >= 80) return '/map_icon_castle.png'; // 城
+    if (score >= 60) return '/map_icon_town.png';   // 町
+    if (score >= 40) return '/map_icon_tent.png';   // テント
+    return '/map_icon_pin.png';                     // ピン
 };
 
 // DQ3フィールドマップ風のマーカーアイコン

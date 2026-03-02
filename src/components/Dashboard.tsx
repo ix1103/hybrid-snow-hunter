@@ -42,7 +42,7 @@ export default function Dashboard({ initialResorts }: DashboardProps) {
             setIsLoading(true);
             try {
                 const promises = initialResorts.map(async (resort) => {
-                    const weather = await fetchResortWeather(resort.lat, resort.long, resort.elevation);
+                    const weather = await fetchResortWeather(resort.lat, resort.long);
                     return { ...resort, weather };
                 });
                 const results = await Promise.all(promises);
@@ -199,7 +199,7 @@ export default function Dashboard({ initialResorts }: DashboardProps) {
         <div className="flex h-screen w-screen overflow-hidden relative" style={{ background: 'var(--dq-bg)' }}>
             {/* モバイルメニューボタン */}
             <button
-                className="absolute top-3 left-14 z-[2000] md:hidden"
+                className="absolute top-3 right-3 z-[2000] md:hidden"
                 onClick={() => setIsSidebarOpen(!isSidebarOpen)}
                 style={{
                     background: 'var(--dq-window-bg)',
@@ -243,7 +243,7 @@ export default function Dashboard({ initialResorts }: DashboardProps) {
                 />
 
                 {/* フローティング表示数バッジ (DQ3ウィンドウ風) */}
-                <div className="absolute top-3 right-3 z-[1000] dq-window"
+                <div className="absolute top-16 md:top-3 right-3 z-[1000] dq-window"
                     style={{ padding: '8px 16px', fontSize: '13px' }}>
                     <span style={{ color: 'var(--dq-text-gold)' }}>{filteredResorts.length}</span>
                     <span style={{ color: 'var(--dq-text-dim)', marginLeft: '4px' }}>の まちを はっけん！</span>
@@ -271,8 +271,10 @@ export default function Dashboard({ initialResorts }: DashboardProps) {
                 <ResortDetailModal
                     resort={detailResort}
                     isFavorite={favorites.has(detailResort.id)}
+                    isInCompare={compareList.some(r => r.id === detailResort.id)}
                     onClose={() => setDetailResort(null)}
                     onToggleFavorite={toggleFavorite}
+                    onToggleCompare={toggleCompare}
                 />
             )}
 

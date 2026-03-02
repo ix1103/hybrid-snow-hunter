@@ -3,32 +3,16 @@ export interface DailyForecast {
     maxTemp: number;
     minTemp: number;
     weatherCode: number;
-    precipitationProb?: number;  // 降水確率 (%) ※JMAモデルでは取得不可のためundefinedになる場合あり
-    precipitation?: number;       // 降水量 (mm/日) JMAモデル対応
-    snowfall?: number;            // 降雪量 (cm/日)
-}
-
-// 時間別予報（当日用）
-export interface HourlyForecast {
-    time: string;          // 例: "09:00"
-    temp: number;          // 気温
-    weatherCode: number;   // 天気コード
-    snowfall: number;      // 降雪量(cm)
-    windGusts: number;     // 最大瞬間風速(m/s)
+    precipitationProb: number;
 }
 
 export interface WeatherData {
-    temp: number;           // 現在気温 (°C)
-    wind: number;           // 現在風速 (m/s)
-    snowfall_24h: number;   // 24時間降雪量 (cm)
-    snow_depth?: number;    // 積雪深 (cm)
-    weather_code: number;   // 現在天気コード
+    temp: number; // Celsius
+    wind: number; // km/h
+    snowfall_24h: number; // cm
+    snow_depth?: number; // cm total
+    weather_code: number;
     forecast: DailyForecast[];
-    // --- 当日精密コンディション ---
-    freezingLevel?: number; // 凍結高度 (m) ※これ以下は雪、以上は雨
-    windGusts?: number;     // 最大瞬間風速 (m/s)
-    visibility?: number;    // 視界 (m) ※低いとホワイトアウト
-    hourlyToday?: HourlyForecast[]; // 今日の時間別予報
 }
 
 export interface ConditionScore {

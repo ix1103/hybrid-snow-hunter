@@ -6,8 +6,10 @@ import { WeatherData, calculateConditionScore, getWeatherLabel, getSnowQuality, 
 interface ResortDetailModalProps {
     resort: Resort & { weather: WeatherData };
     isFavorite: boolean;
+    isInCompare: boolean;
     onClose: () => void;
     onToggleFavorite: (id: string) => void;
+    onToggleCompare: (resort: Resort & { weather: WeatherData }) => void;
 }
 
 const dayNames = ['日', '月', '火', '水', '木', '金', '土'];
@@ -40,8 +42,10 @@ function getDQRank(score: number): string {
 export default function ResortDetailModal({
     resort,
     isFavorite,
+    isInCompare,
     onClose,
     onToggleFavorite,
+    onToggleCompare,
 }: ResortDetailModalProps) {
     const condition = calculateConditionScore(resort.weather);
     const weatherLabel = getWeatherLabel(resort.weather.weather_code);
@@ -286,124 +290,6 @@ export default function ResortDetailModal({
                         </div>
                     </div>
 
-                    {/* ===== 当日精密コンディション ===== */}
-                    {(resort.weather.freezingLevel != null || resort.weather.windGusts != null || resort.weather.hourlyToday) && (
-                        <div style={{ marginBottom: '12px' }}>
-                            <div style={{ fontSize: '11px', color: 'var(--dq-text-gold)', marginBottom: '6px' }}>
-                                🎯 きょうのせいみつじょうほう
-                            </div>
-
-                            {/* 凍結高度・瞬間風速・視界 */}
-                            <div style={{
-                                display: 'grid',
-                                gridTemplateColumns: '1fr 1fr 1fr',
-                                gap: '6px',
-                                marginBottom: '8px',
-                            }}>
-                                {/* 凍結高度 */}
-                                {resort.weather.freezingLevel != null && (
-                                    <div style={{
-                                        background: resort.weather.freezingLevel > 1500
-                                            ? 'rgba(255, 100, 100, 0.15)' // 雨ライン高い→危険（赤）
-                                            : 'rgba(100, 180, 255, 0.15)', // 雪ライン低い→良い（青）
-                                        border: `1px solid ${resort.weather.freezingLevel > 1500 ? 'rgba(255,100,100,0.3)' : 'rgba(100,180,255,0.3)'}`,
-                                        borderRadius: '6px',
-                                        padding: '8px 4px',
-                                        textAlign: 'center',
-                                    }}>
-                                        <div style={{ fontSize: '14px', marginBottom: '2px' }}>
-                                            {resort.weather.freezingLevel > 2000 ? '🌧️' : resort.weather.freezingLevel > 1200 ? '⚠️' : '❄️'}
-                                        </div>
-                                        <div style={{ fontSize: '13px', fontWeight: 'bold', color: resort.weather.freezingLevel > 1500 ? '#ff6464' : '#64b4ff' }}>
-                                            {(resort.weather.freezingLevel / 1000).toFixed(1)}<span style={{ fontSize: '9px' }}>km</span>
-                                        </div>
-                                        <div style={{ fontSize: '9px', color: 'var(--dq-text-dim)' }}>とうけつこうど</div>
-                                    </div>
-                                )}
-                                {/* 最大瞬間風速 */}
-                                {resort.weather.windGusts != null && (
-                                    <div style={{
-                                        background: resort.weather.windGusts > 15
-                                            ? 'rgba(255, 150, 0, 0.15)'
-                                            : 'rgba(0,0,0,0.2)',
-                                        border: `1px solid ${resort.weather.windGusts > 15 ? 'rgba(255,150,0,0.3)' : 'var(--dq-window-border-inner)'}`,
-                                        borderRadius: '6px',
-                                        padding: '8px 4px',
-                                        textAlign: 'center',
-                                    }}>
-                                        <div style={{ fontSize: '14px', marginBottom: '2px' }}>
-                                            {resort.weather.windGusts > 20 ? '🌀' : '💨'}
-                                        </div>
-                                        <div style={{ fontSize: '13px', fontWeight: 'bold', color: resort.weather.windGusts > 15 ? '#ff9600' : 'var(--dq-text)' }}>
-                                            {resort.weather.windGusts}<span style={{ fontSize: '9px' }}>m/s</span>
-                                        </div>
-                                        <div style={{ fontSize: '9px', color: 'var(--dq-text-dim)' }}>さいだいしゅんかん</div>
-                                    </div>
-                                )}
-                                {/* 視界 */}
-                                {resort.weather.visibility != null && (
-                                    <div style={{
-                                        background: resort.weather.visibility < 1000
-                                            ? 'rgba(200,200,200,0.15)'
-                                            : 'rgba(0,0,0,0.2)',
-                                        border: `1px solid ${resort.weather.visibility < 1000 ? 'rgba(200,200,200,0.3)' : 'var(--dq-window-border-inner)'}`,
-                                        borderRadius: '6px',
-                                        padding: '8px 4px',
-                                        textAlign: 'center',
-                                    }}>
-                                        <div style={{ fontSize: '14px', marginBottom: '2px' }}>
-                                            {resort.weather.visibility < 500 ? '🌫️' : resort.weather.visibility < 2000 ? '😶‍🌫️' : '👁️'}
-                                        </div>
-                                        <div style={{ fontSize: '13px', fontWeight: 'bold', color: resort.weather.visibility < 1000 ? '#aaaaaa' : 'var(--dq-text)' }}>
-                                            {resort.weather.visibility >= 1000
-                                                ? `${(resort.weather.visibility / 1000).toFixed(1)}`
-                                                : resort.weather.visibility
-                                            }<span style={{ fontSize: '9px' }}>
-                                                {resort.weather.visibility >= 1000 ? 'km' : 'm'}
-                                            </span>
-                                        </div>
-                                        <div style={{ fontSize: '9px', color: 'var(--dq-text-dim)' }}>しかい</div>
-                                    </div>
-                                )}
-                            </div>
-
-                            {/* 時間別予報（3時間刻み） */}
-                            {resort.weather.hourlyToday && resort.weather.hourlyToday.length > 0 && (
-                                <div style={{
-                                    overflowX: 'auto',
-                                    paddingBottom: '4px',
-                                }}>
-                                    <div style={{
-                                        display: 'flex',
-                                        gap: '6px',
-                                        minWidth: 'max-content',
-                                    }}>
-                                        {resort.weather.hourlyToday.map(h => (
-                                            <div key={h.time} style={{
-                                                background: 'rgba(0,0,0,0.25)',
-                                                border: '1px solid var(--dq-window-border-inner)',
-                                                borderRadius: '6px',
-                                                padding: '6px 8px',
-                                                textAlign: 'center',
-                                                minWidth: '52px',
-                                            }}>
-                                                <div style={{ fontSize: '10px', color: 'var(--dq-text-dim)', marginBottom: '4px' }}>{h.time}</div>
-                                                <div style={{ fontSize: '16px', marginBottom: '2px' }}>{getWeatherEmoji(h.weatherCode)}</div>
-                                                <div style={{ fontSize: '11px', fontWeight: 'bold', color: 'var(--dq-text-orange)' }}>{h.temp}°</div>
-                                                {h.snowfall > 0 && (
-                                                    <div style={{ fontSize: '9px', color: 'var(--dq-text-blue)', marginTop: '2px' }}>❄️{h.snowfall}cm</div>
-                                                )}
-                                                {h.windGusts > 10 && (
-                                                    <div style={{ fontSize: '9px', color: '#ff9600', marginTop: '2px' }}>💨{h.windGusts}</div>
-                                                )}
-                                            </div>
-                                        ))}
-                                    </div>
-                                </div>
-                            )}
-                        </div>
-                    )}
-
                     {/* ===== AIコメント（DQ3の宿屋風メッセージ） ===== */}
                     {aiComment && (
                         <div className="dq-window" style={{
@@ -424,25 +310,14 @@ export default function ResortDetailModal({
                     {/* ===== 週間予報（DQ3ウィンドウ風） ===== */}
                     {resort.weather.forecast && resort.weather.forecast.length > 0 && (
                         <div style={{ marginBottom: '12px' }}>
-                            {/* しゅうかんよほう ヘッダー（tenki.jpへのリンク） */}
-                            <a
-                                href={resort.tenki_id
-                                    ? `https://tenki.jp/season/ski/${resort.tenki_id}/`
-                                    : `https://tenki.jp/season/ski/`
-                                }
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                style={{
-                                    fontSize: '11px',
-                                    color: 'var(--dq-text-gold)',
-                                    marginBottom: '6px',
-                                    letterSpacing: '0.1em',
-                                    display: 'block',
-                                    textDecoration: 'none',
-                                }}
-                            >
-                                📅 しゅうかんよほう ↗
-                            </a>
+                            <div style={{
+                                fontSize: '11px',
+                                color: 'var(--dq-text-gold)',
+                                marginBottom: '6px',
+                                letterSpacing: '0.1em',
+                            }}>
+                                📅 しゅうかんよほう
+                            </div>
                             <div style={{
                                 display: 'flex',
                                 gap: '6px',
@@ -453,73 +328,27 @@ export default function ResortDetailModal({
                                     const d = new Date(day.date);
                                     const label = i === 0 ? 'きょう' : i === 1 ? 'あした' : `${d.getMonth() + 1}/${d.getDate()}`;
                                     const dow = dayNames[d.getDay()];
-                                    const tenkiUrl = resort.tenki_id
-                                        ? `https://tenki.jp/season/ski/${resort.tenki_id}/`
-                                        : `https://tenki.jp/season/ski/`;
                                     return (
                                         <div key={day.date} style={{
                                             flexShrink: 0,
-                                            background: (day.snowfall ?? 0) > 5
-                                                ? 'rgba(100, 180, 255, 0.12)'   // 降雪多い日は青み
-                                                : 'rgba(0, 0, 0, 0.3)',
-                                            border: (day.snowfall ?? 0) > 5
-                                                ? '1px solid rgba(100,180,255,0.35)'
-                                                : '1px solid var(--dq-window-border-inner)',
+                                            background: 'rgba(0, 0, 0, 0.3)',
+                                            border: '1px solid var(--dq-window-border-inner)',
                                             borderRadius: '6px',
                                             padding: '6px 8px',
                                             textAlign: 'center',
-                                            minWidth: '56px',
-                                            cursor: 'pointer',
-                                        }}
-                                            onClick={() => window.open(resort.tenki_id
-                                                ? `https://tenki.jp/season/ski/${resort.tenki_id}/`
-                                                : `https://tenki.jp/season/ski/`, '_blank')}
-                                        >
-                                            {/* 日付・曜日 */}
+                                            minWidth: '52px',
+                                        }}>
                                             <div style={{ fontSize: '10px', color: 'var(--dq-text-dim)' }}>{label}</div>
-                                            <div style={{
-                                                fontSize: '9px', fontWeight: 'bold',
-                                                color: d.getDay() === 0 ? '#ff6464' : d.getDay() === 6 ? '#64b4ff' : 'var(--dq-text-dim)'
-                                            }}>{dow}</div>
-                                            {/* 天気アイコン */}
-                                            <div style={{ fontSize: '18px', margin: '3px 0' }}>{getWeatherEmoji(day.weatherCode)}</div>
-                                            {/* 最高/最低気温 */}
-                                            <div style={{ fontSize: '11px', fontWeight: 'bold', color: '#ff8888' }}>{Math.round(day.maxTemp)}°</div>
-                                            <div style={{ fontSize: '10px', color: '#88aaff' }}>{Math.round(day.minTemp)}°</div>
-                                            {/* 降水量（JMAモデル対応・mm/日） */}
-                                            <div style={{
-                                                fontSize: '9px', marginTop: '3px',
-                                                color: (day.precipitation ?? 0) >= 5 ? '#88aaff' : 'var(--dq-text-dim)'
-                                            }}>
-                                                💧{day.precipitation != null ? `${day.precipitation.toFixed(1)}mm` : '--'}
-                                            </div>
-                                            {/* 降雪量（0以上は常に表示、tenki.jp式） */}
-                                            <div style={{
-                                                fontSize: '9px', marginTop: '2px',
-                                                color: (day.snowfall ?? 0) > 0 ? '#aaddff' : 'var(--dq-text-dim)',
-                                                fontWeight: (day.snowfall ?? 0) > 10 ? 'bold' : 'normal',
-                                            }}>
-                                                ❄️{day.snowfall != null ? day.snowfall.toFixed(1) : '0'}cm
-                                            </div>
-                                            {/* 降雪量バー（視覚化） */}
-                                            {(day.snowfall ?? 0) > 0 && (
-                                                <div style={{
-                                                    height: '3px',
-                                                    background: 'rgba(100,180,255,0.2)',
-                                                    borderRadius: '2px',
-                                                    marginTop: '3px',
-                                                    overflow: 'hidden',
-                                                }}>
-                                                    <div style={{
-                                                        height: '100%',
-                                                        width: `${Math.min(100, ((day.snowfall ?? 0) / 30) * 100)}%`,
-                                                        background: 'rgba(100,180,255,0.8)',
-                                                        borderRadius: '2px',
-                                                    }} />
+                                            <div style={{ fontSize: '10px', color: 'var(--dq-text-dim)' }}>{dow}</div>
+                                            <div style={{ fontSize: '18px', margin: '2px 0' }}>{getWeatherEmoji(day.weatherCode)}</div>
+                                            <div style={{ fontSize: '10px', color: 'var(--dq-text-red)' }}>{Math.round(day.maxTemp)}°</div>
+                                            <div style={{ fontSize: '10px', color: 'var(--dq-text-blue)' }}>{Math.round(day.minTemp)}°</div>
+                                            {day.precipitationProb > 30 && (
+                                                <div style={{ fontSize: '9px', color: 'var(--dq-text-blue)', marginTop: '2px' }}>
+                                                    {day.precipitationProb}%
                                                 </div>
                                             )}
                                         </div>
-
                                     );
                                 })}
                             </div>
@@ -532,27 +361,26 @@ export default function ResortDetailModal({
                         gap: '8px',
                         paddingBottom: '16px',
                     }}>
-                        <a
-                            href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(resort.name)}`}
-                            target="_blank"
-                            rel="noopener noreferrer"
+                        <button
+                            onClick={() => onToggleCompare(resort)}
                             className="dq-command"
                             style={{
                                 flex: 1,
                                 textAlign: 'center',
                                 padding: '10px',
-                                border: '1px solid var(--dq-window-border-inner)',
+                                border: isInCompare
+                                    ? '2px solid var(--dq-text-gold)'
+                                    : '1px solid var(--dq-window-border-inner)',
                                 borderRadius: '6px',
-                                background: 'rgba(0, 0, 0, 0.2)',
-                                color: 'var(--dq-text)',
+                                background: isInCompare
+                                    ? 'rgba(255, 215, 0, 0.1)'
+                                    : 'rgba(0, 0, 0, 0.2)',
+                                color: isInCompare ? 'var(--dq-text-gold)' : 'var(--dq-text)',
                                 fontSize: '12px',
-                                textDecoration: 'none',
-                                fontFamily: 'var(--font-pixel)',
-                                display: 'block'
                             }}
                         >
-                            🗺️ ここへいく
-                        </a>
+                            {isInCompare ? '⚔️ パーティにいる ✓' : '⚔️ なかまにする'}
+                        </button>
                         {resort.url && (
                             <a
                                 href={resort.url}
