@@ -7,7 +7,8 @@ export async function fetchResortWeather(lat: number, long: number, elevation?: 
     const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${long}${elevationParam}&current=temperature_2m,wind_speed_10m,weather_code&daily=snowfall_sum,snow_depth_max,weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max&timezone=Asia%2FTokyo&forecast_days=7`;
 
     try {
-        const res = await fetch(url, { next: { revalidate: 3600 } }); // Cache for 1 hour
+        // cache: 'no-store' でブラウザキャッシュを無効化し、常に最新データを取得
+        const res = await fetch(url, { cache: 'no-store' });
         if (!res.ok) throw new Error('Failed to fetch weather');
 
         const data = await res.json();

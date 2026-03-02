@@ -36,20 +36,28 @@ export default function Dashboard({ initialResorts }: DashboardProps) {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     const [favorites, setFavorites] = useState<Set<string>>(new Set());
 
-    // クライアントサイドで天気データを取得
+    // クライアントサイドで天気データを取得（10件ずつバッチ処理）
     useEffect(() => {
         async function loadWeatherData() {
             setIsLoading(true);
+            const BATCH_SIZE = 10;
+            const allResults: (Resort & { weather: WeatherData })[] = [];
             try {
-                const promises = initialResorts.map(async (resort) => {
-                    const weather = await fetchResortWeather(resort.lat, resort.long, resort.elevation);
-                    return { ...resort, weather };
-                });
-                const results = await Promise.all(promises);
-                setResorts(results);
+                for (let i = 0; i < initialResorts.length; i += BATCH_SIZE) {
+                    const batch = initialResorts.slice(i, i + BATCH_SIZE);
+                    const batchResults = await Promise.all(
+                        batch.map(async (resort) => {
+                            const weather = await fetchResortWeather(resort.lat, resort.long, resort.elevation);
+                            return { ...resort, weather };
+                        })
+                    );
+                    allResults.push(...batchResults);
+                    // バッチごとに随時表示（ローディング中でも順次表示）
+                    setResorts([...allResults]);
+                    if (i === 0) setIsLoading(false); // 最初のバッチで即ローディング解除
+                }
             } catch (error) {
                 console.error("天気データの取得に失敗:", error);
-            } finally {
                 setIsLoading(false);
             }
         }
