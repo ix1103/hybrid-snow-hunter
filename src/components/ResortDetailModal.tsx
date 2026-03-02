@@ -290,23 +290,6 @@ export default function ResortDetailModal({
                         </div>
                     </div>
 
-                    {/* ===== AIコメント（DQ3の宿屋風メッセージ） ===== */}
-                    {aiComment && (
-                        <div className="dq-window" style={{
-                            padding: '10px',
-                            marginBottom: '12px',
-                            fontSize: '12px',
-                            color: 'var(--dq-text)',
-                            lineHeight: '1.8',
-                            whiteSpace: 'pre-line',
-                        }}>
-                            <div style={{ color: 'var(--dq-text-gold)', marginBottom: '4px', fontSize: '11px' }}>
-                                📜 ルイーダのじょうほう
-                            </div>
-                            {aiComment}
-                        </div>
-                    )}
-
                     {/* ===== 週間予報（DQ3ウィンドウ風） ===== */}
                     {resort.weather.forecast && resort.weather.forecast.length > 0 && (
                         <div style={{ marginBottom: '12px' }}>
@@ -355,32 +338,53 @@ export default function ResortDetailModal({
                         </div>
                     )}
 
+                    {/* ===== AIコメント（DQ3の宿屋風メッセージ） ===== */}
+                    {aiComment && (
+                        <div className="dq-window" style={{
+                            padding: '10px',
+                            marginBottom: '12px',
+                            fontSize: '12px',
+                            color: 'var(--dq-text)',
+                            lineHeight: '1.8',
+                            whiteSpace: 'pre-line',
+                        }}>
+                            <div style={{ color: 'var(--dq-text-gold)', marginBottom: '4px', fontSize: '11px' }}>
+                                📜 ルイーダのじょうほう
+                            </div>
+                            {aiComment}
+                        </div>
+                    )}
+
+
                     {/* ===== アクションボタン（DQ3コマンド風） ===== */}
                     <div style={{
                         display: 'flex',
                         gap: '8px',
                         paddingBottom: '16px',
                     }}>
-                        <button
-                            onClick={() => onToggleCompare(resort)}
+                        <a
+                            href={`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(resort.name + ' 駐車場')}&travelmode=driving`}
+                            target="_blank"
+                            rel="noopener noreferrer"
                             className="dq-command"
                             style={{
                                 flex: 1,
                                 textAlign: 'center',
                                 padding: '10px',
-                                border: isInCompare
-                                    ? '2px solid var(--dq-text-gold)'
-                                    : '1px solid var(--dq-window-border-inner)',
+                                border: '2px solid var(--dq-text-blue)',
                                 borderRadius: '6px',
-                                background: isInCompare
-                                    ? 'rgba(255, 215, 0, 0.1)'
-                                    : 'rgba(0, 0, 0, 0.2)',
-                                color: isInCompare ? 'var(--dq-text-gold)' : 'var(--dq-text)',
+                                background: 'rgba(102, 187, 255, 0.1)',
+                                color: 'var(--dq-text-blue)',
                                 fontSize: '12px',
+                                fontFamily: 'var(--font-pixel)',
+                                textDecoration: 'none',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
                             }}
                         >
-                            {isInCompare ? '⚔️ パーティにいる ✓' : '⚔️ なかまにする'}
-                        </button>
+                            🗺️ ここにいく
+                        </a>
                         {resort.url && (
                             <a
                                 href={resort.url}

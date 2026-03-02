@@ -42,7 +42,7 @@ export default function Dashboard({ initialResorts }: DashboardProps) {
             setIsLoading(true);
             try {
                 const promises = initialResorts.map(async (resort) => {
-                    const weather = await fetchResortWeather(resort.lat, resort.long);
+                    const weather = await fetchResortWeather(resort.lat, resort.long, resort.elevation);
                     return { ...resort, weather };
                 });
                 const results = await Promise.all(promises);

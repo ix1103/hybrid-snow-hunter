@@ -31,44 +31,28 @@ function MapController({ selectedResort }: { selectedResort: (Resort & { weather
     return null;
 }
 
-// DQ3風のスコア色
+// レベル別の5段階カラー
 const getScoreColor = (score: number) => {
     if (score >= 80) return '#ffd700'; // ゴールド（でんせつきゅう）
     if (score >= 60) return '#44ff88'; // 緑（ベテラン）
     if (score >= 40) return '#66bbff'; // 青（いっぱしの）
+    if (score >= 20) return '#cc88ff'; // 紫（みならい）
     return '#8899bb';                   // グレー（かけだし）
 };
 
-// DQ3風の画像アイコンパス
-const getRankImagePath = (score: number) => {
-    if (score >= 80) return '/map_icon_castle.png'; // 城
-    if (score >= 60) return '/map_icon_town.png';   // 町
-    if (score >= 40) return '/map_icon_tent.png';   // テント
-    return '/map_icon_pin.png';                     // ピン
-};
-
-// DQ3フィールドマップ風のマーカーアイコン
+// ▼マーカー + ラベルのアイコン生成
 const createDQMarkerIcon = (score: number, name: string) => {
     const color = getScoreColor(score);
-    const imagePath = getRankImagePath(score);
-    // DQ3のフィールドマップ上の町/城アイコン風
-    const svgIcon = `
+    const html = `
     <div style="
         display: flex;
         flex-direction: column;
         align-items: center;
-        width: 140px;
-        filter: drop-shadow(0 2px 4px rgba(0,0,0,1));
+        width: 130px;
+        filter: drop-shadow(0 2px 6px rgba(0,0,0,0.9));
         cursor: pointer;
         transform: translate(-50%, -100%);
     ">
-        <img src="${imagePath}" alt="icon" style="
-            width: 48px;
-            height: 48px;
-            object-fit: contain;
-            image-rendering: pixelated;
-            margin-bottom: 2px;
-        " />
         <div style="
             background: rgba(0, 0, 0, 0.85);
             border: 2px solid ${color};
@@ -78,12 +62,12 @@ const createDQMarkerIcon = (score: number, name: string) => {
             display: flex;
             flex-direction: column;
             align-items: center;
-            box-shadow: 0 0 6px ${color}66;
+            box-shadow: 0 0 8px ${color}44;
         ">
             <span style="
                 font-size: 11px;
                 font-weight: bold;
-                color: #ffffff;
+                color: #e0e0e0;
                 line-height: 1.3;
                 text-align: center;
                 white-space: pre-wrap;
@@ -98,13 +82,20 @@ const createDQMarkerIcon = (score: number, name: string) => {
                 margin-top: 2px;
             ">Lv${score}</span>
         </div>
+        <span style="
+            font-size: 20px;
+            color: ${color};
+            line-height: 1;
+            margin-top: -2px;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.8);
+        ">▼</span>
     </div>
     `;
 
     return L.divIcon({
         className: 'custom-score-marker',
-        html: svgIcon,
-        iconSize: [0, 0], // transformでセンタリングするため0に
+        html,
+        iconSize: [0, 0],
         iconAnchor: [0, 0],
     });
 };

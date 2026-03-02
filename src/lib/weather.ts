@@ -1,9 +1,10 @@
 import { WeatherData } from './scoring';
 
-export async function fetchResortWeather(lat: number, long: number): Promise<WeatherData> {
+export async function fetchResortWeather(lat: number, long: number, elevation?: number): Promise<WeatherData> {
     // Open-Meteo API URL
-    // Fetching current weather and daily forecast for 7 days (today + 6 days)
-    const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${long}&current=temperature_2m,wind_speed_10m,weather_code&daily=snowfall_sum,snow_depth_max,weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max&timezone=Asia%2FTokyo&forecast_days=7`;
+    // elevation を指定すると、その標高での気温補正（約0.7°C/100m）が適用される
+    const elevationParam = elevation ? `&elevation=${elevation}` : '';
+    const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${long}${elevationParam}&current=temperature_2m,wind_speed_10m,weather_code&daily=snowfall_sum,snow_depth_max,weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max&timezone=Asia%2FTokyo&forecast_days=7`;
 
     try {
         const res = await fetch(url, { next: { revalidate: 3600 } }); // Cache for 1 hour
