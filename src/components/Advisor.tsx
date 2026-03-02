@@ -1,0 +1,502 @@
+'use client';
+
+import { useState, useMemo } from 'react';
+import { Resort } from '@/lib/resorts_data';
+import { WeatherData, calculateConditionScore } from '@/lib/scoring';
+
+interface AdvisorProps {
+    resorts: (Resort & { weather: WeatherData })[];
+    onFilterChange: (criteria: 'all' | 'powder' | 'calm' | 'cold' | 'favorites') => void;
+    currentFilter: string;
+    onSearchChange: (query: string) => void;
+    searchQuery: string;
+    onResortClick: (resort: Resort & { weather: WeatherData }) => void;
+    favorites: Set<string>;
+    onToggleFavorite: (id: string) => void;
+}
+
+export default function Advisor({ resorts, onFilterChange, currentFilter, onSearchChange, searchQuery, onResortClick, favorites, onToggleFavorite }: AdvisorProps) {
+    const [showAll, setShowAll] = useState(false);
+    const [selectedArea, setSelectedArea] = useState<string>('all');
+    const [showScoreInfo, setShowScoreInfo] = useState(false);
+
+    // ユニークなエリアを取得
+    const uniqueAreas = useMemo(() => {
+        const areas = new Set(resorts.map(r => r.area));
+        return Array.from(areas);
+    }, [resorts]);
+
+    // 表示するリゾートの絞り込み・ソート
+    const displayResorts = useMemo(() => {
+        let filtered = [...resorts];
+
+        // 1. 検索フィルター
+        if (searchQuery) {
+            return filtered
+                .filter(r => r.name.includes(searchQuery) || r.area.includes(searchQuery))
+                .map(r => ({ ...r, score: calculateConditionScore(r.weather) }));
+        }
+
+        // 2. エリアフィルター
+        if (selectedArea !== 'all') {
+            filtered = filtered.filter(r => r.area === selectedArea);
+        }
+
+        // 3. スコア順ソート
+        const sorted = filtered
+            .map(r => ({ ...r, score: calculateConditionScore(r.weather) }))
+            .sort((a, b) => b.score.score - a.score.score);
+
+        // 4. 上位5件 or 全件
+        return showAll ? sorted : sorted.slice(0, 5);
+    }, [resorts, searchQuery, showAll, selectedArea]);
+
+    // スコアからDQ3風のレベル色を返す
+    const getLevelColor = (score: number) => {
+        if (score >= 80) return 'var(--dq-text-gold)';
+        if (score >= 60) return 'var(--dq-text-green)';
+        if (score >= 40) return 'var(--dq-text-blue)';
+        return 'var(--dq-text-dim)';
+    };
+
+    // スコアからDQ3風のラベルを返す
+    const getScoreLabel = (score: number) => {
+        if (score >= 80) return '✨ でんせつきゅう';
+        if (score >= 60) return '⚔️ ベテラン';
+        if (score >= 40) return '🛡️ いっぱしの';
+        return '📜 かけだし';
+    };
+
+    return (
+        <div className="h-full flex flex-col overflow-y-auto pb-20 md:pb-0 relative"
+            style={{ background: 'var(--dq-bg-dark)' }}>
+
+            {/* ===== ヘッダー（DQ3タイトル風） ===== */}
+            <div className="dq-window" style={{
+                margin: '12px 12px 0',
+                textAlign: 'center',
+                padding: '16px',
+                borderRadius: '12px',
+            }}>
+                <div style={{
+                    fontSize: '22px',
+                    color: 'var(--dq-text-gold)',
+                    fontWeight: 'bold',
+                    letterSpacing: '0.15em',
+                }} className="dq-glow">
+                    スノコン
+                </div>
+                <div style={{
+                    fontSize: '10px',
+                    color: 'var(--dq-text-dim)',
+                    marginTop: '2px',
+                    letterSpacing: '0.2em',
+                }}>
+                    ～ゆきの ゆうしゃたち～
+                </div>
+                {/* スコア情報ボタン */}
+                <button
+                    onClick={() => setShowScoreInfo(true)}
+                    style={{
+                        position: 'absolute',
+                        top: '12px',
+                        right: '16px',
+                        background: 'none',
+                        border: 'none',
+                        color: 'var(--dq-text-dim)',
+                        cursor: 'pointer',
+                        fontSize: '16px',
+                    }}
+                    title="スコアの基準について"
+                >
+                    📖
+                </button>
+            </div>
+
+            {/* ===== 検索入力（DQ3ウィンドウ風） ===== */}
+            <div style={{ padding: '8px 12px 0' }}>
+                <div className="dq-window" style={{ padding: '8px 12px' }}>
+                    <input
+                        type="text"
+                        placeholder="▶ なまえを いれてください..."
+                        value={searchQuery}
+                        onChange={(e) => onSearchChange(e.target.value)}
+                        style={{
+                            width: '100%',
+                            background: 'transparent',
+                            border: 'none',
+                            outline: 'none',
+                            color: 'var(--dq-text)',
+                            fontFamily: 'var(--font-pixel)',
+                            fontSize: '13px',
+                        }}
+                    />
+                </div>
+            </div>
+
+            {/* ===== さくせん（フィルター）エリア ===== */}
+            {!searchQuery && (
+                <div style={{ padding: '8px 12px 0' }}>
+                    {/* コンディションフィルター */}
+                    <div className="dq-window" style={{ padding: '12px' }}>
+                        <div style={{
+                            fontSize: '12px',
+                            color: 'var(--dq-text-gold)',
+                            marginBottom: '8px',
+                            letterSpacing: '0.1em',
+                        }}>
+                            ▼ さくせん
+                        </div>
+
+                        {/* コマンド選択リスト */}
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
+                            {[
+                                { key: 'favorites' as const, label: `⭐ なかまリスト (${favorites.size})`, },
+                                { key: 'all' as const, label: '🗺️ すべてのまち', },
+                                { key: 'powder' as const, label: '❄️ ちからのゆき', },
+                                { key: 'calm' as const, label: '🛡️ かぜの まもり', },
+                                { key: 'cold' as const, label: '🧊 こおりの けっかい', },
+                            ].map(item => (
+                                <button
+                                    key={item.key}
+                                    onClick={() => onFilterChange(currentFilter === item.key ? 'all' : item.key)}
+                                    className={`dq-command ${currentFilter === item.key ? 'active' : ''}`}
+                                    style={{
+                                        paddingLeft: currentFilter === item.key ? '20px' : '20px',
+                                    }}
+                                >
+                                    {item.label}
+                                </button>
+                            ))}
+                        </div>
+                    </div>
+
+                    {/* エリアフィルター */}
+                    <div className="dq-window" style={{ padding: '12px', marginTop: '8px' }}>
+                        <div style={{
+                            fontSize: '12px',
+                            color: 'var(--dq-text-gold)',
+                            marginBottom: '8px',
+                            letterSpacing: '0.1em',
+                        }}>
+                            ▼ ちいきを えらぶ
+                        </div>
+                        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px' }}>
+                            <button
+                                onClick={() => setSelectedArea('all')}
+                                style={{
+                                    padding: '4px 10px',
+                                    borderRadius: '4px',
+                                    fontSize: '11px',
+                                    fontFamily: 'var(--font-pixel)',
+                                    border: selectedArea === 'all' ? '2px solid var(--dq-text-gold)' : '1px solid var(--dq-window-border-inner)',
+                                    background: selectedArea === 'all' ? 'rgba(255, 215, 0, 0.15)' : 'transparent',
+                                    color: selectedArea === 'all' ? 'var(--dq-text-gold)' : 'var(--dq-text-dim)',
+                                    cursor: 'pointer',
+                                }}
+                            >
+                                ぜんこく
+                            </button>
+                            {uniqueAreas.map(area => (
+                                <button
+                                    key={area}
+                                    onClick={() => setSelectedArea(area)}
+                                    style={{
+                                        padding: '4px 10px',
+                                        borderRadius: '4px',
+                                        fontSize: '11px',
+                                        fontFamily: 'var(--font-pixel)',
+                                        border: selectedArea === area ? '2px solid var(--dq-text-gold)' : '1px solid var(--dq-window-border-inner)',
+                                        background: selectedArea === area ? 'rgba(255, 215, 0, 0.15)' : 'transparent',
+                                        color: selectedArea === area ? 'var(--dq-text-gold)' : 'var(--dq-text-dim)',
+                                        cursor: 'pointer',
+                                    }}
+                                >
+                                    {area}
+                                </button>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* ===== ランキングリスト（DQ3ステータス風） ===== */}
+            <div style={{ padding: '8px 12px', flex: 1 }}>
+                <div className="dq-window" style={{ padding: '12px' }}>
+                    <div style={{
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                        marginBottom: '12px',
+                    }}>
+                        <span style={{
+                            fontSize: '12px',
+                            color: 'var(--dq-text-gold)',
+                            letterSpacing: '0.1em',
+                        }}>
+                            ▼ {searchQuery
+                                ? 'けんさくけっか'
+                                : (selectedArea !== 'all' ? `${selectedArea}の つわもの` : 'つよさ ランキング')}
+                        </span>
+                        {!showAll && !searchQuery && (
+                            <span style={{ fontSize: '10px', color: 'var(--dq-text-dim)' }}>
+                                トップ5
+                            </span>
+                        )}
+                    </div>
+
+                    {displayResorts.length === 0 ? (
+                        <div style={{
+                            textAlign: 'center',
+                            padding: '20px',
+                            color: 'var(--dq-text-dim)',
+                            fontSize: '13px',
+                        }}>
+                            まものは いなかった！🏔️
+                        </div>
+                    ) : (
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                            {displayResorts.map((resort, idx) => (
+                                <div
+                                    key={resort.id}
+                                    onClick={() => onResortClick(resort)}
+                                    style={{
+                                        padding: '10px',
+                                        borderRadius: '6px',
+                                        border: '1px solid var(--dq-window-border-inner)',
+                                        background: 'rgba(13, 27, 62, 0.6)',
+                                        cursor: 'pointer',
+                                        transition: 'all 0.15s',
+                                    }}
+                                    onMouseEnter={(e) => {
+                                        e.currentTarget.style.borderColor = 'var(--dq-text-gold)';
+                                        e.currentTarget.style.background = 'rgba(255, 215, 0, 0.05)';
+                                    }}
+                                    onMouseLeave={(e) => {
+                                        e.currentTarget.style.borderColor = 'var(--dq-window-border-inner)';
+                                        e.currentTarget.style.background = 'rgba(13, 27, 62, 0.6)';
+                                    }}
+                                >
+                                    {/* 上段: 順位・名前・レベル */}
+                                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                            {/* 順位 */}
+                                            {!searchQuery && (
+                                                <span style={{
+                                                    fontSize: '16px',
+                                                    fontWeight: 'bold',
+                                                    color: idx < 3 ? 'var(--dq-text-gold)' : 'var(--dq-text-dim)',
+                                                    minWidth: '20px',
+                                                }}>
+                                                    {idx + 1}
+                                                </span>
+                                            )}
+                                            <div>
+                                                <div style={{
+                                                    fontSize: '13px',
+                                                    color: 'var(--dq-text)',
+                                                    fontWeight: 'bold',
+                                                }}>
+                                                    {resort.name}
+                                                </div>
+                                                <div style={{
+                                                    fontSize: '10px',
+                                                    color: 'var(--dq-text-dim)',
+                                                }}>
+                                                    {resort.area}
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '4px' }}>
+                                            {/* お気に入りボタン */}
+                                            <button
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    onToggleFavorite(resort.id);
+                                                }}
+                                                style={{
+                                                    background: 'none',
+                                                    border: 'none',
+                                                    cursor: 'pointer',
+                                                    fontSize: '16px',
+                                                    padding: '0',
+                                                    transition: 'transform 0.15s',
+                                                }}
+                                                onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.2)'}
+                                                onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
+                                            >
+                                                {favorites.has(resort.id) ? '⭐' : '☆'}
+                                            </button>
+                                            {/* レベル表示 */}
+                                            <span style={{
+                                                fontSize: '14px',
+                                                fontWeight: 'bold',
+                                                color: getLevelColor(resort.score.score),
+                                            }}>
+                                                Lv.{resort.score.score}
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                    {/* 下段: ステータスバー */}
+                                    <div style={{
+                                        marginTop: '6px',
+                                        display: 'flex',
+                                        justifyContent: 'space-between',
+                                        alignItems: 'center',
+                                        fontSize: '11px',
+                                        color: 'var(--dq-text-dim)',
+                                        padding: '4px 6px',
+                                        borderRadius: '4px',
+                                        background: 'rgba(0, 0, 0, 0.3)',
+                                    }}>
+                                        <span>❄️ {resort.weather.snowfall_24h}cm</span>
+                                        {resort.weather.snow_depth != null && (
+                                            <span>🏔️ {resort.weather.snow_depth}cm</span>
+                                        )}
+                                        <span>🌡️ {resort.weather.temp}°C</span>
+                                        <span>💨 {resort.weather.wind}m/s</span>
+                                    </div>
+
+                                    {/* DQ3風ひとこと */}
+                                    <div style={{
+                                        marginTop: '4px',
+                                        fontSize: '11px',
+                                        color: getLevelColor(resort.score.score),
+                                        padding: '2px 0',
+                                    }}>
+                                        {getScoreLabel(resort.score.score)} ─ {resort.score.details}
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    )}
+
+                    {/* もっと見る / 戻す ボタン */}
+                    {!searchQuery && !showAll && (
+                        <button
+                            onClick={() => setShowAll(true)}
+                            className="dq-command"
+                            style={{
+                                width: '100%',
+                                textAlign: 'center',
+                                marginTop: '12px',
+                                color: 'var(--dq-text-blue)',
+                                fontSize: '13px',
+                                padding: '8px',
+                                border: '1px dashed var(--dq-window-border-inner)',
+                                borderRadius: '6px',
+                            }}
+                        >
+                            ▼ つづきを みる（のこり {Math.max(0, resorts.filter(r => selectedArea === 'all' || r.area === selectedArea).length - 5)} けん）
+                        </button>
+                    )}
+
+                    {!searchQuery && showAll && (
+                        <button
+                            onClick={() => setShowAll(false)}
+                            className="dq-command"
+                            style={{
+                                width: '100%',
+                                textAlign: 'center',
+                                marginTop: '12px',
+                                color: 'var(--dq-text-dim)',
+                                fontSize: '13px',
+                                padding: '8px',
+                            }}
+                        >
+                            ▲ ベスト5に もどる
+                        </button>
+                    )}
+                </div>
+            </div>
+
+            {/* ===== スコア情報モーダル（DQ3ウィンドウ風） ===== */}
+            {showScoreInfo && (
+                <div
+                    className="fixed inset-0 z-[2000] flex items-center justify-center dq-fade-in"
+                    style={{ background: 'rgba(0, 0, 0, 0.75)', padding: '16px' }}
+                    onClick={() => setShowScoreInfo(false)}
+                >
+                    <div className="dq-window" style={{ maxWidth: '360px', width: '100%' }}
+                        onClick={e => e.stopPropagation()}>
+                        {/* タイトル */}
+                        <div style={{
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                            alignItems: 'center',
+                            marginBottom: '12px',
+                        }}>
+                            <span style={{
+                                fontSize: '14px',
+                                color: 'var(--dq-text-gold)',
+                                fontWeight: 'bold',
+                            }}>
+                                📖 レベルの きじゅん
+                            </span>
+                            <button
+                                onClick={() => setShowScoreInfo(false)}
+                                style={{
+                                    background: 'none',
+                                    border: 'none',
+                                    color: 'var(--dq-text-dim)',
+                                    cursor: 'pointer',
+                                    fontSize: '16px',
+                                }}
+                            >
+                                ✕
+                            </button>
+                        </div>
+
+                        <div style={{ fontSize: '12px', color: 'var(--dq-text-dim)', marginBottom: '12px' }}>
+                            スノーボーダーしてんの どくじアルゴリズムで けいさんしています。
+                        </div>
+
+                        <hr className="dq-divider" />
+
+                        {/* 降雪量 */}
+                        <div style={{ marginBottom: '10px' }}>
+                            <div style={{ color: 'var(--dq-text-blue)', fontWeight: 'bold', fontSize: '13px', marginBottom: '4px' }}>
+                                ❄️ こうせつりょう (+さいだい40)
+                            </div>
+                            <div style={{ paddingLeft: '16px', fontSize: '11px', color: 'var(--dq-text)', lineHeight: '1.8' }}>
+                                ・30cm いじょう: <span style={{ color: 'var(--dq-text-gold)' }}>かいしんの いちげき！(+40)</span><br />
+                                ・15cm いじょう: <span style={{ color: 'var(--dq-text-green)' }}>よい こうげき (+20)</span><br />
+                                ・5cm いじょう: <span style={{ color: 'var(--dq-text-blue)' }}>ちょっとした ゆき (+10)</span>
+                            </div>
+                        </div>
+
+                        {/* 気温 */}
+                        <div style={{ marginBottom: '10px' }}>
+                            <div style={{ color: 'var(--dq-text-orange)', fontWeight: 'bold', fontSize: '13px', marginBottom: '4px' }}>
+                                🌡️ きおん・ゆきしつ (+10 / -20)
+                            </div>
+                            <div style={{ paddingLeft: '16px', fontSize: '11px', color: 'var(--dq-text)', lineHeight: '1.8' }}>
+                                ・-5℃ いか: <span style={{ color: 'var(--dq-text-blue)' }}>ごくじょうゆき (+10)</span><br />
+                                ・5℃ いじょう: <span style={{ color: 'var(--dq-text-red)' }}>シャバゆき (-20)</span>
+                            </div>
+                        </div>
+
+                        {/* 風速 */}
+                        <div style={{ marginBottom: '10px' }}>
+                            <div style={{ color: 'var(--dq-text-green)', fontWeight: 'bold', fontSize: '13px', marginBottom: '4px' }}>
+                                💨 ふうそく (-10 / -30)
+                            </div>
+                            <div style={{ paddingLeft: '16px', fontSize: '11px', color: 'var(--dq-text)', lineHeight: '1.8' }}>
+                                ・8m/s いじょう: <span style={{ color: 'var(--dq-text-dim)' }}>さむくて つらい (-10)</span><br />
+                                ・15m/s いじょう: <span style={{ color: 'var(--dq-text-red)' }}>うんきゅうリスク大 (-30)</span>
+                            </div>
+                        </div>
+
+                        <hr className="dq-divider" />
+
+                        <div style={{ fontSize: '10px', color: 'var(--dq-text-dim)', textAlign: 'center' }}>
+                            ※あくまで めやすです。こうしきサイトで かくにんを。
+                        </div>
+                    </div>
+                </div>
+            )}
+        </div>
+    );
+}
