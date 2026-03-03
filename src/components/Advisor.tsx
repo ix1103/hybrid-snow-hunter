@@ -317,7 +317,7 @@ export default function Advisor({ resorts, onFilterChange, currentFilter, onSear
                                 ? 'けんさくけっか'
                                 : (selectedArea !== 'all'
                                     ? `${selectedArea}の ${isSummer ? 'ひしょち' : 'つわもの'}`
-                                    : (isSummer ? 'ひしょ ランキング' : 'つよさ ランキング'))}
+                                    : (isSummer ? 'ランキング' : 'つよさ ランキング'))}
                         </span>
                         {!showAll && !searchQuery && (
                             <span style={{ fontSize: '10px', color: 'var(--dq-text-dim)' }}>
