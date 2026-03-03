@@ -41,8 +41,17 @@ export default function Dashboard({ initialResorts, initialSummerSpots }: Dashbo
     const { season } = useSeason();
     const isSummer = season === 'summer';
 
+    // 季節が変わったらフィルターと選択状態をリセット
+    useEffect(() => {
+        setFilter('all');
+        setSelectedSpot(null);
+        setDetailSpot(null);
+    }, [isSummer]);
+
     // 季節に応じたデータソースで天気を取得
     useEffect(() => {
+        let isCancelled = false;
+
         async function loadWeatherData() {
             setIsLoading(true);
             const BATCH_SIZE = 10;
@@ -50,6 +59,8 @@ export default function Dashboard({ initialResorts, initialSummerSpots }: Dashbo
             const sourceData = isSummer ? initialSummerSpots : initialResorts;
             try {
                 for (let i = 0; i < sourceData.length; i += BATCH_SIZE) {
+                    if (isCancelled) break;
+
                     const batch = sourceData.slice(i, i + BATCH_SIZE);
                     const batchResults = await Promise.all(
                         batch.map(async (item) => {
@@ -61,16 +72,24 @@ export default function Dashboard({ initialResorts, initialSummerSpots }: Dashbo
                             }
                         })
                     );
+
+                    if (isCancelled) break;
+
                     allResults.push(...batchResults);
                     setSpots([...allResults]);
                     if (i === 0) setIsLoading(false);
                 }
             } catch (error) {
                 console.error("天気データの取得に失敗:", error);
-                setIsLoading(false);
+                if (!isCancelled) setIsLoading(false);
             }
         }
+
         loadWeatherData();
+
+        return () => {
+            isCancelled = true;
+        };
     }, [initialResorts, initialSummerSpots, isSummer]);
 
     // お気に入り読み込み（季節別キー）

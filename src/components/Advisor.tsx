@@ -51,13 +51,8 @@ export default function Advisor({ resorts, onFilterChange, currentFilter, onSear
             filtered = filtered.filter(r => r.area === selectedArea);
         }
 
-        // 3. 季節別フィルター
-        if (isSummer && currentFilter !== 'all' && currentFilter !== 'favorites') {
-            // 夏モード: アクティビティフィルター（activitiesフィールドで見る）
-            filtered = filtered.filter(r =>
-                r.activities && r.activities.includes(currentFilter)
-            );
-        } else if (!isSummer && currentFilter !== 'all' && currentFilter !== 'favorites') {
+        // 3. 季節別フィルター（Dashboardで既に絞り込まれているため不要だが、念のため残す場合は冬のコンディションのみ）
+        if (!isSummer && currentFilter !== 'all' && currentFilter !== 'favorites') {
             // 冬モード: 元のコンディションフィルター
             if (currentFilter === 'powder') {
                 filtered = filtered.filter(r => r.weather.snowfall_24h > 10);
