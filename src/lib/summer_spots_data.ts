@@ -169,7 +169,117 @@ export const SUMMER_SPOTS: SummerSpot[] = [
         difficulty: 1, courseTime: '2時間', features: ['あいち さいこうほう', 'シバザクラ', 'ファミリーむけ'],
         hut: 'なし', tent: 'なし', water: '豊富'
     },
+    {
+        id: 'tanzawa-daibozan',
+        name: '丹沢山',
+        lat: 35.4734, long: 139.1637, elevation: 1567,
+        area: '神奈川県', url: 'https://www.tanzawa-mt.com/',
+        category: 'trekking', activities: ['trekking', 'nature'],
+        bestMonths: [4, 5, 10, 11],
+        difficulty: 2, courseTime: '6時間', features: ['日本百名山', 'やまごや あり', 'しかに あえる'],
+        hut: 'あり(有人)', tent: 'なし', water: '豊富'
+    },
+    {
+        id: 'okutama',
+        name: '雲取山',
+        lat: 35.8548, long: 138.9428, elevation: 2017,
+        area: '東京都', url: 'https://www.okutama-town.com/',
+        category: 'trekking', activities: ['trekking', 'nature'],
+        bestMonths: [5, 6, 7, 8, 9, 10],
+        difficulty: 3, courseTime: '10時間', features: ['日本百名山', 'とうきょう さいこうほう', 'やまごや あり'],
+        hut: 'あり(有人)', tent: 'あり', water: '豊富'
+    },
+    {
+        id: 'buko',
+        name: '武甲山',
+        lat: 35.9924, long: 139.0588, elevation: 1304,
+        area: '埼玉県', url: 'https://www.yamagoya.org/bukousan',
+        category: 'trekking', activities: ['trekking', 'nature'],
+        bestMonths: [4, 5, 10, 11],
+        difficulty: 2, courseTime: '4時間', features: ['さいたまのせいれいざん', 'しだれざくら'],
+        hut: 'なし', tent: 'なし', water: '要かくにん'
+    },
+    {
+        id: 'ryugatake',
+        name: '竜ヶ岳',
+        lat: 35.4633, long: 138.6203, elevation: 1485,
+        area: '静岡県', url: 'http://www.fujisan-lmt.jp/',
+        category: 'trekking', activities: ['trekking', 'nature'],
+        bestMonths: [1, 12, 4, 5],
+        difficulty: 2, courseTime: '4時間30分', features: ['ダイヤモンド富士', '富士山てんぼう', '本栖湖わき'],
+        hut: 'なし', tent: 'なし', water: 'なし'
+    },
+    {
+        id: 'horaiji',
+        name: '鳳来寺山',
+        lat: 34.9494, long: 137.6003, elevation: 684,
+        area: '愛知県', url: 'https://www.horaiji.com/',
+        category: 'trekking', activities: ['trekking', 'nature'],
+        bestMonths: [4, 5, 10, 11],
+        difficulty: 1, courseTime: '3時間', features: ['しぜんきねんぶつ', '1425だんのかいだん', 'こけのもり'],
+        hut: 'なし', tent: 'なし', water: '豊富'
+    },
     // --- ⚔️ 中級（Lv.3〜4 / ベテラン級） ---
+    {
+        id: 'tanigawadake',
+        name: '谷川岳',
+        lat: 36.8455, long: 138.7427, elevation: 1977,
+        area: '群馬県', url: 'https://tanigawadake-rw.com/',
+        category: 'trekking', activities: ['trekking', 'nature', 'gondola'],
+        bestMonths: [7, 8, 9, 10],
+        difficulty: 4, courseTime: '5時間30分', features: ['日本百名山', 'ロープウェイあり', 'まなこいわ（ガレ場）'],
+        hut: 'あり(有人)', tent: 'あり', water: '豊富'
+    },
+    {
+        id: 'kinpu',
+        name: '金峰山',
+        lat: 35.7986, long: 138.6411, elevation: 2599,
+        area: '山梨県', url: 'https://www.kirari.yamashi.com/',
+        category: 'trekking', activities: ['trekking', 'nature'],
+        bestMonths: [7, 8, 9],
+        difficulty: 3, courseTime: '7時間', features: ['日本百名山', '五丈岩（ほこら）', 'ずっとやまの うえ'],
+        hut: 'あり(有人)', tent: 'あり', water: '要かくにん'
+    },
+    {
+        id: 'tateshina',
+        name: '蓼科山',
+        lat: 36.1045, long: 138.2980, elevation: 2531,
+        area: '長野県', url: 'https://tateshina.or.jp/',
+        category: 'trekking', activities: ['trekking', 'nature'],
+        bestMonths: [7, 8, 9, 10],
+        difficulty: 3, courseTime: '5時間', features: ['日本百名山', 'まん丸な さんちょう', 'かい石のたたみ'],
+        hut: 'あり(有人)', tent: 'なし', water: '要かくにん'
+    },
+    {
+        id: 'mizugaki',
+        name: '瑞牆山',
+        lat: 35.8606, long: 138.5947, elevation: 2230,
+        area: '山梨県', url: 'https://kanko.hokuto-city.jp/',
+        category: 'trekking', activities: ['trekking', 'nature'],
+        bestMonths: [6, 7, 8, 9, 10],
+        difficulty: 3, courseTime: '5時間30分', features: ['日本百名山', 'きょだいいわ', 'フリークライミング'],
+        hut: 'あり(有人)', tent: 'あり', water: '豊富'
+    },
+    {
+        id: 'ryokami',
+        name: '両神山',
+        lat: 36.0600, long: 138.8389, elevation: 1723,
+        area: '埼玉県', url: 'https://www.town.yoshida.saitama.jp/',
+        category: 'trekking', activities: ['trekking', 'nature'],
+        bestMonths: [4, 5, 10, 11],
+        difficulty: 4, courseTime: '8時間', features: ['日本百名山', 'じゅうさんくさり', 'おくのほそみち'],
+        hut: 'あり(有人)', tent: 'なし', water: '豊富'
+    },
+    {
+        id: 'fuji-subashiri',
+        name: '富士山（須走口）',
+        lat: 35.3563, long: 138.7778, elevation: 3776,
+        area: '静岡県', url: 'https://www.fujisan-climb.jp/',
+        category: 'trekking', activities: ['trekking', 'nature'],
+        bestMonths: [7, 8],
+        difficulty: 4, courseTime: '10時間', features: ['世界遺産', 'すばしり さんどう', 'すなはし りがいち'],
+        hut: 'あり(有人)', tent: 'なし', water: '要かくにん'
+    },
     {
         id: 'gozaisho',
         name: '御在所岳',
@@ -281,6 +391,26 @@ export const SUMMER_SPOTS: SummerSpot[] = [
         hut: '避難小屋のみ', tent: 'あり', water: '要かくにん'
     },
     // --- 🐉 上級（Lv.5 / でんせつ級） ---
+    {
+        id: 'kaikomagadake',
+        name: '甲斐駒ヶ岳',
+        lat: 35.7606, long: 138.2358, elevation: 2967,
+        area: '山梨県', url: 'https://www.minamialps-net.jp/',
+        category: 'trekking', activities: ['trekking', 'nature'],
+        bestMonths: [7, 8, 9],
+        difficulty: 5, courseTime: '11時間(1泊)', features: ['日本百名山', 'しろいはだの花崗岩', 'きけんないわば'],
+        hut: 'あり(有人)', tent: 'あり', water: '要かくにん'
+    },
+    {
+        id: 'kitadake',
+        name: '北岳',
+        lat: 35.6744, long: 138.2375, elevation: 3193,
+        area: '山梨県', url: 'https://www.minamialps-net.jp/',
+        category: 'trekking', activities: ['trekking', 'nature'],
+        bestMonths: [7, 8, 9],
+        difficulty: 5, courseTime: '14時間(1〜2泊)', features: ['日本百名山', 'にほんだい2い', 'キタダケソウ'],
+        hut: 'あり(有人)', tent: 'あり', water: '豊富'
+    },
     {
         id: 'yarigatake',
         name: '槍ヶ岳',
