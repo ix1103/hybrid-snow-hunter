@@ -122,17 +122,14 @@ export default function Advisor({ resorts, onFilterChange, currentFilter, onSear
                     />
                 ) : (
                     <img
-                        src="/title-logo-summer.png"
-                        alt="GREEN ADVENTURE HUNTER"
+                        src="/yamacon-logo.png"
+                        alt="やま▲こん～やまのゆうしゃたち～"
                         style={{
                             width: '100%',
                             maxWidth: '240px',
                             objectFit: 'contain',
                             filter: 'drop-shadow(0px 2px 4px rgba(0,0,0,0.4))',
-                        }}
-                        onError={(e) => {
-                            // 夏ロゴがまだない場合はテキストにフォールバック
-                            (e.target as HTMLImageElement).style.display = 'none';
+                            borderRadius: '8px'
                         }}
                     />
                 )}
