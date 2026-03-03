@@ -205,16 +205,7 @@ export const SUMMER_SPOTS: SummerSpot[] = [
         difficulty: 2, courseTime: '4時間', features: ['さいたまのせいれいざん', 'しだれざくら'],
         hut: 'なし', tent: 'なし', water: '要かくにん'
     },
-    {
-        id: 'ryugatake',
-        name: '竜ヶ岳',
-        lat: 35.4633, long: 138.6203, elevation: 1485,
-        area: '静岡県', url: 'http://www.fujisan-lmt.jp/',
-        category: 'trekking', activities: ['trekking', 'nature'],
-        bestMonths: [1, 12, 4, 5],
-        difficulty: 2, courseTime: '4時間30分', features: ['ダイヤモンド富士', '富士山てんぼう', '本栖湖わき'],
-        hut: 'なし', tent: 'なし', water: 'なし'
-    },
+
 
     // --- ⚔️ 中級（Lv.3〜4 / ベテラン級） ---
     {
@@ -754,6 +745,92 @@ export const SUMMER_SPOTS: SummerSpot[] = [
         bestMonths: [4, 5, 10, 11],
         difficulty: 3, courseTime: '5時間', features: ['えんしゅうの めいほう', 'きゅうとう あり', 'あきのやまの しめい'],
         hut: '避難小屋のみ', tent: 'なし', water: '要かくにん'
+    },
+    {
+        id: 'akihasan',
+        name: '秋葉山',
+        lat: 34.9814, long: 137.8656, elevation: 866,
+        area: '静岡県', url: 'https://www.akihasanhongu.jp/',
+        category: 'trekking', activities: ['trekking', 'nature'],
+        bestMonths: [4, 5, 10, 11],
+        difficulty: 2, courseTime: '4時間', features: ['あきはじんじゃ', 'てんぐ しんこう', 'とうかい しぜんほどう'],
+        hut: 'なし', tent: 'なし', water: '要かくにん'
+    },
+
+    // 🌲 安倍奥（オクシズ）エリア
+    {
+        id: 'yanbushi',
+        name: '山伏（やんぶし）',
+        lat: 35.2975, long: 138.2711, elevation: 2014,
+        area: '静岡県', url: 'https://www.okushizuoka.jp/',
+        category: 'trekking', activities: ['trekking', 'nature', 'flower'],
+        bestMonths: [5, 6, 9, 10, 11],
+        difficulty: 3, courseTime: '6時間30分', features: ['日本三百名山', 'ささはらの りょうせん', 'ヤナギラン・こうよう'],
+        hut: '避難小屋のみ', tent: 'なし', water: '要かくにん'
+    },
+    {
+        id: 'jumaisan',
+        name: '十枚山',
+        lat: 35.2344, long: 138.3564, elevation: 1730,
+        area: '静岡県', url: 'https://www.okushizuoka.jp/',
+        category: 'trekking', activities: ['trekking', 'nature'],
+        bestMonths: [4, 5, 10, 11],
+        difficulty: 3, courseTime: '5時間30分', features: ['ふじさんと みなみアルプス てんぼう', 'ヤマビル ちゅうい', 'あべおかの めいほう'],
+        hut: 'なし', tent: 'なし', water: 'なし'
+    },
+
+    // 🌊 伊豆半島・箱根西麓エリア
+    {
+        id: 'sukumoyama',
+        name: '巣雲山',
+        lat: 34.9939, long: 139.0436, elevation: 581,
+        area: '静岡県', url: 'https://kanko.city.izu.shizuoka.jp/',
+        category: 'trekking', activities: ['trekking', 'nature'],
+        bestMonths: [1, 2, 3, 4, 11, 12],
+        difficulty: 1, courseTime: '2時間', features: ['360ど だいパノラマ', 'いずスカイライン', 'ファミリーむけ'],
+        hut: 'なし', tent: 'なし', water: 'なし'
+    },
+    {
+        id: 'izusanzan',
+        name: '伊豆三山（城山・葛城山・発端丈山）',
+        lat: 35.0119, long: 138.9328, elevation: 452,
+        area: '静岡県', url: 'https://izunotabi.com/',
+        category: 'trekking', activities: ['trekking', 'nature'],
+        bestMonths: [3, 4, 5, 10, 11, 12],
+        difficulty: 2, courseTime: '4時間', features: ['ロッククライミングの せいち(じょうやま)', 'ふじさんと するがわん', 'れんぞく じゅうそう'],
+        hut: 'なし', tent: 'なし', water: 'なし'
+    },
+    {
+        id: 'nesugatayama',
+        name: '寝姿山',
+        lat: 34.6783, long: 138.9511, elevation: 200,
+        area: '静岡県', url: 'https://www.ropeway.co.jp/',
+        category: 'trekking', activities: ['trekking', 'nature', 'gondola'],
+        bestMonths: [1, 2, 3, 4, 11, 12],
+        difficulty: 1, courseTime: '1時間', features: ['ロープウェイあり', 'じょせいの あおむけすがた', 'ぜっけい テラス'],
+        hut: 'なし', tent: 'なし', water: '豊富'
+    },
+
+    // 🗻 富士山周辺・天子山地 エリア
+    {
+        id: 'chojagatake',
+        name: '長者ヶ岳',
+        lat: 35.3467, long: 138.5414, elevation: 1336,
+        area: '静岡県', url: 'https://fujinomiya.gr.jp/',
+        category: 'trekking', activities: ['trekking', 'nature'],
+        bestMonths: [4, 5, 10, 11, 12],
+        difficulty: 2, courseTime: '3時間30分', features: ['たぬきこからの ふじさん てんぼう', 'てんしさんち', 'さんちょうが ひろい'],
+        hut: 'なし', tent: 'なし', water: 'なし'
+    },
+    {
+        id: 'ryugadake-fuji',
+        name: '竜ヶ岳（富士五湖）',
+        lat: 35.4194, long: 138.5636, elevation: 1485,
+        area: '静岡県', url: 'https://motosuko.com/',
+        category: 'trekking', activities: ['trekking', 'nature'],
+        bestMonths: [1, 12, 4, 5],
+        difficulty: 2, courseTime: '4時間', features: ['ダイヤモンド富士', 'ささはらの だいパノラマ', 'もとすこ わき'],
+        hut: 'なし', tent: 'なし', water: 'なし'
     },
 
     // ⛰️ 南アルプス深南部（静岡側）
