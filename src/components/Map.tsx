@@ -119,7 +119,7 @@ function ResortMarker({ resort, onResortClick, isSummer }: {
 }) {
     // 季節に応じてスコア計算を切り替え
     const condition = isSummer
-        ? calculateSummerScore(resort.weather)
+        ? calculateSummerScore(resort.weather, (resort as any).bestMonths, resort.elevation)
         : calculateConditionScore(resort.weather);
     const markerIcon = createDQMarkerIcon(condition.score, resort.name, isSummer);
 

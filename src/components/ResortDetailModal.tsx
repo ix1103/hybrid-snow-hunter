@@ -65,7 +65,7 @@ export default function ResortDetailModal({
 
     // 季節に応じてスコア・コメントを切り替え
     const condition = isSummer
-        ? calculateSummerScore(resort.weather)
+        ? calculateSummerScore(resort.weather, resort.bestMonths, resort.elevation)
         : calculateConditionScore(resort.weather);
     const weatherLabel = getWeatherLabel(resort.weather.weather_code);
     const snowQuality = isSummer ? null : getSnowQuality(resort.weather);

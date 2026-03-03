@@ -1,6 +1,7 @@
 /**
- * 夏モード用スコアリングロジック
- * 「避暑度」「晴天度」「風の心地よさ」「降水リスク」の4軸で評価
+ * 夏モード用スコアリングロジック（v2 - 現実版）
+ * 「快適度」「晴天度」「風の心地よさ」「降水リスク」「シーズン適性」の5軸で評価
+ * 寒すぎる場所（3月の富良野など）は正しく低スコアになる
  */
 
 import { WeatherData, ConditionScore, DailyForecast } from './scoring';
@@ -18,31 +19,63 @@ function getCityTemp(): number {
     return CITY_REFERENCE_TEMPS[month] ?? 28;
 }
 
-// --- 夏モードのコンディションスコア ---
-export function calculateSummerScore(data: WeatherData): ConditionScore {
-    let score = 50;
+function getCurrentMonth(): number {
+    return new Date().getMonth() + 1;
+}
 
-    // 1. 避暑度（都市との気温差が大きいほど高スコア）
+// --- 夏モードのコンディションスコア（v2） ---
+// bestMonths を渡すとシーズン適性も考慮する
+export function calculateSummerScore(
+    data: WeatherData,
+    bestMonths?: number[],
+    elevation?: number,
+): ConditionScore {
+    let score = 50;
+    const temp = data.temp;
     const cityTemp = getCityTemp();
-    const tempDiff = cityTemp - data.temp; // 正の値なら山の方が涼しい
-    if (tempDiff >= 15) score += 30;       // 15℃以上涼しい → 最高の避暑地
-    else if (tempDiff >= 10) score += 20;  // 10℃以上涼しい → 快適
-    else if (tempDiff >= 5) score += 10;   // 5℃以上涼しい → まあまあ
-    else if (tempDiff < 0) score -= 10;    // 山の方が暑い（ありえないが念のため）
+    const month = getCurrentMonth();
+
+    // ==================================
+    // 1. 快適度（最重要: 実際の気温が快適かどうか）
+    // ==================================
+    // 快適ゾーン: 15〜28℃が最高、それ以外はペナルティ
+    if (temp >= 15 && temp <= 22) {
+        score += 25;  // 最高に快適（涼しくて気持ちいい）
+    } else if (temp >= 22 && temp <= 28) {
+        score += 15;  // 快適（暖かいけど暑すぎない）
+    } else if (temp >= 10 && temp < 15) {
+        score += 5;   // やや涼しい（上着があればOK）
+    } else if (temp >= 5 && temp < 10) {
+        score -= 10;  // 寒い（春or秋の装備が必要）
+    } else if (temp >= 0 && temp < 5) {
+        score -= 25;  // かなり寒い（アウトドアは厳しい）
+    } else if (temp < 0) {
+        score -= 40;  // 氷点下（夏のアクティビティは不可能）
+    } else if (temp > 28 && temp <= 33) {
+        score -= 5;   // 暑い（避暑の意味がない）
+    } else if (temp > 33) {
+        score -= 15;  // 猛暑（危険）
+    }
+
+    // 都会との気温差ボーナス（ただし快適ゾーン内のみ有効）
+    if (temp >= 10 && temp <= 28) {
+        const tempDiff = cityTemp - temp;
+        if (tempDiff >= 10) score += 10;       // かなり涼しい
+        else if (tempDiff >= 5) score += 5;    // 程よく涼しい
+    }
 
     // 2. 晴天度（天気コードで判定）
     if (data.weather_code === 0) score += 15;           // 快晴
     else if (data.weather_code <= 3) score += 5;        // 曇り
+    else if (data.weather_code >= 95) score -= 25;      // 雷雨（先に判定）
     else if (data.weather_code >= 61) score -= 15;      // 雨
-    else if (data.weather_code >= 95) score -= 25;      // 雷雨
 
-    // 3. 風の心地よさ（微風が最高、強風はマイナス）
-    if (data.wind >= 1 && data.wind <= 4) score += 10;  // そよ風 → 最高
+    // 3. 風の心地よさ
+    if (temp >= 15 && data.wind >= 1 && data.wind <= 4) score += 10;  // 快適な気温でのそよ風
     else if (data.wind > 10) score -= 15;               // 強風
     else if (data.wind > 7) score -= 5;                 // やや強風
 
-    // 4. 降水リスク（予報の降水確率）
-    // forecast の当日分を使う
+    // 4. 降水リスク
     if (data.forecast && data.forecast.length > 0) {
         const todayProb = data.forecast[0].precipitationProb ?? 0;
         if (todayProb > 70) score -= 15;
@@ -50,28 +83,58 @@ export function calculateSummerScore(data: WeatherData): ConditionScore {
         else if (todayProb < 20) score += 5;
     }
 
+    // 5. シーズン適性（bestMonths が指定されている場合）
+    if (bestMonths && bestMonths.length > 0) {
+        if (bestMonths.includes(month)) {
+            score += 10;  // ベストシーズン！
+        } else {
+            score -= 15;  // シーズン外
+        }
+    }
+
+    // 6. 標高ボーナス（夏に1500m以上は涼しい恩恵）
+    if (elevation && elevation >= 1500 && temp >= 10 && temp <= 25) {
+        score += 5;
+    }
+
     // スコアの範囲制限
     score = Math.max(0, Math.min(100, score));
 
-    // DQ3風のラベル
+    // DQ3風のラベル（気温に応じて変化）
     let label = 'ふつう';
     let color = 'bg-yellow-500';
 
-    if (score >= 80) {
+    if (temp < 5) {
+        label = 'さむすぎて むり！';
+        color = 'bg-blue-500';
+    } else if (score >= 80) {
         label = 'さいこうの ひしょち！';
         color = 'bg-emerald-500';
     } else if (score >= 60) {
-        label = 'あつさから にげろ！';
+        label = 'ぼうけんに でかけよう！';
         color = 'bg-green-500';
-    } else if (score <= 30) {
+    } else if (score <= 20) {
         label = 'きょうは やめとけ…';
         color = 'bg-gray-500';
+    } else if (score <= 35) {
+        label = 'じゅんびを しっかり';
+        color = 'bg-orange-500';
     }
 
-    // 理由の生成
+    // 理由の生成（現実的に）
     const reasons = [];
-    const diffRounded = Math.round(tempDiff);
-    if (tempDiff >= 10) reasons.push(`都会より${diffRounded}℃涼しい`);
+    if (temp < 0) reasons.push(`氷点下${Math.abs(Math.round(temp))}℃！`);
+    else if (temp < 10) reasons.push(`気温${Math.round(temp)}℃（寒い）`);
+    else if (temp >= 15 && temp <= 25) {
+        const diff = Math.round(cityTemp - temp);
+        if (diff > 0) reasons.push(`都会より${diff}℃涼しい`);
+        else reasons.push('快適な気温');
+    } else if (temp > 30) reasons.push(`${Math.round(temp)}℃（暑い）`);
+
+    if (bestMonths && bestMonths.length > 0) {
+        if (bestMonths.includes(month)) reasons.push('ベストシーズン');
+        else reasons.push('シーズン外');
+    }
     if (data.weather_code === 0) reasons.push('快晴');
     if (data.weather_code >= 61 && data.weather_code < 95) reasons.push('雨に注意');
     if (data.wind > 10) reasons.push('強風注意');
