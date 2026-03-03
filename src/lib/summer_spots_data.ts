@@ -14,7 +14,7 @@ export interface SummerSpot {
     elevation: number;
     area: string;
     url: string;
-    category: 'highland' | 'trekking' | 'camp' | 'mtb' | 'river' | 'flower' | 'onsen';
+    category: 'highland' | 'trekking' | 'camp' | 'mtb';
     activities: string[];      // 複数タグ（フィルター用）
     bestMonths?: number[];     // ベストシーズン月（1〜12）
     // 登山特化データ（任意）
@@ -540,121 +540,6 @@ export const SUMMER_SPOTS: SummerSpot[] = [
         bestMonths: [5, 6, 7, 8, 9, 10],
     },
 
-    // ============================
-    // 🌊 渓谷・川遊び (river)
-    // ============================
-    {
-        id: 'okutama',
-        name: '奥多摩渓谷',
-        lat: 35.8092, long: 139.0906, elevation: 350,
-        area: '東京都', url: 'https://www.okutama.gr.jp/',
-        category: 'river', activities: ['river', 'trekking', 'nature'],
-        bestMonths: [5, 6, 7, 8, 9],
-    },
-    {
-        id: 'nagatoro',
-        name: '長瀞渓谷',
-        lat: 36.1125, long: 139.1183, elevation: 150,
-        area: '埼玉県', url: 'https://www.nagatoro.gr.jp/',
-        category: 'river', activities: ['river', 'nature'],
-        bestMonths: [5, 6, 7, 8, 9],
-    },
-    {
-        id: 'ojiro-river',
-        name: '尾白川渓谷',
-        lat: 35.7881, long: 138.3025, elevation: 700,
-        area: '山梨県', url: 'https://www.hokuto-kanko.jp/',
-        category: 'river', activities: ['river', 'trekking', 'nature'],
-        bestMonths: [6, 7, 8, 9],
-    },
-    {
-        id: 'atera-valley',
-        name: '阿寺渓谷',
-        lat: 35.7500, long: 137.6833, elevation: 550,
-        area: '長野県', url: 'https://www.town-kiso.com/',
-        category: 'river', activities: ['river', 'nature'],
-        bestMonths: [6, 7, 8, 9],
-    },
-    {
-        id: 'oirase',
-        name: '奥入瀬渓流',
-        lat: 40.5300, long: 140.9800, elevation: 400,
-        area: '青森県', url: 'https://towadako.or.jp/',
-        category: 'river', activities: ['trekking', 'nature'],
-        bestMonths: [5, 6, 7, 8, 9, 10],
-    },
-
-    // ============================
-    // 🌸 高原花畑 (flower)
-    // ============================
-    {
-        id: 'furano-lavender',
-        name: '富良野ラベンダー畑（ファーム富田）',
-        lat: 43.3497, long: 142.3808, elevation: 220,
-        area: '北海道', url: 'https://www.farm-tomita.co.jp/',
-        category: 'flower', activities: ['nature'],
-        bestMonths: [7, 8],
-    },
-    {
-        id: 'kirigamine-nikko',
-        name: '霧ヶ峰ニッコウキスゲ群生地',
-        lat: 36.1000, long: 138.2000, elevation: 1700,
-        area: '長野県', url: 'https://www.kirigamine-vc.jp/',
-        category: 'flower', activities: ['trekking', 'nature'],
-        bestMonths: [7],
-    },
-    {
-        id: 'hitachi-seaside',
-        name: 'ひたち海浜公園 ネモフィラ',
-        lat: 36.3953, long: 140.5981, elevation: 30,
-        area: '茨城県', url: 'https://hitachikaihin.jp/',
-        category: 'flower', activities: ['nature'],
-        bestMonths: [4, 5],
-    },
-    {
-        id: 'kurobe-alpine',
-        name: '黒部平 高山植物園',
-        lat: 36.5942, long: 137.5933, elevation: 1828,
-        area: '富山県', url: 'https://www.alpen-route.com/',
-        category: 'flower', activities: ['gondola', 'nature', 'trekking'],
-        bestMonths: [6, 7, 8, 9],
-    },
-
-    // ============================
-    // ♨️ 温泉+アウトドア (onsen)
-    // ============================
-    {
-        id: 'nozawa-onsen',
-        name: '野沢温泉郷',
-        lat: 36.9222, long: 138.4411, elevation: 600,
-        area: '長野県', url: 'https://nozawakanko.jp/',
-        category: 'onsen', activities: ['onsen', 'trekking', 'nature'],
-        bestMonths: [5, 6, 7, 8, 9, 10],
-    },
-    {
-        id: 'kusatsu-onsen',
-        name: '草津温泉',
-        lat: 36.6208, long: 138.5958, elevation: 1200,
-        area: '群馬県', url: 'https://www.kusatsu-onsen.ne.jp/',
-        category: 'onsen', activities: ['onsen', 'nature', 'trekking'],
-        bestMonths: [5, 6, 7, 8, 9, 10],
-    },
-    {
-        id: 'nyuto-onsen',
-        name: '乳頭温泉郷',
-        lat: 39.7806, long: 140.7722, elevation: 700,
-        area: '秋田県', url: 'http://www.nyuto-onsenkyo.com/',
-        category: 'onsen', activities: ['onsen', 'nature', 'trekking'],
-        bestMonths: [6, 7, 8, 9, 10],
-    },
-    {
-        id: 'zao-onsen-summer',
-        name: '蔵王温泉（御釜トレッキング）',
-        lat: 38.1697, long: 140.3978, elevation: 900,
-        area: '山形県', url: 'https://www.zao-spa.or.jp/',
-        category: 'onsen', activities: ['onsen', 'trekking', 'gondola'],
-        bestMonths: [6, 7, 8, 9, 10],
-    },
 
     // ============================
     // 🏕️ キャンプ 追加 (camp)
@@ -766,34 +651,6 @@ export const SUMMER_SPOTS: SummerSpot[] = [
         area: '山形県', url: 'https://www.choukai.jp/',
         category: 'trekking', activities: ['trekking', 'nature'],
         bestMonths: [7, 8, 9],
-    },
-
-    // ============================
-    // 🌊 渓谷 追加 (river)
-    // ============================
-    {
-        id: 'shosenkyo',
-        name: '昇仙峡',
-        lat: 35.7500, long: 138.5667, elevation: 500,
-        area: '山梨県', url: 'https://www.shosenkyo-kankoukyokai.com/',
-        category: 'river', activities: ['trekking', 'nature'],
-        bestMonths: [5, 6, 7, 8, 9, 10, 11],
-    },
-    {
-        id: 'mitake-valley',
-        name: '御岳渓谷',
-        lat: 35.7986, long: 139.1633, elevation: 250,
-        area: '東京都', url: 'https://www.omekanko.gr.jp/',
-        category: 'river', activities: ['river', 'trekking', 'nature'],
-        bestMonths: [5, 6, 7, 8, 9, 10],
-    },
-    {
-        id: 'takachiho',
-        name: '高千穂峡',
-        lat: 32.7250, long: 131.3056, elevation: 300,
-        area: '宮崎県', url: 'https://takachiho-kanko.info/',
-        category: 'river', activities: ['river', 'nature'],
-        bestMonths: [4, 5, 6, 7, 8, 9, 10],
     },
 
     // ============================
