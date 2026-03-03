@@ -2,6 +2,8 @@
 
 import { Resort } from '@/lib/resorts_data';
 import { WeatherData, calculateConditionScore, getWeatherLabel, getSnowQuality, calculateWindChill, getClothingAdvice, generateAIAnalysis, generateWeekSummary } from '@/lib/scoring';
+import { calculateSummerScore, generateSummerAnalysis, generateSummerWeekSummary } from '@/lib/scoring_summer';
+import { useSeason } from '@/lib/season';
 
 interface ResortDetailModalProps {
     resort: Resort & { weather: WeatherData };
@@ -27,8 +29,16 @@ function getWeatherEmoji(code: number): string {
     return '❓';
 }
 
-// スコアからDQ3風のランク名を返す
-function getDQRank(score: number): string {
+// スコアからDQ3風のランク名を返す（冬・夏共用）
+function getDQRank(score: number, isSummer: boolean): string {
+    if (isSummer) {
+        if (score >= 90) return 'ひしょのせいち';
+        if (score >= 80) return 'おすすめきゅう';
+        if (score >= 70) return 'かいてきど たかい';
+        if (score >= 60) return 'まあまあ';
+        if (score >= 40) return 'ふつう';
+        return 'きょうははやめに';
+    }
     if (score >= 90) return 'けんじゃ';
     if (score >= 80) return 'ゆうしゃ';
     if (score >= 70) return 'まほうつかい';
@@ -47,14 +57,31 @@ export default function ResortDetailModal({
     onToggleFavorite,
     onToggleCompare,
 }: ResortDetailModalProps) {
-    const condition = calculateConditionScore(resort.weather);
+    const { season } = useSeason();
+    const isSummer = season === 'summer';
+
+    // 季節に応じてスコア・コメントを切り替え
+    const condition = isSummer
+        ? calculateSummerScore(resort.weather)
+        : calculateConditionScore(resort.weather);
     const weatherLabel = getWeatherLabel(resort.weather.weather_code);
-    const snowQuality = getSnowQuality(resort.weather);
+    const snowQuality = isSummer ? null : getSnowQuality(resort.weather);
     const windChill = calculateWindChill(resort.weather.temp, resort.weather.wind);
     const clothingAdvice = getClothingAdvice(windChill);
-    const aiComment = generateAIAnalysis(resort.name, resort.area, resort.weather);
-    const { summary: weekSummary } = generateWeekSummary(resort.weather.forecast);
+    const aiComment = isSummer
+        ? generateSummerAnalysis(resort.name, resort.area, resort.weather)
+        : generateAIAnalysis(resort.name, resort.area, resort.weather);
+    const { summary: weekSummary } = isSummer
+        ? generateSummerWeekSummary(resort.weather.forecast)
+        : generateWeekSummary(resort.weather.forecast);
 
+    // 公式サイトURL（季節対応）
+    const officialUrl = isSummer
+        ? (resort.summer_url || resort.url)
+        : resort.url;
+    const officialUrlLabel = isSummer ? '🌿 なつのこうしきサイトへ' : '⛷ こうしきサイトへ';
+
+    // tenki.jp検索リンク
     const tenkiUrl = `https://www.google.com/search?q=${encodeURIComponent(resort.name + ' tenki.jp スキー場')}`;
 
     const getLevelColor = (score: number) => {
@@ -171,7 +198,7 @@ export default function ResortDetailModal({
                             fontWeight: 'bold',
                             color: getLevelColor(condition.score),
                         }}>
-                            {getDQRank(condition.score)}
+                            {getDQRank(condition.score, isSummer)}
                         </div>
                         <div style={{ fontSize: '12px', color: 'var(--dq-text-dim)', marginTop: '2px' }}>
                             {condition.details}
@@ -262,7 +289,9 @@ export default function ResortDetailModal({
                         {[
                             { label: 'てんき', value: weatherLabel },
                             { label: 'ふうそく', value: `💨 ${resort.weather.wind} m/s` },
-                            { label: 'ゆきしつ', value: snowQuality },
+                            ...(snowQuality ? [{ label: 'ゆきしつ', value: snowQuality }] : [
+                                { label: 'きおんさ', value: `🌡️ ${isSummer ? `都会より${Math.round(28 - resort.weather.temp)}℃涼しい` : `${resort.weather.temp}°C`}` }
+                            ]),
                             { label: 'たいかんおんど', value: `${windChill}°C` },
                         ].map(item => (
                             <div key={item.label} style={{
@@ -409,20 +438,20 @@ export default function ResortDetailModal({
                         >
                             🗺️ ここにいく
                         </a>
-                        {resort.url && (
+                        {officialUrl && (
                             <a
-                                href={resort.url}
+                                href={officialUrl}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 style={{
                                     flex: 1,
                                     textAlign: 'center',
                                     padding: '10px',
-                                    border: '1px solid var(--dq-window-border-inner)',
+                                    border: `1px solid ${isSummer ? 'var(--dq-text-green)' : 'var(--dq-window-border-inner)'}`,
                                     borderRadius: '6px',
-                                    background: 'rgba(0, 0, 0, 0.2)',
-                                    color: 'var(--dq-text-dim)',
-                                    fontSize: '12px',
+                                    background: isSummer ? 'rgba(68, 255, 136, 0.1)' : 'rgba(0, 0, 0, 0.2)',
+                                    color: isSummer ? 'var(--dq-text-green)' : 'var(--dq-text-dim)',
+                                    fontSize: '11px',
                                     textDecoration: 'none',
                                     fontFamily: 'var(--font-pixel)',
                                     display: 'flex',
@@ -430,7 +459,7 @@ export default function ResortDetailModal({
                                     justifyContent: 'center',
                                 }}
                             >
-                                🏰 こうしきサイト
+                                {officialUrlLabel}
                             </a>
                         )}
                     </div>

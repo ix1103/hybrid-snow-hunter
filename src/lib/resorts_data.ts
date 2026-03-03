@@ -5,32 +5,34 @@ export interface Resort {
   long: number;
   elevation?: number; // ゲレンデ中腹の標高（メートル）
   area: string;
-  url?: string;
+  url?: string;       // 冬の公式サイト
+  summer_url?: string; // 夏の公式サイト
+  summer_activities?: string[]; // 夏のアクティビティ例：'mtb','trekking','camp','nature','gondola'
 }
 
 export const RESORTS: Resort[] = [
   // --- 北海道 (Hokkaido) ---
-  { id: 'niseko-united', name: 'ニセコユナイテッド', lat: 42.8631, long: 140.7032, elevation: 750, area: '北海道', url: 'https://www.niseko.ne.jp/' },
-  { id: 'rusutsu', name: 'ルスツリゾート', lat: 42.7533, long: 140.9069, elevation: 700, area: '北海道', url: 'https://rusutsu.com/' },
-  { id: 'furano', name: '富良野スキー場', lat: 43.3242, long: 142.3364, elevation: 700, area: '北海道', url: 'https://www.princehotels.co.jp/ski/furano/' },
-  { id: 'kiroro', name: 'キロロスノーワールド', lat: 43.0694, long: 140.9850, elevation: 750, area: '北海道', url: 'https://www.kiroro.co.jp/' },
-  { id: 'tomamu', name: '星野リゾート トマム', lat: 43.0628, long: 142.6319, elevation: 900, area: '北海道', url: 'https://www.snowtomamu.jp/winter/' },
+  { id: 'niseko-united', name: 'ニセコユナイテッド', lat: 42.8631, long: 140.7032, elevation: 750, area: '北海道', url: 'https://www.niseko.ne.jp/', summer_url: 'https://www.niseko.ne.jp/summer/', summer_activities: ['mtb', 'trekking', 'camp', 'gondola'] },
+  { id: 'rusutsu', name: 'ルスツリゾート', lat: 42.7533, long: 140.9069, elevation: 700, area: '北海道', url: 'https://rusutsu.com/', summer_url: 'https://rusutsu.com/summer/', summer_activities: ['camp', 'nature'] },
+  { id: 'furano', name: '富良野スキー場', lat: 43.3242, long: 142.3364, elevation: 700, area: '北海道', url: 'https://www.princehotels.co.jp/ski/furano/', summer_url: 'https://www.princehotels.co.jp/furano/', summer_activities: ['trekking', 'nature', 'gondola'] },
+  { id: 'kiroro', name: 'キロロスノーワールド', lat: 43.0694, long: 140.9850, elevation: 750, area: '北海道', url: 'https://www.kiroro.co.jp/', summer_url: 'https://www.kiroro.co.jp/summer/', summer_activities: ['camp', 'nature'] },
+  { id: 'tomamu', name: '星野リゾート トマム', lat: 43.0628, long: 142.6319, elevation: 900, area: '北海道', url: 'https://www.snowtomamu.jp/winter/', summer_url: 'https://www.hoshino-tomamu.jp/summer/', summer_activities: ['trekking', 'camp', 'nature', 'gondola'] },
   { id: 'sapporo-kokusai', name: '札幌国際スキー場', lat: 42.9614, long: 141.0858, elevation: 800, area: '北海道', url: 'https://www.sapporo-kokusai.jp/' },
   { id: 'sapporo-teine', name: 'サッポロテイネ', lat: 43.0950, long: 141.2056, elevation: 700, area: '北海道', url: 'https://sapporo-teine.com/snow/' },
-  { id: 'kamui-links', name: 'カムイスキーリンクス', lat: 43.7144, long: 142.2289, elevation: 600, area: '北海道', url: 'https://www.kamui-skilinks.com/' },
+  { id: 'kamui-links', name: 'カムイスキーリンクス', lat: 43.7144, long: 142.2289, elevation: 600, area: '北海道', url: 'https://www.kamui-skilinks.com/', summer_url: 'https://www.kamui-skilinks.com/summer/', summer_activities: ['mtb', 'trekking'] },
   { id: 'sahoro', name: 'サホロリゾート', lat: 43.1667, long: 142.8000, elevation: 600, area: '北海道', url: 'https://sahoro.co.jp/' },
-  { id: 'moiwa', name: 'ニセコモイワ', lat: 42.8500, long: 140.6333, elevation: 650, area: '北海道', url: 'https://niseko-moiwa.jp/' },
+  { id: 'moiwa', name: 'ニセコモイワ', lat: 42.8500, long: 140.6333, elevation: 650, area: '北海道', url: 'https://niseko-moiwa.jp/', summer_url: 'https://niseko-moiwa.jp/summer/', summer_activities: ['trekking', 'gondola'] },
   { id: 'bankei', name: 'さっぽろばんけい', lat: 43.0333, long: 141.2833, elevation: 350, area: '北海道', url: 'https://www.bankei.co.jp/' },
-  { id: 'asahidake', name: '旭岳ロープウェー', lat: 43.6631, long: 142.8394, elevation: 1600, area: '北海道', url: 'https://asahidake.hokkaido.jp/' },
-  { id: 'kuromadake', name: '黒岳スキー場', lat: 43.7083, long: 142.9333, elevation: 1300, area: '北海道', url: 'https://www.rinyu.co.jp/kurodake/' },
+  { id: 'asahidake', name: '旭岳ロープウェー', lat: 43.6631, long: 142.8394, elevation: 1600, area: '北海道', url: 'https://asahidake.hokkaido.jp/', summer_url: 'https://asahidake.hokkaido.jp/', summer_activities: ['trekking', 'nature', 'gondola'] },
+  { id: 'kuromadake', name: '黒岳スキー場', lat: 43.7083, long: 142.9333, elevation: 1300, area: '北海道', url: 'https://www.rinyu.co.jp/kurodake/', summer_url: 'https://www.rinyu.co.jp/kurodake/', summer_activities: ['trekking', 'gondola'] },
 
   // --- 東北 (Tohoku) ---
-  { id: 'appi', name: '安比高原スキー場', lat: 40.0006, long: 140.9839, elevation: 1000, area: '岩手県', url: 'https://www.appi.co.jp/' },
+  { id: 'appi', name: '安比高原スキー場', lat: 40.0006, long: 140.9839, elevation: 1000, area: '岩手県', url: 'https://www.appi.co.jp/', summer_url: 'https://www.appi.co.jp/summer/', summer_activities: ['mtb', 'trekking', 'camp', 'gondola'] },
   { id: 'ntj-geto', name: '夏油高原スキー場', lat: 39.1839, long: 140.9039, elevation: 900, area: '岩手県', url: 'https://www.getokogen.com/' },
-  { id: 'hachimantai', name: '八幡平リゾート', lat: 39.8550, long: 140.9567, elevation: 900, area: '岩手県', url: 'https://www.hachimantai.co.jp/' },
+  { id: 'hachimantai', name: '八幡平リゾート', lat: 39.8550, long: 140.9567, elevation: 900, area: '岩手県', url: 'https://www.hachimantai.co.jp/', summer_url: 'https://www.hachimantai.co.jp/summer/', summer_activities: ['trekking', 'camp', 'nature'] },
   { id: 'iwategen', name: '岩手高原スノーパーク', lat: 39.7556, long: 140.9833, elevation: 800, area: '岩手県', url: 'https://iwatekogen.jp/' },
-  { id: 'zao', name: '山形蔵王温泉スキー場', lat: 38.1611, long: 140.3992, elevation: 1200, area: '山形県', url: 'http://www.zao-ski.or.jp/' },
-  { id: 'gassan', name: '月山スキー場', lat: 38.5478, long: 140.0306, elevation: 1500, area: '山形県', url: 'https://gassankanko.jp/' },
+  { id: 'zao', name: '山形蔵王温泉スキー場', lat: 38.1611, long: 140.3992, elevation: 1200, area: '山形県', url: 'http://www.zao-ski.or.jp/', summer_url: 'https://www.zao-ski.or.jp/summer/', summer_activities: ['trekking', 'nature', 'gondola'] },
+  { id: 'gassan', name: '月山スキー場', lat: 38.5478, long: 140.0306, elevation: 1500, area: '山形県', url: 'https://gassankanko.jp/', summer_url: 'https://gassankanko.jp/', summer_activities: ['trekking', 'nature', 'skiing'] },
   { id: 'jangle', name: '黒伏高原スノーパーク', lat: 38.4333, long: 140.5333, elevation: 700, area: '山形県', url: 'https://jangle.co.jp/' },
   { id: 'alts-bandai', name: '星野リゾート ネコマ マウンテン', lat: 37.5925, long: 140.0383, elevation: 1000, area: '福島県', url: 'https://www.nekoma.co.jp/' },
   { id: 'grandeco', name: 'グランデコスノーリゾート', lat: 37.6625, long: 140.1017, elevation: 1200, area: '福島県', url: 'https://www.grandeco.com/' },
