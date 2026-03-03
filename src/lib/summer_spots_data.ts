@@ -215,16 +215,7 @@ export const SUMMER_SPOTS: SummerSpot[] = [
         difficulty: 2, courseTime: '4時間30分', features: ['ダイヤモンド富士', '富士山てんぼう', '本栖湖わき'],
         hut: 'なし', tent: 'なし', water: 'なし'
     },
-    {
-        id: 'horaiji',
-        name: '鳳来寺山',
-        lat: 34.9494, long: 137.6003, elevation: 684,
-        area: '愛知県', url: 'https://www.horaiji.com/',
-        category: 'trekking', activities: ['trekking', 'nature'],
-        bestMonths: [4, 5, 10, 11],
-        difficulty: 1, courseTime: '3時間', features: ['しぜんきねんぶつ', '1425だんのかいだん', 'こけのもり'],
-        hut: 'なし', tent: 'なし', water: '豊富'
-    },
+
     // --- ⚔️ 中級（Lv.3〜4 / ベテラン級） ---
     {
         id: 'tanigawadake',
@@ -287,34 +278,14 @@ export const SUMMER_SPOTS: SummerSpot[] = [
         hut: 'あり(有人)', tent: 'なし', water: '要かくにん'
     },
     {
-        id: 'gozaisho',
-        name: '御在所岳',
-        lat: 35.0206, long: 136.4172, elevation: 1212,
-        area: '三重県', url: 'https://www.gozaisho.co.jp/',
-        category: 'trekking', activities: ['trekking', 'nature', 'gondola'],
-        bestMonths: [4, 5, 10, 11],
-        difficulty: 3, courseTime: '5時間', features: ['ロープウェイあり', 'いわば', 'きガン・ちガン'],
-        hut: 'あり(有人)', tent: 'なし', water: '要かくにん'
-    },
-    {
-        id: 'enasan',
-        name: '恵那山',
-        lat: 35.4419, long: 137.5956, elevation: 2191,
-        area: '岐阜県', url: 'https://kankou-ena.jp/',
+        id: 'hirasan',
+        name: '比良山系（武奈ヶ岳）',
+        lat: 35.2678, long: 135.8856, elevation: 1214,
+        area: '滋賀県', url: 'https://www.biwako-visitors.jp/',
         category: 'trekking', activities: ['trekking', 'nature'],
-        bestMonths: [6, 7, 8, 9, 10],
-        difficulty: 4, courseTime: '7時間', features: ['日本百名山', 'やぶこぎ', 'ながいコース'],
-        hut: '避難小屋のみ', tent: 'なし', water: 'なし'
-    },
-    {
-        id: 'amagisan',
-        name: '天城山',
-        lat: 34.8647, long: 139.0064, elevation: 1406,
-        area: '静岡県', url: 'https://amagigoe.jp/',
-        category: 'trekking', activities: ['trekking', 'nature'],
-        bestMonths: [4, 5, 10, 11],
-        difficulty: 3, courseTime: '4時間30分', features: ['日本百名山', 'シャクナゲ', 'うっそうとした もり'],
-        hut: 'なし', tent: 'なし', water: 'なし'
+        bestMonths: [5, 6, 10, 11],
+        difficulty: 3, courseTime: '6時間', features: ['関西百名山', 'びわこ てんぼう', 'ブナの もり'],
+        hut: 'なし', tent: 'なし', water: '要かくにん'
     },
     {
         id: 'yatsugatake-akadake',
@@ -616,6 +587,7 @@ export const SUMMER_SPOTS: SummerSpot[] = [
         difficulty: 2, courseTime: '3時間', features: ['360どパノラマ', 'かみなり いわ', 'みえの やまやまけい'],
         hut: 'なし', tent: 'なし', water: 'なし'
     },
+
     {
         id: 'gozaisho',
         name: '御在所岳',
@@ -633,7 +605,7 @@ export const SUMMER_SPOTS: SummerSpot[] = [
         area: '三重県', url: 'https://www.kankomie.or.jp/',
         category: 'trekking', activities: ['trekking', 'nature', 'flower'],
         bestMonths: [3, 4, 5, 10, 11],
-        difficulty: 2, courseTime: '5時間', features: ['すずかやまけい', 'フクジュソウ・セツブンソウ', 'カレンフェルト'],
+        difficulty: 2, courseTime: '6時間', features: ['すずかやまけい', 'はなめぐり', 'やまごや あり'],
         hut: '避難小屋のみ', tent: 'なし', water: 'なし'
     },
     {
