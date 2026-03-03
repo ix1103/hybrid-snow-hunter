@@ -12,6 +12,17 @@ export function detectSeason(): Season {
     return (month >= 5 && month <= 10) ? 'summer' : 'winter';
 }
 
+// --- localStorage のキー ---
+const SEASON_STORAGE_KEY = 'snow_hunter_season';
+
+// --- 保存された季節を取得（なければ自動判定） ---
+export function getSavedSeason(): Season {
+    if (typeof window === 'undefined') return detectSeason();
+    const saved = localStorage.getItem(SEASON_STORAGE_KEY);
+    if (saved === 'winter' || saved === 'summer') return saved;
+    return detectSeason();
+}
+
 // --- Context の型 ---
 interface SeasonContextType {
     season: Season;
@@ -31,15 +42,18 @@ export function SeasonProvider({ children }: { children: ReactNode }) {
     const [season, setSeason] = useState<Season>('winter');
     const [isManualOverride, setIsManualOverride] = useState(false);
 
-    // 初期表示時に自動判定
+    // 初期表示時に localStorage → 自動判定
     useEffect(() => {
-        setSeason(detectSeason());
+        setSeason(getSavedSeason());
     }, []);
 
-    // 手動で季節を切り替える
+    // 手動で季節を切り替える → localStorage に保存してリロード
     const toggleSeason = () => {
-        setSeason(prev => prev === 'winter' ? 'summer' : 'winter');
+        const next = season === 'winter' ? 'summer' : 'winter';
+        localStorage.setItem(SEASON_STORAGE_KEY, next);
         setIsManualOverride(true);
+        // ページリロードでデータソースを切り替え
+        window.location.reload();
     };
 
     // body にクラスを付与してCSSテーマを切り替え

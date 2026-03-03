@@ -6,12 +6,13 @@ import Advisor from '@/components/Advisor';
 import ResortDetailModal from '@/components/ResortDetailModal';
 import ComparePanel from '@/components/ComparePanel';
 import { Resort } from '@/lib/resorts_data';
+import { SummerSpot } from '@/lib/summer_spots_data';
 import { WeatherData } from '@/lib/scoring';
 import { fetchResortWeather } from '@/lib/weather';
 import { useSeason } from '@/lib/season';
+import { SpotWithWeather, resortToSpot, summerSpotToSpot } from '@/lib/spot_types';
 import type { MapProps } from './Map';
 
-// 地図の動的インポート（SSR無効）
 const Map = dynamic<MapProps>(() => import('./Map'), {
     ssr: false,
     loading: () => (
@@ -23,41 +24,46 @@ const Map = dynamic<MapProps>(() => import('./Map'), {
 
 interface DashboardProps {
     initialResorts: Resort[];
+    initialSummerSpots: SummerSpot[];
 }
 
-export default function Dashboard({ initialResorts }: DashboardProps) {
-    const [resorts, setResorts] = useState<(Resort & { weather: WeatherData })[]>([]);
+export default function Dashboard({ initialResorts, initialSummerSpots }: DashboardProps) {
+    const [spots, setSpots] = useState<SpotWithWeather[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [filter, setFilter] = useState<'all' | 'powder' | 'calm' | 'cold' | 'favorites'>('all');
     const [searchQuery, setSearchQuery] = useState('');
-    const [selectedResort, setSelectedResort] = useState<(Resort & { weather: WeatherData }) | null>(null);
-    const [detailResort, setDetailResort] = useState<(Resort & { weather: WeatherData }) | null>(null);
-    const [compareList, setCompareList] = useState<(Resort & { weather: WeatherData })[]>([]);
+    const [selectedSpot, setSelectedSpot] = useState<SpotWithWeather | null>(null);
+    const [detailSpot, setDetailSpot] = useState<SpotWithWeather | null>(null);
+    const [compareList, setCompareList] = useState<SpotWithWeather[]>([]);
     const [showCompare, setShowCompare] = useState(false);
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     const [favorites, setFavorites] = useState<Set<string>>(new Set());
     const { season } = useSeason();
     const isSummer = season === 'summer';
 
-    // クライアントサイドで天気データを取得（10件ずつバッチ処理）
+    // 季節に応じたデータソースで天気を取得
     useEffect(() => {
         async function loadWeatherData() {
             setIsLoading(true);
             const BATCH_SIZE = 10;
-            const allResults: (Resort & { weather: WeatherData })[] = [];
+            const allResults: SpotWithWeather[] = [];
+            const sourceData = isSummer ? initialSummerSpots : initialResorts;
             try {
-                for (let i = 0; i < initialResorts.length; i += BATCH_SIZE) {
-                    const batch = initialResorts.slice(i, i + BATCH_SIZE);
+                for (let i = 0; i < sourceData.length; i += BATCH_SIZE) {
+                    const batch = sourceData.slice(i, i + BATCH_SIZE);
                     const batchResults = await Promise.all(
-                        batch.map(async (resort) => {
-                            const weather = await fetchResortWeather(resort.lat, resort.long, resort.elevation);
-                            return { ...resort, weather };
+                        batch.map(async (item) => {
+                            const weather = await fetchResortWeather(item.lat, item.long, item.elevation ?? 500);
+                            if (isSummer) {
+                                return summerSpotToSpot({ ...(item as SummerSpot), weather });
+                            } else {
+                                return resortToSpot({ ...(item as Resort), weather });
+                            }
                         })
                     );
                     allResults.push(...batchResults);
-                    // バッチごとに随時表示（ローディング中でも順次表示）
-                    setResorts([...allResults]);
-                    if (i === 0) setIsLoading(false); // 最初のバッチで即ローディング解除
+                    setSpots([...allResults]);
+                    if (i === 0) setIsLoading(false);
                 }
             } catch (error) {
                 console.error("天気データの取得に失敗:", error);
@@ -65,35 +71,30 @@ export default function Dashboard({ initialResorts }: DashboardProps) {
             }
         }
         loadWeatherData();
-    }, [initialResorts]);
+    }, [initialResorts, initialSummerSpots, isSummer]);
 
-    // お気に入りをlocalStorageから読み込み
+    // お気に入り読み込み（季節別キー）
     useEffect(() => {
-        const saved = localStorage.getItem('snow_hunter_favorites');
-        if (saved) {
-            setFavorites(new Set(JSON.parse(saved)));
-        }
-    }, []);
+        const key = isSummer ? 'green_hunter_favorites' : 'snow_hunter_favorites';
+        const saved = localStorage.getItem(key);
+        if (saved) setFavorites(new Set(JSON.parse(saved)));
+    }, [isSummer]);
 
-    // お気に入りのトグル
-    const toggleFavorite = (resortId: string) => {
+    const toggleFavorite = (spotId: string) => {
         const newFavorites = new Set(favorites);
-        if (newFavorites.has(resortId)) {
-            newFavorites.delete(resortId);
-        } else {
-            newFavorites.add(resortId);
-        }
+        if (newFavorites.has(spotId)) newFavorites.delete(spotId);
+        else newFavorites.add(spotId);
         setFavorites(newFavorites);
-        localStorage.setItem('snow_hunter_favorites', JSON.stringify(Array.from(newFavorites)));
+        const key = isSummer ? 'green_hunter_favorites' : 'snow_hunter_favorites';
+        localStorage.setItem(key, JSON.stringify(Array.from(newFavorites)));
     };
 
-    // 比較パネルのトグル
-    const toggleCompare = (resort: Resort & { weather: WeatherData }) => {
+    const toggleCompare = (spot: SpotWithWeather) => {
         setCompareList(prev => {
-            const exists = prev.find(r => r.id === resort.id);
-            if (exists) return prev.filter(r => r.id !== resort.id);
-            if (prev.length >= 3) return prev; // 最大3つ
-            return [...prev, resort];
+            const exists = prev.find(r => r.id === spot.id);
+            if (exists) return prev.filter(r => r.id !== spot.id);
+            if (prev.length >= 3) return prev;
+            return [...prev, spot];
         });
         setShowCompare(true);
     };
@@ -106,86 +107,62 @@ export default function Dashboard({ initialResorts }: DashboardProps) {
         });
     };
 
-    // フィルターロジック
-    const filteredResorts = useMemo(() => {
-        let result = resorts;
-
+    const filteredSpots = useMemo(() => {
+        let result = spots;
         if (searchQuery) {
             result = result.filter(r =>
                 r.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
                 r.area.toLowerCase().includes(searchQuery.toLowerCase())
             );
         }
-
-        if (filter === 'powder') {
-            result = result.filter(r => r.weather.snowfall_24h > 5);
-        } else if (filter === 'calm') {
-            result = result.filter(r => r.weather.wind < 15);
-        } else if (filter === 'cold') {
-            result = result.filter(r => r.weather.temp < 0);
-        } else if (filter === 'favorites') {
-            result = result.filter(r => favorites.has(r.id));
+        if (!isSummer) {
+            if (filter === 'powder') result = result.filter(r => r.weather.snowfall_24h > 5);
+            else if (filter === 'calm') result = result.filter(r => r.weather.wind < 15);
+            else if (filter === 'cold') result = result.filter(r => r.weather.temp < 0);
+            else if (filter === 'favorites') result = result.filter(r => favorites.has(r.id));
+        } else {
+            if (filter === 'favorites') result = result.filter(r => favorites.has(r.id));
         }
-
         return result;
-    }, [resorts, filter, searchQuery, favorites]);
+    }, [spots, filter, searchQuery, favorites, isSummer]);
 
     const handleFilterChange = (newFilter: 'all' | 'powder' | 'calm' | 'cold' | 'favorites') => {
         setFilter(newFilter);
         setIsSidebarOpen(false);
     };
 
-    const handleResortClick = (resort: Resort & { weather: WeatherData }) => {
-        setSelectedResort(resort);
-        setDetailResort(resort);
-        if (window.innerWidth < 768) {
-            setIsSidebarOpen(false);
-        }
+    const handleSpotClick = (spot: SpotWithWeather) => {
+        setSelectedSpot(spot);
+        setDetailSpot(spot);
+        if (window.innerWidth < 768) setIsSidebarOpen(false);
     };
 
-    // ===== ローディング画面 (DQ3風・季節対応) =====
+    // ===== ローディング画面 =====
     if (isLoading) {
         return (
             <div className="flex flex-col items-center justify-center h-screen w-screen dq-fade-in"
                 style={{ background: 'var(--dq-bg)' }}>
                 <div className="dq-window" style={{
-                    maxWidth: '360px',
-                    width: '88%',
-                    textAlign: 'center',
-                    padding: '28px 24px',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    gap: '0',
+                    maxWidth: '360px', width: '88%', textAlign: 'center',
+                    padding: '28px 24px', display: 'flex', flexDirection: 'column',
+                    alignItems: 'center', gap: '0',
                 }}>
-                    {/* タイトルロゴ（季節対応） */}
                     <div style={{ marginBottom: '16px', display: 'flex', justifyContent: 'center' }}>
                         <img
                             src={isSummer ? '/title-logo-summer.png' : '/title-logo.png'}
                             alt={isSummer ? 'GREEN ADVENTURE HUNTER' : 'SNOW CONDITION HUNTER'}
                             style={{
-                                width: '100%',
-                                maxWidth: '300px',
-                                objectFit: 'contain',
-                                filter: 'drop-shadow(0px 4px 8px rgba(0,0,0,0.5))',
+                                width: '100%', maxWidth: '300px', objectFit: 'contain',
+                                filter: 'drop-shadow(0px 4px 8px rgba(0,0,0,0.5))'
                             }}
                         />
                     </div>
-
-                    {/* ドット風区切り線 */}
                     <div style={{
-                        width: '70%',
-                        height: '1px',
+                        width: '70%', height: '1px',
                         background: 'linear-gradient(90deg, transparent, var(--dq-window-border), transparent)',
-                        marginBottom: '16px',
+                        marginBottom: '16px'
                     }} />
-
-                    {/* ローディングメッセージ（季節対応） */}
-                    <div style={{
-                        fontSize: '13px',
-                        color: 'var(--dq-text)',
-                        lineHeight: '2',
-                    }}>
+                    <div style={{ fontSize: '13px', color: 'var(--dq-text)', lineHeight: '2' }}>
                         <p className="dq-text-appear" style={{ animationDelay: '0s' }}>
                             {isSummer ? 'やまの なつのしょを よんでいます' : 'ぼうけんのしょを よんでいます'}
                         </p>
@@ -199,71 +176,55 @@ export default function Dashboard({ initialResorts }: DashboardProps) {
         );
     }
 
-    // ===== メインレイアウト (DQ3風) =====
+    // ===== メインレイアウト =====
     return (
         <div className="flex h-screen w-screen overflow-hidden relative" style={{ background: 'var(--dq-bg)' }}>
-            {/* モバイルメニューボタン */}
             <button
                 className="absolute top-3 right-3 z-[2000] md:hidden"
                 onClick={() => setIsSidebarOpen(!isSidebarOpen)}
                 style={{
-                    background: 'var(--dq-window-bg)',
-                    border: '2px solid var(--dq-window-border)',
-                    borderRadius: '8px',
-                    padding: '8px 12px',
-                    color: 'var(--dq-text)',
-                    fontSize: '16px',
+                    background: 'var(--dq-window-bg)', border: '2px solid var(--dq-window-border)',
+                    borderRadius: '8px', padding: '8px 12px', color: 'var(--dq-text)', fontSize: '16px'
                 }}
             >
-                {isSidebarOpen ? '✕ とじる' : '☰ さくせん'}
+                {isSidebarOpen ? '✕ とじる' : (isSummer ? '☰ たんさく' : '☰ さくせん')}
             </button>
 
-            {/* サイドバー / Advisor */}
-            <div className={`
-                absolute md:relative z-[1500] h-[100dvh] w-80 transition-transform duration-300 ease-in-out
-                ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}
-            `}
-                style={{ background: 'var(--dq-bg-dark)' }}
-            >
+            <div className={`absolute md:relative z-[1500] h-[100dvh] w-80 transition-transform duration-300 ease-in-out
+                ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}`}
+                style={{ background: 'var(--dq-bg-dark)' }}>
                 <Advisor
-                    resorts={filteredResorts}
+                    resorts={filteredSpots as any}
                     searchQuery={searchQuery}
                     onSearchChange={setSearchQuery}
                     currentFilter={filter}
                     onFilterChange={handleFilterChange}
-                    onResortClick={handleResortClick}
+                    onResortClick={handleSpotClick as any}
                     favorites={favorites}
                     onToggleFavorite={toggleFavorite}
                 />
             </div>
 
-            {/* メイン地図エリア */}
             <div className="flex-1 h-full relative z-[1000]">
                 <Map
-                    resorts={filteredResorts}
-                    selectedResort={selectedResort}
+                    resorts={filteredSpots as any}
+                    selectedResort={selectedSpot as any}
                     favorites={favorites}
                     onToggleFavorite={toggleFavorite}
-                    onResortClick={handleResortClick}
+                    onResortClick={handleSpotClick as any}
                 />
-
-                {/* フローティング表示数バッジ (DQ3ウィンドウ風) */}
                 <div className="absolute top-16 md:top-3 right-3 z-[1000] dq-window"
                     style={{ padding: '8px 16px', fontSize: '13px' }}>
-                    <span style={{ color: 'var(--dq-text-gold)' }}>{filteredResorts.length}</span>
-                    <span style={{ color: 'var(--dq-text-dim)', marginLeft: '4px' }}>の まちを はっけん！</span>
+                    <span style={{ color: 'var(--dq-text-gold)' }}>{filteredSpots.length}</span>
+                    <span style={{ color: 'var(--dq-text-dim)', marginLeft: '4px' }}>
+                        {isSummer ? 'の スポットを はっけん！' : 'の まちを はっけん！'}
+                    </span>
                 </div>
-
-                {/* フローティング比較ボタン (DQ3コマンド風) */}
                 {compareList.length > 0 && (
                     <button
                         onClick={() => setShowCompare(v => !v)}
                         className="absolute bottom-6 right-4 z-[1000] dq-window"
-                        style={{
-                            padding: '12px 20px',
-                            cursor: 'pointer',
-                            fontSize: '14px',
-                        }}
+                        style={{ padding: '12px 20px', cursor: 'pointer', fontSize: '14px' }}
                     >
                         <span style={{ color: 'var(--dq-text-gold)' }}>⚔️ パーティへんせい</span>
                         <span style={{ color: 'var(--dq-text-dim)', marginLeft: '8px' }}>({compareList.length})</span>
@@ -271,22 +232,19 @@ export default function Dashboard({ initialResorts }: DashboardProps) {
                 )}
             </div>
 
-            {/* 詳細モーダル */}
-            {detailResort && (
+            {detailSpot && (
                 <ResortDetailModal
-                    resort={detailResort}
-                    isFavorite={favorites.has(detailResort.id)}
-                    isInCompare={compareList.some(r => r.id === detailResort.id)}
-                    onClose={() => setDetailResort(null)}
+                    resort={detailSpot as any}
+                    isFavorite={favorites.has(detailSpot.id)}
+                    isInCompare={compareList.some(r => r.id === detailSpot.id)}
+                    onClose={() => setDetailSpot(null)}
                     onToggleFavorite={toggleFavorite}
-                    onToggleCompare={toggleCompare}
+                    onToggleCompare={toggleCompare as any}
                 />
             )}
-
-            {/* 比較パネル */}
             {showCompare && compareList.length > 0 && (
                 <ComparePanel
-                    resorts={compareList}
+                    resorts={compareList as any}
                     onRemove={removeFromCompare}
                     onClose={() => setShowCompare(false)}
                 />
