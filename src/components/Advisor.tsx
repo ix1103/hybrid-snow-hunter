@@ -17,11 +17,13 @@ interface AdvisorProps {
     onResortClick: (resort: any) => void;
     favorites: Set<string>;
     onToggleFavorite: (id: string) => void;
+    selectedArea: string;
+    onAreaChange: (area: string) => void;
+    uniqueAreas: string[];
 }
 
-export default function Advisor({ resorts, onFilterChange, currentFilter, onSearchChange, searchQuery, onResortClick, favorites, onToggleFavorite }: AdvisorProps) {
+export default function Advisor({ resorts, onFilterChange, currentFilter, onSearchChange, searchQuery, onResortClick, favorites, onToggleFavorite, selectedArea, onAreaChange, uniqueAreas }: AdvisorProps) {
     const [showAll, setShowAll] = useState(false);
-    const [selectedArea, setSelectedArea] = useState<string>('all');
     const [showScoreInfo, setShowScoreInfo] = useState(false);
     const { season, toggleSeason } = useSeason();
     const isSummer = season === 'summer';
@@ -29,44 +31,10 @@ export default function Advisor({ resorts, onFilterChange, currentFilter, onSear
     // 季節に応じたスコア計算関数を選択
     const calcScore = isSummer ? calculateSummerScore : calculateConditionScore;
 
-    // ユニークなエリアを取得
-    const uniqueAreas = useMemo(() => {
-        const areas = new Set(resorts.map(r => r.area));
-        return Array.from(areas);
-    }, [resorts]);
-
-    // 表示するリゾートの絞り込み・ソート
+    // 表示するリゾートのソート（絞り込みはDashboardで完了済のため不要）
     const displayResorts = useMemo(() => {
-        let filtered = [...resorts];
-
-        // 1. 検索フィルター
-        if (searchQuery) {
-            return filtered
-                .filter(r => r.name.includes(searchQuery) || r.area.includes(searchQuery))
-                .map(r => ({ ...r, score: calcScore(r.weather) }));
-        }
-
-        // 2. エリアフィルター
-        if (selectedArea !== 'all') {
-            filtered = filtered.filter(r => r.area === selectedArea);
-        }
-
-        // 3. 季節別フィルター（Dashboardで既に絞り込まれているため不要だが、念のため残す場合は冬のコンディションのみ）
-        if (!isSummer && currentFilter !== 'all' && currentFilter !== 'favorites') {
-            // 冬モード: 元のコンディションフィルター
-            if (currentFilter === 'powder') {
-                filtered = filtered.filter(r => r.weather.snowfall_24h > 10);
-            } else if (currentFilter === 'calm') {
-                filtered = filtered.filter(r => r.weather.wind <= 5);
-            } else if (currentFilter === 'cold') {
-                filtered = filtered.filter(r => r.weather.temp < -5);
-            }
-        } else if (currentFilter === 'favorites') {
-            filtered = filtered.filter(r => favorites.has(r.id));
-        }
-
-        // 4. スコア順ソート（季節対応・bestMonths/elevation も渡す）
-        const sorted = filtered
+        // スコア順ソート（季節対応・bestMonths/elevation も渡す）
+        const sorted = [...resorts]
             .map(r => ({
                 ...r, score: isSummer
                     ? calculateSummerScore(r.weather, r.bestMonths, r.elevation)
@@ -74,9 +42,9 @@ export default function Advisor({ resorts, onFilterChange, currentFilter, onSear
             }))
             .sort((a, b) => b.score.score - a.score.score);
 
-        // 5. 上位5件 or 全件
+        // 上位5件 or 全件
         return showAll ? sorted : sorted.slice(0, 5);
-    }, [resorts, searchQuery, showAll, selectedArea, isSummer, currentFilter, favorites]);
+    }, [resorts, showAll, isSummer]);
 
     // スコアからDQ3風のレベル色を返す
     const getLevelColor = (score: number) => {
@@ -258,7 +226,7 @@ export default function Advisor({ resorts, onFilterChange, currentFilter, onSear
                         </div>
                         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px' }}>
                             <button
-                                onClick={() => setSelectedArea('all')}
+                                onClick={() => onAreaChange('all')}
                                 style={{
                                     padding: '4px 10px',
                                     borderRadius: '4px',
@@ -275,7 +243,7 @@ export default function Advisor({ resorts, onFilterChange, currentFilter, onSear
                             {uniqueAreas.map(area => (
                                 <button
                                     key={area}
-                                    onClick={() => setSelectedArea(area)}
+                                    onClick={() => onAreaChange(area)}
                                     style={{
                                         padding: '4px 10px',
                                         borderRadius: '4px',

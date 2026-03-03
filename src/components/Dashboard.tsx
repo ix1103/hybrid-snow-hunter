@@ -32,6 +32,7 @@ export default function Dashboard({ initialResorts, initialSummerSpots }: Dashbo
     const [isLoading, setIsLoading] = useState(true);
     const [filter, setFilter] = useState<string>('all');
     const [searchQuery, setSearchQuery] = useState('');
+    const [selectedArea, setSelectedArea] = useState<string>('all');
     const [selectedSpot, setSelectedSpot] = useState<SpotWithWeather | null>(null);
     const [detailSpot, setDetailSpot] = useState<SpotWithWeather | null>(null);
     const [compareList, setCompareList] = useState<SpotWithWeather[]>([]);
@@ -44,6 +45,8 @@ export default function Dashboard({ initialResorts, initialSummerSpots }: Dashbo
     // 季節が変わったらフィルターと選択状態をリセット
     useEffect(() => {
         setFilter('all');
+        setSelectedArea('all');
+        setSearchQuery('');
         setSelectedSpot(null);
         setDetailSpot(null);
     }, [isSummer]);
@@ -126,6 +129,11 @@ export default function Dashboard({ initialResorts, initialSummerSpots }: Dashbo
         });
     };
 
+    const uniqueAreas = useMemo(() => {
+        const areas = new Set(spots.map(r => r.area));
+        return Array.from(areas).sort();
+    }, [spots]);
+
     const filteredSpots = useMemo(() => {
         let result = spots;
         if (searchQuery) {
@@ -134,20 +142,23 @@ export default function Dashboard({ initialResorts, initialSummerSpots }: Dashbo
                 r.area.toLowerCase().includes(searchQuery.toLowerCase())
             );
         }
+        if (selectedArea !== 'all') {
+            result = result.filter(r => r.area === selectedArea);
+        }
         if (!isSummer) {
-            if (filter === 'powder') result = result.filter(r => r.weather.snowfall_24h > 5);
-            else if (filter === 'calm') result = result.filter(r => r.weather.wind < 15);
-            else if (filter === 'cold') result = result.filter(r => r.weather.temp < 0);
+            if (filter === 'powder') result = result.filter(r => r.weather.snowfall_24h > 10);
+            else if (filter === 'calm') result = result.filter(r => r.weather.wind <= 5);
+            else if (filter === 'cold') result = result.filter(r => r.weather.temp < -5);
             else if (filter === 'favorites') result = result.filter(r => favorites.has(r.id));
         } else {
             if (filter === 'favorites') result = result.filter(r => favorites.has(r.id));
             else if (filter !== 'all') {
-                // 夏のアクティビティフィルター（詳細カードのカテゴリと完全に一致させる）
-                result = result.filter(r => r.category === filter);
+                // 夏のアクティビティフィルター
+                result = result.filter(r => r.activities && r.activities.includes(filter));
             }
         }
         return result;
-    }, [spots, filter, searchQuery, favorites, isSummer]);
+    }, [spots, filter, searchQuery, selectedArea, favorites, isSummer]);
 
     const handleFilterChange = (newFilter: string) => {
         setFilter(newFilter);
@@ -222,6 +233,9 @@ export default function Dashboard({ initialResorts, initialSummerSpots }: Dashbo
                     onSearchChange={setSearchQuery}
                     currentFilter={filter}
                     onFilterChange={handleFilterChange}
+                    selectedArea={selectedArea}
+                    onAreaChange={setSelectedArea}
+                    uniqueAreas={uniqueAreas}
                     onResortClick={handleSpotClick as any}
                     favorites={favorites}
                     onToggleFavorite={toggleFavorite}
