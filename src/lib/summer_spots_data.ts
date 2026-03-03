@@ -482,6 +482,310 @@ export const SUMMER_SPOTS: SummerSpot[] = [
         hut: 'あり(有人)', tent: 'あり', water: '豊富'
     },
 
+    // --- 🏔️ 東北の名峰 ---
+    {
+        id: 'gassan',
+        name: '月山',
+        lat: 38.5483, long: 140.0258, elevation: 1984,
+        area: '山形県', url: 'https://www.gassan.co.jp/',
+        category: 'trekking', activities: ['trekking', 'nature'],
+        bestMonths: [7, 8, 9],
+        difficulty: 2, courseTime: '5時間', features: ['日本百名山', 'なつスキー', 'こうざんしょくぶつ'],
+        hut: 'あり(有人)', tent: 'なし', water: '要かくにん'
+    },
+    {
+        id: 'zao-kumanodake',
+        name: '蔵王（熊野岳）',
+        lat: 38.1450, long: 140.4367, elevation: 1841,
+        area: '山形県', url: 'https://www.zao-spa.or.jp/',
+        category: 'trekking', activities: ['trekking', 'nature', 'gondola'],
+        bestMonths: [6, 7, 8, 9],
+        difficulty: 2, courseTime: '3時間', features: ['日本百名山', 'おかまのいけ', 'ロープウェイあり'],
+        hut: 'なし', tent: 'なし', water: 'なし'
+    },
+    {
+        id: 'iwakisan',
+        name: '岩木山',
+        lat: 40.6556, long: 140.3028, elevation: 1625,
+        area: '青森県', url: 'https://www.iwakisan.com/',
+        category: 'trekking', activities: ['trekking', 'nature'],
+        bestMonths: [6, 7, 8, 9],
+        difficulty: 2, courseTime: '5時間', features: ['日本百名山', 'つがるふじ', 'いわきスカイライン'],
+        hut: '避難小屋のみ', tent: 'なし', water: 'なし'
+    },
+    {
+        id: 'hayachine',
+        name: '早池峰山',
+        lat: 39.5600, long: 141.5000, elevation: 1917,
+        area: '岩手県', url: 'https://www.city.hanamaki.iwate.jp/',
+        category: 'trekking', activities: ['trekking', 'nature'],
+        bestMonths: [6, 7, 8],
+        difficulty: 3, courseTime: '6時間', features: ['日本百名山', 'ハヤチネウスユキソウ', 'うるとらまふぃっくがん'],
+        hut: '避難小屋のみ', tent: 'なし', water: '要かくにん'
+    },
+    {
+        id: 'iwatesan',
+        name: '岩手山',
+        lat: 39.8514, long: 141.0006, elevation: 2038,
+        area: '岩手県', url: 'https://www.city.shizukuishi.iwate.jp/',
+        category: 'trekking', activities: ['trekking', 'nature'],
+        bestMonths: [7, 8, 9],
+        difficulty: 3, courseTime: '9時間', features: ['日本百名山', 'なんぶかたふじ', 'コマクサ群生'],
+        hut: '避難小屋のみ', tent: 'あり', water: '要かくにん'
+    },
+    {
+        id: 'azumayama',
+        name: '吾妻山（西吾妻山）',
+        lat: 37.7350, long: 140.1450, elevation: 2035,
+        area: '福島県', url: 'https://www.urabandai-inf.com/',
+        category: 'trekking', activities: ['trekking', 'nature', 'gondola'],
+        bestMonths: [6, 7, 8, 9],
+        difficulty: 2, courseTime: '4時間', features: ['日本百名山', 'しつげん', 'ロープウェイあり'],
+        hut: '避難小屋のみ', tent: 'なし', water: '要かくにん'
+    },
+    {
+        id: 'adatarayama',
+        name: '安達太良山',
+        lat: 37.6211, long: 140.2878, elevation: 1700,
+        area: '福島県', url: 'https://www.adatara-resort.com/',
+        category: 'trekking', activities: ['trekking', 'nature', 'gondola'],
+        bestMonths: [6, 7, 8, 9, 10],
+        difficulty: 2, courseTime: '4時間', features: ['日本百名山', 'ほんとうの そら', 'ゴンドラあり'],
+        hut: 'あり(有人)', tent: 'あり', water: '豊富'
+    },
+    {
+        id: 'bandaisan',
+        name: '磐梯山',
+        lat: 37.6014, long: 140.0725, elevation: 1816,
+        area: '福島県', url: 'https://www.urabandai-inf.com/',
+        category: 'trekking', activities: ['trekking', 'nature'],
+        bestMonths: [6, 7, 8, 9],
+        difficulty: 3, courseTime: '6時間', features: ['日本百名山', 'ばくれつ火口', 'ごしきぬま'],
+        hut: '避難小屋のみ', tent: 'なし', water: '要かくにん'
+    },
+
+    // --- 🏔️ 北海道の名峰 ---
+    {
+        id: 'tokachidake',
+        name: '十勝岳',
+        lat: 43.4156, long: 142.6878, elevation: 2077,
+        area: '北海道', url: 'https://www.kamifurano.jp/',
+        category: 'trekking', activities: ['trekking', 'nature'],
+        bestMonths: [7, 8, 9],
+        difficulty: 3, courseTime: '7時間', features: ['日本百名山', 'かっかざん', 'うんかいてんぼう'],
+        hut: '避難小屋のみ', tent: 'なし', water: 'なし'
+    },
+    {
+        id: 'yoteizan',
+        name: '羊蹄山',
+        lat: 42.8267, long: 140.8117, elevation: 1898,
+        area: '北海道', url: 'https://www.town-kutchan.jp/',
+        category: 'trekking', activities: ['trekking', 'nature'],
+        bestMonths: [7, 8, 9],
+        difficulty: 4, courseTime: '10時間', features: ['日本百名山', 'えぞふじ', 'ようていのわきみず'],
+        hut: '避難小屋のみ', tent: 'あり', water: '要かくにん'
+    },
+    {
+        id: 'rishirizan',
+        name: '利尻山',
+        lat: 45.1783, long: 141.2433, elevation: 1721,
+        area: '北海道', url: 'https://www.rishiri-plus.jp/',
+        category: 'trekking', activities: ['trekking', 'nature'],
+        bestMonths: [6, 7, 8],
+        difficulty: 4, courseTime: '10時間', features: ['日本百名山', 'さいほくの ひゃくめいざん', 'しまぜんたいが やま'],
+        hut: '避難小屋のみ', tent: 'あり', water: '要かくにん'
+    },
+
+    // --- 🏔️ 中国・四国の名峰 ---
+    {
+        id: 'daisen',
+        name: '大山（伯耆大山）',
+        lat: 35.3706, long: 133.5453, elevation: 1729,
+        area: '鳥取県', url: 'https://tourismdaisen.com/',
+        category: 'trekking', activities: ['trekking', 'nature'],
+        bestMonths: [5, 6, 7, 8, 9, 10],
+        difficulty: 2, courseTime: '5時間', features: ['日本百名山', 'ほうきふじ', 'ブナの もり'],
+        hut: '避難小屋のみ', tent: 'なし', water: '要かくにん'
+    },
+    {
+        id: 'ishizuchisan',
+        name: '石鎚山',
+        lat: 33.7689, long: 133.1144, elevation: 1982,
+        area: '愛媛県', url: 'https://www.ishizuchi.com/',
+        category: 'trekking', activities: ['trekking', 'nature'],
+        bestMonths: [5, 6, 7, 8, 9, 10],
+        difficulty: 3, courseTime: '6時間', features: ['日本百名山', 'にしにほん さいこうほう', 'くさり場 あり'],
+        hut: 'あり(有人)', tent: 'なし', water: '要かくにん'
+    },
+    {
+        id: 'tsurugisan',
+        name: '剣山',
+        lat: 33.8528, long: 134.0936, elevation: 1955,
+        area: '徳島県', url: 'https://tsurugisan.net/',
+        category: 'trekking', activities: ['trekking', 'nature', 'gondola'],
+        bestMonths: [5, 6, 7, 8, 9, 10],
+        difficulty: 1, courseTime: '3時間', features: ['日本百名山', 'リフトあり', 'ミヤマクマザサ'],
+        hut: 'あり(有人)', tent: 'なし', water: '豊富'
+    },
+    {
+        id: 'sanbesan',
+        name: '三瓶山',
+        lat: 35.1389, long: 132.6217, elevation: 1126,
+        area: '島根県', url: 'https://www.ginzan-wm.jp/',
+        category: 'trekking', activities: ['trekking', 'nature'],
+        bestMonths: [4, 5, 6, 9, 10, 11],
+        difficulty: 1, courseTime: '3時間', features: ['日本二百名山', 'そうげん', 'かいてきジュウソウ'],
+        hut: 'なし', tent: 'なし', water: 'なし'
+    },
+
+    // --- 🏔️ 九州の名峰 ---
+    {
+        id: 'asosan',
+        name: '阿蘇山（高岳）',
+        lat: 32.8839, long: 131.1039, elevation: 1592,
+        area: '熊本県', url: 'https://www.asocity-kanko.jp/',
+        category: 'trekking', activities: ['trekking', 'nature'],
+        bestMonths: [5, 6, 9, 10],
+        difficulty: 2, courseTime: '4時間', features: ['日本百名山', 'せかい さいだいきゅうの カルデラ', 'かっかざん'],
+        hut: 'なし', tent: 'なし', water: 'なし'
+    },
+    {
+        id: 'kirishima',
+        name: '霧島山（韓国岳）',
+        lat: 31.9344, long: 130.8608, elevation: 1700,
+        area: '宮崎県', url: 'https://kirishimakankou.com/',
+        category: 'trekking', activities: ['trekking', 'nature'],
+        bestMonths: [5, 6, 9, 10, 11],
+        difficulty: 2, courseTime: '4時間', features: ['日本百名山', 'ミヤマキリシマ', 'おおなみのいけ'],
+        hut: 'なし', tent: 'なし', water: 'なし'
+    },
+    {
+        id: 'miyanoura',
+        name: '宮之浦岳',
+        lat: 30.3350, long: 130.5003, elevation: 1936,
+        area: '鹿児島県', url: 'https://www.yakushima-town.jp/',
+        category: 'trekking', activities: ['trekking', 'nature'],
+        bestMonths: [5, 6, 9, 10],
+        difficulty: 4, courseTime: '14時間(1〜2泊)', features: ['日本百名山', 'せかいいさん やくしま', 'やくすぎの もり'],
+        hut: '避難小屋のみ', tent: 'あり', water: '豊富'
+    },
+    {
+        id: 'kaimon',
+        name: '開聞岳',
+        lat: 31.2008, long: 130.5656, elevation: 924,
+        area: '鹿児島県', url: 'https://www.ibusuki.or.jp/',
+        category: 'trekking', activities: ['trekking', 'nature'],
+        bestMonths: [3, 4, 5, 10, 11],
+        difficulty: 2, courseTime: '5時間', features: ['日本百名山', 'さつまふじ', 'うみ が みえる'],
+        hut: 'なし', tent: 'なし', water: 'なし'
+    },
+
+    // --- 🏔️ 北陸・信越の名峰（追加） ---
+    {
+        id: 'myokosan',
+        name: '妙高山',
+        lat: 36.8917, long: 138.3331, elevation: 2454,
+        area: '新潟県', url: 'https://www.myoko.tv/',
+        category: 'trekking', activities: ['trekking', 'nature'],
+        bestMonths: [7, 8, 9],
+        difficulty: 3, courseTime: '8時間', features: ['日本百名山', 'えちごふじ', 'おおだに ヒュッテ'],
+        hut: 'あり(有人)', tent: 'あり', water: '豊富'
+    },
+    {
+        id: 'hiuchidake',
+        name: '火打山',
+        lat: 36.9283, long: 138.3400, elevation: 2462,
+        area: '新潟県', url: 'https://www.myoko.tv/',
+        category: 'trekking', activities: ['trekking', 'nature'],
+        bestMonths: [7, 8, 9],
+        difficulty: 3, courseTime: '10時間(1泊)', features: ['日本百名山', 'てんぐのにわ', 'ハクサンコザクラ'],
+        hut: 'あり(有人)', tent: 'あり', water: '豊富'
+    },
+    {
+        id: 'naebasan',
+        name: '苗場山',
+        lat: 36.8461, long: 138.6875, elevation: 2145,
+        area: '新潟県', url: 'https://www.town-tsunan.jp/',
+        category: 'trekking', activities: ['trekking', 'nature'],
+        bestMonths: [7, 8, 9],
+        difficulty: 3, courseTime: '8時間', features: ['日本百名山', 'さんちょう しつげん', 'いけとう ぐん'],
+        hut: 'あり(有人)', tent: 'なし', water: '豊富'
+    },
+    {
+        id: 'arakawadake',
+        name: '荒川三山（悪沢岳）',
+        lat: 35.5361, long: 138.1817, elevation: 3141,
+        area: '静岡県', url: 'https://www.t-forest.com/',
+        category: 'trekking', activities: ['trekking', 'nature'],
+        bestMonths: [7, 8, 9],
+        difficulty: 5, courseTime: '20時間(2〜3泊)', features: ['日本百名山', 'みなみアルプス南部', 'にほんだい6い'],
+        hut: 'あり(有人)', tent: 'あり', water: '豊富'
+    },
+
+    // --- 🏔️ 関東の名峰（追加） ---
+    {
+        id: 'nikko-nantai',
+        name: '日光男体山',
+        lat: 36.7656, long: 139.4903, elevation: 2486,
+        area: '栃木県', url: 'https://www.nikko-kankou.org/',
+        category: 'trekking', activities: ['trekking', 'nature'],
+        bestMonths: [6, 7, 8, 9, 10],
+        difficulty: 3, courseTime: '6時間', features: ['日本百名山', 'ちゅうぜんじこ ビュー', 'しんこうの やま'],
+        hut: 'なし', tent: 'なし', water: 'なし'
+    },
+    {
+        id: 'nikko-shirane',
+        name: '日光白根山',
+        lat: 36.7981, long: 139.3764, elevation: 2578,
+        area: '栃木県', url: 'https://www.marunuma.jp/green/',
+        category: 'trekking', activities: ['trekking', 'nature', 'gondola'],
+        bestMonths: [6, 7, 8, 9],
+        difficulty: 3, courseTime: '6時間', features: ['日本百名山', 'かんとう さいこうほう', 'ロープウェイあり'],
+        hut: '避難小屋のみ', tent: 'なし', water: 'なし'
+    },
+    {
+        id: 'akagiyama',
+        name: '赤城山',
+        lat: 36.5617, long: 139.1614, elevation: 1828,
+        area: '群馬県', url: 'https://www.maebashi-cvb.com/',
+        category: 'trekking', activities: ['trekking', 'nature'],
+        bestMonths: [5, 6, 7, 8, 9, 10],
+        difficulty: 1, courseTime: '3時間', features: ['日本百名山', 'おおぬまの ほとり', 'しょしんしゃ おすすめ'],
+        hut: 'なし', tent: 'なし', water: 'なし'
+    },
+    {
+        id: 'nasusan',
+        name: '那須岳（茶臼岳）',
+        lat: 37.1247, long: 139.9628, elevation: 1915,
+        area: '栃木県', url: 'https://nasukogen.org/',
+        category: 'trekking', activities: ['trekking', 'nature', 'gondola'],
+        bestMonths: [5, 6, 7, 8, 9, 10],
+        difficulty: 2, courseTime: '3時間', features: ['日本百名山', 'かっかざん', 'ロープウェイあり'],
+        hut: '避難小屋のみ', tent: 'あり', water: '要かくにん'
+    },
+
+    // --- 🏔️ 東海・近畿の名峰（追加） ---
+    {
+        id: 'ontakesan',
+        name: '御嶽山',
+        lat: 35.8933, long: 137.4808, elevation: 3067,
+        area: '長野県', url: 'https://www.kankou-kiso.com/',
+        category: 'trekking', activities: ['trekking', 'nature'],
+        bestMonths: [7, 8, 9],
+        difficulty: 3, courseTime: '7時間', features: ['日本百名山', 'しんこうの やま', '2014ふんか'],
+        hut: 'あり(有人)', tent: 'なし', water: '要かくにん'
+    },
+    {
+        id: 'odaigahara',
+        name: '大台ケ原',
+        lat: 34.1828, long: 136.1072, elevation: 1695,
+        area: '奈良県', url: 'https://www.odaigahara.jp/',
+        category: 'trekking', activities: ['trekking', 'nature'],
+        bestMonths: [5, 6, 9, 10, 11],
+        difficulty: 1, courseTime: '3時間30分', features: ['日本百名山', 'にほんいち あめがおおい', 'こけの もり'],
+        hut: 'なし', tent: 'なし', water: 'なし'
+    },
+
     // ============================
     // 🏕️ キャンプ (camp)
     // ============================
