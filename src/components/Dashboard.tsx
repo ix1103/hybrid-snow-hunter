@@ -172,12 +172,11 @@ export default function Dashboard({ initialResorts, initialSummerSpots }: Dashbo
                 }}>
                     <div style={{ marginBottom: '16px', display: 'flex', justifyContent: 'center' }}>
                         <img
-                            src={isSummer ? '/yamacon-logo.png' : '/title-logo.png'}
+                            src={isSummer ? '/title-logo-summer.png' : '/title-logo.png'}
                             alt={isSummer ? 'やま▲こん～やまのゆうしゃたち～' : 'SNOW CONDITION HUNTER'}
                             style={{
                                 width: '100%', maxWidth: '300px', objectFit: 'contain',
-                                filter: 'drop-shadow(0px 4px 8px rgba(0,0,0,0.5))',
-                                borderRadius: '8px'
+                                filter: 'drop-shadow(0px 4px 8px rgba(0,0,0,0.5))'
                             }}
                         />
                     </div>
