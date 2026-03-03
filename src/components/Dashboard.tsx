@@ -8,6 +8,7 @@ import ComparePanel from '@/components/ComparePanel';
 import { Resort } from '@/lib/resorts_data';
 import { WeatherData } from '@/lib/scoring';
 import { fetchResortWeather } from '@/lib/weather';
+import { useSeason } from '@/lib/season';
 import type { MapProps } from './Map';
 
 // 地図の動的インポート（SSR無効）
@@ -35,6 +36,8 @@ export default function Dashboard({ initialResorts }: DashboardProps) {
     const [showCompare, setShowCompare] = useState(false);
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     const [favorites, setFavorites] = useState<Set<string>>(new Set());
+    const { season } = useSeason();
+    const isSummer = season === 'summer';
 
     // クライアントサイドで天気データを取得（10件ずつバッチ処理）
     useEffect(() => {
@@ -140,7 +143,7 @@ export default function Dashboard({ initialResorts }: DashboardProps) {
         }
     };
 
-    // ===== ローディング画面 (DQ3風) =====
+    // ===== ローディング画面 (DQ3風・季節対応) =====
     if (isLoading) {
         return (
             <div className="flex flex-col items-center justify-center h-screen w-screen dq-fade-in"
@@ -155,11 +158,11 @@ export default function Dashboard({ initialResorts }: DashboardProps) {
                     alignItems: 'center',
                     gap: '0',
                 }}>
-                    {/* タイトルロゴ（DQ3風） */}
+                    {/* タイトルロゴ（季節対応） */}
                     <div style={{ marginBottom: '16px', display: 'flex', justifyContent: 'center' }}>
                         <img
-                            src="/title-logo.png"
-                            alt="SNOW CONDITION HUNTER"
+                            src={isSummer ? '/title-logo-summer.png' : '/title-logo.png'}
+                            alt={isSummer ? 'GREEN ADVENTURE HUNTER' : 'SNOW CONDITION HUNTER'}
                             style={{
                                 width: '100%',
                                 maxWidth: '300px',
@@ -177,17 +180,18 @@ export default function Dashboard({ initialResorts }: DashboardProps) {
                         marginBottom: '16px',
                     }} />
 
-                    {/* ローディングメッセージ */}
+                    {/* ローディングメッセージ（季節対応） */}
                     <div style={{
                         fontSize: '13px',
                         color: 'var(--dq-text)',
                         lineHeight: '2',
                     }}>
                         <p className="dq-text-appear" style={{ animationDelay: '0s' }}>
-                            ぼうけんのしょを よんでいます
+                            {isSummer ? 'やまの なつのしょを よんでいます' : 'ぼうけんのしょを よんでいます'}
                         </p>
                         <p className="dq-text-appear" style={{ animationDelay: '0.5s', color: 'var(--dq-text-dim)', fontSize: '12px' }}>
-                            かくちの てんきを しらべています<span className="dq-loading-dots"></span>
+                            {isSummer ? 'やまの きこうを しらべています' : 'かくちの てんきを しらべています'}
+                            <span className="dq-loading-dots"></span>
                         </p>
                     </div>
                 </div>

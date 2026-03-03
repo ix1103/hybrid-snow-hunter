@@ -314,9 +314,11 @@ export default function Advisor({ resorts, onFilterChange, currentFilter, onSear
                             color: 'var(--dq-text-gold)',
                             letterSpacing: '0.1em',
                         }}>
-                            ▼ {searchQuery
+                            {isSummer ? '🌿' : '⚔️'} {searchQuery
                                 ? 'けんさくけっか'
-                                : (selectedArea !== 'all' ? `${selectedArea}の つわもの` : 'つよさ ランキング')}
+                                : (selectedArea !== 'all'
+                                    ? `${selectedArea}の ${isSummer ? 'ひしょち' : 'つわもの'}`
+                                    : (isSummer ? 'ひしょ ランキング' : 'つよさ ランキング'))}
                         </span>
                         {!showAll && !searchQuery && (
                             <span style={{ fontSize: '10px', color: 'var(--dq-text-dim)' }}>
@@ -332,7 +334,7 @@ export default function Advisor({ resorts, onFilterChange, currentFilter, onSear
                             color: 'var(--dq-text-dim)',
                             fontSize: '13px',
                         }}>
-                            まものは いなかった！🏔️
+                            {isSummer ? 'このアクティビティは なかった！🌿' : 'まものは いなかった！🏔️'}
                         </div>
                     ) : (
                         <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
@@ -344,7 +346,9 @@ export default function Advisor({ resorts, onFilterChange, currentFilter, onSear
                                         padding: '10px',
                                         borderRadius: '6px',
                                         border: '1px solid var(--dq-window-border-inner)',
-                                        background: 'rgba(13, 27, 62, 0.6)',
+                                        background: isSummer
+                                            ? 'rgba(13, 62, 27, 0.6)'
+                                            : 'rgba(13, 27, 62, 0.6)',
                                         cursor: 'pointer',
                                         transition: 'all 0.15s',
                                     }}
@@ -414,7 +418,7 @@ export default function Advisor({ resorts, onFilterChange, currentFilter, onSear
                                                 fontWeight: 'bold',
                                                 color: getLevelColor(resort.score.score),
                                             }}>
-                                                Lv.{resort.score.score}
+                                                {isSummer ? `避${resort.score.score}℃` : `Lv.${resort.score.score}`}
                                             </span>
                                         </div>
                                     </div>

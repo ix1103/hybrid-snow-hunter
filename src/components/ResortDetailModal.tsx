@@ -187,7 +187,7 @@ export default function ResortDetailModal({
                             fontWeight: 'bold',
                             color: getLevelColor(condition.score),
                         }} className="dq-glow">
-                            Lv.{condition.score}
+                            {isSummer ? `避${condition.score}℃` : `Lv.${condition.score}`}
                         </div>
                         <div style={{ fontSize: '10px', color: 'var(--dq-text-dim)' }}>/ 100</div>
                     </div>
@@ -221,6 +221,46 @@ export default function ResortDetailModal({
                             marginBottom: '12px',
                         }}>
                             {weekSummary}
+                        </div>
+                    )}
+
+                    {/* 夏モード: アクティビティバッジ */}
+                    {isSummer && resort.summer_activities && resort.summer_activities.length > 0 && (
+                        <div style={{ marginBottom: '12px' }}>
+                            <div style={{
+                                fontSize: '11px',
+                                color: 'var(--dq-text-green)',
+                                marginBottom: '6px',
+                                letterSpacing: '0.1em',
+                            }}>
+                                🌿 ここで できること
+                            </div>
+                            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px' }}>
+                                {resort.summer_activities.map(activity => {
+                                    const badges: Record<string, { emoji: string; label: string }> = {
+                                        mtb: { emoji: '🚵', label: 'MTB' },
+                                        trekking: { emoji: '🥾', label: 'トレッキング' },
+                                        camp: { emoji: '🏕️', label: 'キャンプ' },
+                                        nature: { emoji: '🌸', label: '自然観察' },
+                                        gondola: { emoji: '🚡', label: 'ゴンドラ' },
+                                        skiing: { emoji: '⛷️', label: 'きこうげけん' },
+                                    };
+                                    const badge = badges[activity];
+                                    if (!badge) return null;
+                                    return (
+                                        <span key={activity} style={{
+                                            padding: '3px 8px',
+                                            borderRadius: '12px',
+                                            fontSize: '11px',
+                                            background: 'rgba(68, 255, 136, 0.1)',
+                                            border: '1px solid rgba(68, 255, 136, 0.3)',
+                                            color: 'var(--dq-text-green)',
+                                        }}>
+                                            {badge.emoji} {badge.label}
+                                        </span>
+                                    );
+                                })}
+                            </div>
                         </div>
                     )}
 
