@@ -451,6 +451,36 @@ export const SUMMER_SPOTS: SummerSpot[] = [
         difficulty: 4, courseTime: '12時間(1泊)', features: ['日本百名山', 'にほん いちの やま', 'こうざんびょうに ちゅうい'],
         hut: 'あり(有人)', tent: 'なし', water: '要かくにん'
     },
+    {
+        id: 'tsubakurodake',
+        name: '燕岳',
+        lat: 36.4119, long: 137.7519, elevation: 2763,
+        area: '長野県', url: 'https://www.enzanso.co.jp/',
+        category: 'trekking', activities: ['trekking', 'nature'],
+        bestMonths: [7, 8, 9],
+        difficulty: 3, courseTime: '8時間(1泊)', features: ['日本百名山', 'イルカいわ', '北アルプス入門'],
+        hut: 'あり(有人)', tent: 'あり', water: '要かくにん'
+    },
+    {
+        id: 'chogatake',
+        name: '蝶ヶ岳',
+        lat: 36.3167, long: 137.7167, elevation: 2677,
+        area: '長野県', url: 'https://www.kamikochi.or.jp/',
+        category: 'trekking', activities: ['trekking', 'nature'],
+        bestMonths: [7, 8, 9],
+        difficulty: 3, courseTime: '9時間(1泊)', features: ['槍・穂高 パノラマ', 'やまごや あり', 'テントはく むき'],
+        hut: 'あり(有人)', tent: 'あり', water: '豊富'
+    },
+    {
+        id: 'hakuba-daisekkei',
+        name: '白馬大雪渓',
+        lat: 36.7472, long: 137.7625, elevation: 2469,
+        area: '長野県', url: 'https://www.hakuba-happo.or.jp/',
+        category: 'trekking', activities: ['trekking', 'nature'],
+        bestMonths: [7, 8],
+        difficulty: 4, courseTime: '12時間(1泊)', features: ['日本百名山', '大雪渓 あるき', 'アイゼン 必要'],
+        hut: 'あり(有人)', tent: 'あり', water: '豊富'
+    },
 
     // ============================
     // 🏕️ キャンプ (camp)
@@ -592,66 +622,8 @@ export const SUMMER_SPOTS: SummerSpot[] = [
         category: 'camp', activities: ['camp', 'nature', 'gondola'],
         bestMonths: [5, 6, 7, 8, 9, 10],
     },
+    // (追加分はここで既存エントリに統合済み。このブロックは削除)
 
-    // ============================
-    // 🥾 登山・トレッキング 追加 (trekking)
-    // ============================
-    {
-        id: 'tanigawadake',
-        name: '谷川岳',
-        lat: 36.8317, long: 138.9283, elevation: 1977,
-        area: '群馬県', url: 'https://www.tanigawadake-rw.com/',
-        category: 'trekking', activities: ['trekking', 'gondola', 'nature'],
-        bestMonths: [6, 7, 8, 9, 10],
-    },
-    {
-        id: 'hakuba-daisekkei',
-        name: '白馬大雪渓',
-        lat: 36.7583, long: 137.7583, elevation: 2100,
-        area: '長野県', url: 'https://www.hakuba-happo.or.jp/',
-        category: 'trekking', activities: ['trekking', 'nature'],
-        bestMonths: [7, 8, 9],
-    },
-    {
-        id: 'tsubakurodake',
-        name: '燕岳',
-        lat: 36.4167, long: 137.7167, elevation: 2763,
-        area: '長野県', url: 'https://www.enzanso.co.jp/',
-        category: 'trekking', activities: ['trekking', 'nature'],
-        bestMonths: [7, 8, 9],
-    },
-    {
-        id: 'chogatake',
-        name: '蝶ヶ岳',
-        lat: 36.3167, long: 137.7167, elevation: 2677,
-        area: '長野県', url: 'https://www.kamikochi.or.jp/',
-        category: 'trekking', activities: ['trekking', 'nature'],
-        bestMonths: [7, 8, 9],
-    },
-    {
-        id: 'kisokomagatake',
-        name: '木曽駒ヶ岳',
-        lat: 35.7889, long: 137.8167, elevation: 2956,
-        area: '長野県', url: 'https://www.chuo-alps.com/',
-        category: 'trekking', activities: ['trekking', 'gondola', 'nature'],
-        bestMonths: [7, 8, 9],
-    },
-    {
-        id: 'kitadake',
-        name: '北岳',
-        lat: 35.6750, long: 138.2389, elevation: 3193,
-        area: '山梨県', url: 'https://www.ashiyasu.gr.jp/',
-        category: 'trekking', activities: ['trekking', 'nature'],
-        bestMonths: [7, 8, 9],
-    },
-    {
-        id: 'chokaisan',
-        name: '鳥海山',
-        lat: 39.0972, long: 140.0472, elevation: 2236,
-        area: '山形県', url: 'https://www.choukai.jp/',
-        category: 'trekking', activities: ['trekking', 'nature'],
-        bestMonths: [7, 8, 9],
-    },
 
     // ============================
     // 🏔️ 高原 追加 (highland)
