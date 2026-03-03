@@ -668,24 +668,35 @@ export const SUMMER_SPOTS: SummerSpot[] = [
     },
 
     // --- 🏔️ 静岡県 ---
+    // 🌋 伊豆・箱根エリア
     {
-        id: 'kenanashi',
-        name: '毛無山',
-        lat: 35.3636, long: 138.5358, elevation: 1945,
-        area: '静岡県', url: 'https://www.fujisan-lt.jp/',
+        id: 'amagisan',
+        name: '天城山（万二郎・万三郎岳）',
+        lat: 34.8622, long: 139.0019, elevation: 1406,
+        area: '静岡県', url: 'https://kanko.city.izu.shizuoka.jp/',
         category: 'trekking', activities: ['trekking', 'nature'],
-        bestMonths: [5, 6, 9, 10, 11],
-        difficulty: 4, courseTime: '7時間', features: ['ふじさん 真正面', 'きゅうしゃ 急登', 'すみれ山塊きゅうじょう'],
+        bestMonths: [4, 5, 6, 10, 11],
+        difficulty: 3, courseTime: '5時間30分', features: ['日本百名山', 'アマギシャクナゲ', 'いずはんとう さいこうほう'],
         hut: 'なし', tent: 'なし', water: 'なし'
     },
     {
-        id: 'echizendake',
-        name: '越前岳（愛鷹山）',
-        lat: 35.2219, long: 138.8139, elevation: 1504,
+        id: 'darumayama',
+        name: '達磨山',
+        lat: 34.9547, long: 138.8406, elevation: 982,
+        area: '静岡県', url: 'https://kanko.city.izu.shizuoka.jp/',
+        category: 'trekking', activities: ['trekking', 'nature'],
+        bestMonths: [3, 4, 5, 10, 11, 12],
+        difficulty: 2, courseTime: '3時間', features: ['いずさんりょうせん ほどう', 'ふじさん と するがわん', 'ささはら の てんぼう'],
+        hut: 'なし', tent: 'なし', water: 'なし'
+    },
+    {
+        id: 'kurotake-ashitaka',
+        name: '愛鷹山（黒岳）',
+        lat: 35.2344, long: 138.8058, elevation: 1086,
         area: '静岡県', url: 'https://numazu-kankou.jp/',
         category: 'trekking', activities: ['trekking', 'nature'],
-        bestMonths: [4, 5, 10, 11],
-        difficulty: 3, courseTime: '5時間', features: ['あしだかやまけい さいこうほう', 'ふじさん 眼前に', 'ブナの もり'],
+        bestMonths: [4, 5, 10, 11, 12],
+        difficulty: 2, courseTime: '3時間', features: ['ふじさん てんぼうしゃしん', 'あしだかやまけい', 'やまざくら・こうよう'],
         hut: 'なし', tent: 'なし', water: 'なし'
     },
     {
@@ -695,9 +706,53 @@ export const SUMMER_SPOTS: SummerSpot[] = [
         area: '静岡県', url: 'https://www.hakone.or.jp/',
         category: 'trekking', activities: ['trekking', 'nature'],
         bestMonths: [4, 5, 10, 11],
-        difficulty: 2, courseTime: '4時間', features: ['ふじさん & はこねの てんぼう', 'まさかりもつ きんたろう', 'さんちょうに おてんき もとむ'],
+        difficulty: 2, courseTime: '3時間30分', features: ['ふじさん & はこねの てんぼう', 'まさかりもつ きんたろう', 'きんたろうちゃや'],
         hut: 'あり(有人)', tent: 'なし', water: 'なし'
     },
+    {
+        id: 'kurotake-hakone',
+        name: '玄岳',
+        lat: 35.0883, long: 139.0431, elevation: 798,
+        area: '静岡県', url: 'https://www.ataminews.gr.jp/',
+        category: 'trekking', activities: ['trekking', 'nature'],
+        bestMonths: [3, 4, 5, 10, 11, 12],
+        difficulty: 1, courseTime: '2時間30分', features: ['さがみわん パノラマ', 'いずスカイライン', 'こおりがいけ'],
+        hut: 'なし', tent: 'なし', water: 'なし'
+    },
+
+    // 🗻 富士山エリア
+    {
+        id: 'fujisan-fujinomiya',
+        name: '富士山（富士宮ルート）',
+        lat: 35.3606, long: 138.7274, elevation: 3776,
+        area: '静岡県', url: 'https://www.fujisan-climb.jp/',
+        category: 'trekking', activities: ['trekking', 'nature'],
+        bestMonths: [7, 8, 9],
+        difficulty: 4, courseTime: '8時間30分', features: ['日本最高峰 剣ヶ峰', 'こうざんびょう ちゅうい', 'にほんいちの てんぼう'],
+        hut: 'あり(有人)', tent: 'なし', water: '要かくにん'
+    },
+    {
+        id: 'kenanashi',
+        name: '毛無山',
+        lat: 35.3636, long: 138.5358, elevation: 1945,
+        area: '静岡県', url: 'https://www.fujisan-lt.jp/',
+        category: 'trekking', activities: ['trekking', 'nature'],
+        bestMonths: [5, 6, 9, 10, 11],
+        difficulty: 4, courseTime: '7時間', features: ['ふじさん 真正面', 'きゅうとう 連続', 'てんしさんち さいこうほう'],
+        hut: 'なし', tent: 'なし', water: 'なし'
+    },
+    {
+        id: 'echizendake',
+        name: '越前岳（愛鷹山）',
+        lat: 35.2219, long: 138.8139, elevation: 1504,
+        area: '静岡県', url: 'https://numazu-kankou.jp/',
+        category: 'trekking', activities: ['trekking', 'nature'],
+        bestMonths: [4, 5, 10, 11],
+        difficulty: 3, courseTime: '5時間', features: ['あしだかやまけい さいこうほう', 'ふじさん の だいぱのらま', 'ブナの もり'],
+        hut: 'なし', tent: 'なし', water: 'なし'
+    },
+
+    // 駿河・遠州エリア
     {
         id: 'ryusozan',
         name: '竜爪山',
@@ -705,7 +760,7 @@ export const SUMMER_SPOTS: SummerSpot[] = [
         area: '静岡県', url: 'https://www.city.shizuoka.lg.jp/',
         category: 'trekking', activities: ['trekking', 'nature'],
         bestMonths: [3, 4, 5, 10, 11],
-        difficulty: 2, courseTime: '4時間', features: ['しずおかの やまやまけい', 'ふじさん てんぼう', 'じんじゃ あり'],
+        difficulty: 2, courseTime: '4時間', features: ['しずおかの しみんのやま', 'ふじさん・するがわん てんぼう', 'ほづみじんじゃ'],
         hut: 'なし', tent: 'なし', water: 'なし'
     },
     {
@@ -715,7 +770,7 @@ export const SUMMER_SPOTS: SummerSpot[] = [
         area: '静岡県', url: 'https://www.city.yaizu.lg.jp/',
         category: 'trekking', activities: ['trekking', 'nature'],
         bestMonths: [1, 2, 3, 4, 11, 12],
-        difficulty: 1, courseTime: '2時間30分', features: ['ふじさん ぜっけい', 'するがわん てんぼう', 'はじめてのやまに ぴったり'],
+        difficulty: 1, courseTime: '2時間30分', features: ['ふじさん ぜっけい', 'するがわん と やいづ', 'はじめてのやまに ぴったり'],
         hut: 'なし', tent: 'なし', water: 'なし'
     },
     {
@@ -726,16 +781,28 @@ export const SUMMER_SPOTS: SummerSpot[] = [
         category: 'trekking', activities: ['trekking', 'nature'],
         bestMonths: [4, 5, 10, 11],
         difficulty: 3, courseTime: '5時間', features: ['えんしゅうの めいほう', 'きゅうとう あり', 'あきのやまの しめい'],
-        hut: 'なし', tent: 'なし', water: 'なし'
+        hut: '避難小屋のみ', tent: 'なし', water: '要かくにん'
     },
+
+    // ⛰️ 南アルプス深南部（静岡側）
     {
-        id: 'kitadake-shizuoka',
-        name: '北岳（静岡側）',
-        lat: 35.6747, long: 138.2367, elevation: 3193,
+        id: 'tekaridake',
+        name: '光岳（てかりだけ）',
+        lat: 35.3364, long: 138.0805, elevation: 2591,
         area: '静岡県', url: 'https://www.pref.shizuoka.jp/',
         category: 'trekking', activities: ['trekking', 'nature'],
         bestMonths: [7, 8, 9],
-        difficulty: 5, courseTime: '14時間(1〜2泊)', features: ['にほん だい2い', 'みなみアルプス', 'きたがわの かべ'],
+        difficulty: 5, courseTime: '15時間(1〜2泊)', features: ['日本百名山', 'みなみアルプス さいなんたん', 'しゅくばい はっしょうのち'],
+        hut: 'あり(有人)', tent: 'あり', water: '豊富'
+    },
+    {
+        id: 'chausudake-minamialps',
+        name: '茶臼岳（南アルプス）',
+        lat: 35.3608, long: 138.1250, elevation: 2604,
+        area: '静岡県', url: 'https://www.pref.shizuoka.jp/',
+        category: 'trekking', activities: ['trekking', 'nature'],
+        bestMonths: [7, 8, 9],
+        difficulty: 4, courseTime: '11時間(1泊)', features: ['ふじさん と みなみアルプス てんぼう', 'ちゃうすごや', 'てかりだけへの つうかてん'],
         hut: 'あり(有人)', tent: 'あり', water: '豊富'
     },
     {
@@ -745,7 +812,17 @@ export const SUMMER_SPOTS: SummerSpot[] = [
         area: '静岡県', url: 'https://www.pref.shizuoka.jp/',
         category: 'trekking', activities: ['trekking', 'nature'],
         bestMonths: [7, 8, 9],
-        difficulty: 5, courseTime: '20時間(2〜3泊)', features: ['日本百名山', 'みなみアルプス すいせん', 'ちょうロングコース'],
+        difficulty: 5, courseTime: '16時間(2泊)', features: ['日本百名山', 'みなみアルプス だいパノラマ', 'ちょうロングコース'],
+        hut: 'あり(有人)', tent: 'あり', water: '豊富'
+    },
+    {
+        id: 'kitadake-shizuoka',
+        name: '北岳（静岡側）',
+        lat: 35.6747, long: 138.2367, elevation: 3193,
+        area: '静岡県', url: 'https://www.pref.shizuoka.jp/',
+        category: 'trekking', activities: ['trekking', 'nature'],
+        bestMonths: [7, 8, 9],
+        difficulty: 5, courseTime: '14時間(1〜2泊)', features: ['にほん だい2い', 'みなみアルプス', 'きたがわの かべ'],
         hut: 'あり(有人)', tent: 'あり', water: '豊富'
     },
 
