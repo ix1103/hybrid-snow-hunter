@@ -17,6 +17,10 @@ export interface SummerSpot {
     category: 'highland' | 'trekking' | 'camp' | 'mtb' | 'river' | 'flower' | 'onsen';
     activities: string[];      // 複数タグ（フィルター用）
     bestMonths?: number[];     // ベストシーズン月（1〜12）
+    // 登山特化データ（任意）
+    difficulty?: 1 | 2 | 3 | 4 | 5; // 1:初心者〜5:上級・プロ級
+    courseTime?: string;       // 例: "5時間30分"
+    features?: string[];       // 例: ["日本百名山", "山小屋あり", "岩場あり"]
 }
 
 // --- 夏スポット一覧（約40件） ---
@@ -101,6 +105,43 @@ export const SUMMER_SPOTS: SummerSpot[] = [
     // ============================
     // 🥾 登山・トレッキング (trekking)
     // ============================
+    // --- 🔰 初級（Lv.1〜2 / スライム級） ---
+    {
+        id: 'takao',
+        name: '高尾山',
+        lat: 35.625, long: 139.2436, elevation: 599,
+        area: '東京都', url: 'https://mttakaomagazine.com/',
+        category: 'trekking', activities: ['trekking', 'nature'],
+        bestMonths: [4, 5, 10, 11],
+        difficulty: 1, courseTime: '3時間30分', features: ['はじめてのやま', 'ケーブルカーあり', 'みせが おおい']
+    },
+    {
+        id: 'tsukuba',
+        name: '筑波山',
+        lat: 36.2255, long: 140.1066, elevation: 877,
+        area: '茨城県', url: 'https://www.mt-tsukuba.com/',
+        category: 'trekking', activities: ['trekking', 'nature', 'gondola'],
+        bestMonths: [4, 5, 9, 10, 11],
+        difficulty: 1, courseTime: '4時間', features: ['日本百名山', 'ロープウェイあり', 'いわばが すこし']
+    },
+    {
+        id: 'oyama',
+        name: '大山',
+        lat: 35.4411, long: 139.2316, elevation: 1252,
+        area: '神奈川県', url: 'https://www.oyamakankou.jp/',
+        category: 'trekking', activities: ['trekking', 'nature'],
+        bestMonths: [4, 5, 10, 11],
+        difficulty: 2, courseTime: '4時間30分', features: ['ケーブルカーあり', 'かいだんが おおい']
+    },
+    {
+        id: 'mitake',
+        name: '御岳山',
+        lat: 35.7827, long: 139.1494, elevation: 929,
+        area: '東京都', url: 'https://www.mt-mitake.gr.jp/',
+        category: 'trekking', activities: ['trekking', 'nature'],
+        bestMonths: [4, 5, 6, 9, 10, 11],
+        difficulty: 1, courseTime: '4時間', features: ['ケーブルカーあり', 'たきが ある', 'しゅくぼう']
+    },
     {
         id: 'oze',
         name: '尾瀬ヶ原',
@@ -108,22 +149,62 @@ export const SUMMER_SPOTS: SummerSpot[] = [
         area: '群馬県', url: 'https://www.oze-fnd.or.jp/',
         category: 'trekking', activities: ['trekking', 'nature'],
         bestMonths: [5, 6, 7, 8, 9, 10],
+        difficulty: 1, courseTime: '6時間', features: ['日本百名山', 'きどう あるき', 'みずばしょう']
+    },
+    // --- ⚔️ 中級（Lv.3〜4 / ベテラン級） ---
+    {
+        id: 'yatsugatake-akadake',
+        name: '八ヶ岳（赤岳）',
+        lat: 35.9708, long: 138.3683, elevation: 2899,
+        area: '長野県', url: 'https://yatsugatake.gr.jp/',
+        category: 'trekking', activities: ['trekking', 'nature'],
+        bestMonths: [6, 7, 8, 9, 10],
+        difficulty: 4, courseTime: '8時間30分', features: ['日本百名山', 'やまごや おおい', 'いわば あり']
+    },
+    {
+        id: 'chokaisan',
+        name: '鳥海山',
+        lat: 39.0988, long: 140.0483, elevation: 2236,
+        area: '山形県', url: 'https://chokaizan.com/',
+        category: 'trekking', activities: ['trekking', 'nature'],
+        bestMonths: [7, 8, 9],
+        difficulty: 4, courseTime: '9時間', features: ['日本百名山', 'うみ が みえる', 'コチコチの ゆき渓']
+    },
+    {
+        id: 'hakusan',
+        name: '白山',
+        lat: 36.1550, long: 136.7713, elevation: 2702,
+        area: '石川県', url: 'https://www.kagahakusan.jp/',
+        category: 'trekking', activities: ['trekking', 'nature', 'flower'],
+        bestMonths: [7, 8, 9],
+        difficulty: 3, courseTime: '10時間', features: ['日本百名山', 'はなばたけ', 'やまごや あり']
+    },
+    {
+        id: 'kujurenzan',
+        name: '九重連山',
+        lat: 33.0833, long: 131.2500, elevation: 1791,
+        area: '大分県', url: 'https://kuju.jp/',
+        category: 'trekking', activities: ['trekking', 'nature', 'flower'],
+        bestMonths: [5, 6, 9, 10, 11],
+        difficulty: 3, courseTime: '7時間', features: ['日本百名山', 'ミヤマキリシマ', 'おんせん']
+    },
+    {
+        id: 'kisokomagadake',
+        name: '木曽駒ヶ岳',
+        lat: 35.7891, long: 137.8047, elevation: 2956,
+        area: '長野県', url: 'https://www.chuo-alps.com/',
+        category: 'trekking', activities: ['trekking', 'nature', 'gondola'],
+        bestMonths: [7, 8, 9, 10],
+        difficulty: 2, courseTime: '4時間', features: ['日本百名山', 'ロープウェイあり', '3000mきゅう']
     },
     {
         id: 'tateyama-murodo',
-        name: '立山室堂',
-        lat: 36.5770, long: 137.6013, elevation: 2450,
+        name: '立山（雄山）',
+        lat: 36.5770, long: 137.6013, elevation: 3003,
         area: '富山県', url: 'https://www.alpen-route.com/',
         category: 'trekking', activities: ['trekking', 'nature', 'gondola'],
-        bestMonths: [6, 7, 8, 9, 10],
-    },
-    {
-        id: 'senjojiki',
-        name: '千畳敷カール',
-        lat: 35.7782, long: 137.8167, elevation: 2612,
-        area: '長野県', url: 'https://www.chuo-alps.com/',
-        category: 'trekking', activities: ['trekking', 'nature', 'gondola'],
-        bestMonths: [7, 8, 9],
+        bestMonths: [7, 8, 9, 10],
+        difficulty: 3, courseTime: '5時間', features: ['日本百名山', 'ケーブルカーあり', 'いわば']
     },
     {
         id: 'karasawa',
@@ -132,38 +213,53 @@ export const SUMMER_SPOTS: SummerSpot[] = [
         area: '長野県', url: 'https://www.kamikochi.or.jp/',
         category: 'trekking', activities: ['trekking', 'nature'],
         bestMonths: [7, 8, 9, 10],
-    },
-    {
-        id: 'norikura-summit',
-        name: '乗鞍岳',
-        lat: 36.1064, long: 137.5531, elevation: 2700,
-        area: '長野県', url: 'https://norikuradake.jp/',
-        category: 'trekking', activities: ['trekking', 'nature'],
-        bestMonths: [7, 8, 9],
-    },
-    {
-        id: 'hachimantai',
-        name: '八幡平',
-        lat: 39.9558, long: 140.8556, elevation: 1600,
-        area: '岩手県', url: 'https://www.hachimantai.or.jp/',
-        category: 'trekking', activities: ['trekking', 'nature'],
-        bestMonths: [6, 7, 8, 9, 10],
+        difficulty: 3, courseTime: '12時間', features: ['やまごや だいにんき', 'テントはく', 'こうよう']
     },
     {
         id: 'daisetsuzan',
         name: '大雪山系 旭岳',
-        lat: 43.6625, long: 142.8514, elevation: 1600,
+        lat: 43.6625, long: 142.8514, elevation: 2291,
         area: '北海道', url: 'https://asahidake.hokkaido.jp/',
         category: 'trekking', activities: ['trekking', 'nature', 'gondola'],
         bestMonths: [7, 8, 9],
+        difficulty: 3, courseTime: '4時間30分', features: ['日本百名山', 'ロープウェイあり', 'カムイミンタラ']
+    },
+    // --- 🐉 上級（Lv.5 / でんせつ級） ---
+    {
+        id: 'yarigatake',
+        name: '槍ヶ岳',
+        lat: 36.3419, long: 137.6475, elevation: 3180,
+        area: '長野県', url: 'https://www.yarigatake.co.jp/',
+        category: 'trekking', activities: ['trekking', 'nature'],
+        bestMonths: [7, 8, 9],
+        difficulty: 5, courseTime: '18時間(2泊)', features: ['日本百名山', 'きけんないわば', 'はしご・くさり']
     },
     {
-        id: 'shiretoko',
-        name: '知床五湖',
-        lat: 44.1178, long: 145.0894, elevation: 250,
-        area: '北海道', url: 'https://www.goko.go.jp/',
+        id: 'hotakadake',
+        name: '奥穂高岳',
+        lat: 36.2891, long: 137.6480, elevation: 3190,
+        area: '長野県', url: 'https://www.kamikochi.or.jp/',
         category: 'trekking', activities: ['trekking', 'nature'],
-        bestMonths: [6, 7, 8, 9],
+        bestMonths: [7, 8, 9],
+        difficulty: 5, courseTime: '16時間(2泊)', features: ['日本百名山', 'きけんないわば', 'にほん だい3い']
+    },
+    {
+        id: 'tsurugidake',
+        name: '剱岳',
+        lat: 36.6233, long: 137.6172, elevation: 2999,
+        area: '富山県', url: 'https://toyama-angeltour.co.jp/',
+        category: 'trekking', activities: ['trekking', 'nature'],
+        bestMonths: [7, 8, 9],
+        difficulty: 5, courseTime: '15時間(1〜2泊)', features: ['日本百名山', 'いっぱんルート さいこうなんど', 'カニのタテバイ']
+    },
+    {
+        id: 'fujisan',
+        name: '富士山',
+        lat: 35.3606, long: 138.7274, elevation: 3776,
+        area: '静岡県', url: 'https://www.fujisan-climb.jp/',
+        category: 'trekking', activities: ['trekking', 'nature'],
+        bestMonths: [7, 8],
+        difficulty: 4, courseTime: '12時間(1泊)', features: ['日本百名山', 'にほん いちの やま', 'こうざんびょうに ちゅうい']
     },
 
     // ============================

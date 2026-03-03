@@ -331,6 +331,64 @@ export default function ResortDetailModal({
                                 </div>
                             </div>
 
+                            {/* 登山・トレッキング専用ステータス（山頂気温・雷風アラート） */}
+                            {resort.category === 'trekking' && resort.elevation && (
+                                <div style={{
+                                    padding: '8px 12px',
+                                    background: 'rgba(0,0,0,0.3)',
+                                    borderRadius: '6px',
+                                    border: '1px solid var(--dq-window-border-inner)',
+                                    marginBottom: '12px'
+                                }}>
+                                    {/* アラート */}
+                                    {(resort.weather.weather_code >= 95 || resort.weather.wind >= 10) && (
+                                        <div className="dq-glow" style={{ color: 'var(--dq-text-red)', fontWeight: 'bold', fontSize: '13px', marginBottom: '8px', textAlign: 'center' }}>
+                                            ⚠️ いのちのきき！ {resort.weather.weather_code >= 95 ? 'かみなり ' : ''}{resort.weather.wind >= 10 ? 'ぼうふう' : ''}
+                                        </div>
+                                    )}
+                                    {/* 山頂気温計算 */}
+                                    <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px', marginBottom: '4px' }}>
+                                        <span style={{ color: 'var(--dq-text-dim)' }}>さんちょうの きおん</span>
+                                        <span style={{ color: 'var(--dq-text-blue)' }}>
+                                            {Math.round(resort.weather.temp - (resort.elevation / 100 * 0.6))}℃
+                                        </span>
+                                    </div>
+                                    <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px', marginBottom: '4px' }}>
+                                        <span style={{ color: 'var(--dq-text-dim)' }}>たいかん (かぜ考慮)</span>
+                                        <span style={{ color: 'var(--dq-text-orange)' }}>
+                                            {Math.round((resort.weather.temp - (resort.elevation / 100 * 0.6)) - resort.weather.wind)}℃
+                                        </span>
+                                    </div>
+                                    {/* 難易度とコースタイム */}
+                                    {resort.difficulty && (
+                                        <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px', marginBottom: '4px', marginTop: '8px', borderTop: '1px dashed var(--dq-text-dim)', paddingTop: '8px' }}>
+                                            <span style={{ color: 'var(--dq-text-dim)' }}>なんいど</span>
+                                            <span style={{ color: 'var(--dq-text-gold)' }}>
+                                                {'★'.repeat(resort.difficulty)}{'☆'.repeat(5 - resort.difficulty)}
+                                            </span>
+                                        </div>
+                                    )}
+                                    {resort.courseTime && (
+                                        <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px', marginBottom: '4px' }}>
+                                            <span style={{ color: 'var(--dq-text-dim)' }}>コースタイム</span>
+                                            <span style={{ color: 'var(--dq-text)' }}>{resort.courseTime}</span>
+                                        </div>
+                                    )}
+                                    {/* 特徴タグ */}
+                                    {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+                                    {resort.features && resort.features.length > 0 && (
+                                        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px', marginTop: '8px' }}>
+                                            {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+                                            {resort.features.map((f: any) => (
+                                                <span key={f} style={{ fontSize: '10px', padding: '2px 6px', background: 'var(--dq-bg-dark)', border: '1px solid var(--dq-text-dim)', borderRadius: '4px', color: 'var(--dq-text-dim)' }}>
+                                                    {f}
+                                                </span>
+                                            ))}
+                                        </div>
+                                    )}
+                                </div>
+                            )}
+
                             {/* ベストシーズン＋現在気温＋天気の詳細行 */}
                             <div style={{
                                 display: 'flex', flexDirection: 'column', gap: '4px', marginBottom: '12px',

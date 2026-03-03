@@ -67,13 +67,14 @@ export function calculateSummerScore(
     // 2. 晴天度（天気コードで判定）
     if (data.weather_code === 0) score += 15;           // 快晴
     else if (data.weather_code <= 3) score += 5;        // 曇り
-    else if (data.weather_code >= 95) score -= 25;      // 雷雨（先に判定）
+    else if (data.weather_code >= 95) score -= 40;      // 雷雨（命に関わるので大幅減点）
     else if (data.weather_code >= 61) score -= 15;      // 雨
 
-    // 3. 風の心地よさ
+    // 3. 風の心地よさ（登山の稜線では風は最強の敵）
     if (temp >= 15 && data.wind >= 1 && data.wind <= 4) score += 10;  // 快適な気温でのそよ風
-    else if (data.wind > 10) score -= 15;               // 強風
-    else if (data.wind > 7) score -= 5;                 // やや強風
+    else if (data.wind >= 15) score -= 50;              // 暴風（アウトドア中止レベル）
+    else if (data.wind >= 10) score -= 30;              // 強風（テント倒壊・稜線歩行危険）
+    else if (data.wind > 7) score -= 10;                 // やや強風
 
     // 4. 降水リスク
     if (data.forecast && data.forecast.length > 0) {
