@@ -218,7 +218,7 @@ export default function Advisor({ resorts, onFilterChange, currentFilter, onSear
                                 // 夏モード: アクティビティフィルター
                                 { key: 'all', label: '🗺️ すべての やまへ' },
                                 { key: 'mtb', label: '🚵 マウンテンバイク' },
-                                { key: 'trekking', label: '🥾 トレッキング' },
+                                { key: 'trekking', label: '🥾 やまのぼり' },
                                 { key: 'camp', label: '🏕️ キャンプ・グランピング' },
                                 { key: 'nature', label: '🌸 しぜん・こうざん' },
                                 { key: 'gondola', label: '🚡 ゴンドラ・リフト' },

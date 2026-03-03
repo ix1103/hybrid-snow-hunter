@@ -159,7 +159,47 @@ export const SUMMER_SPOTS: SummerSpot[] = [
         difficulty: 1, courseTime: '6時間', features: ['日本百名山', 'きどう あるき', 'みずばしょう'],
         hut: 'あり(有人)', tent: 'あり', water: '豊富'
     },
+    {
+        id: 'chausuyama',
+        name: '茶臼山',
+        lat: 35.2272, long: 137.6622, elevation: 1415,
+        area: '愛知県', url: 'http://www.chausuyama.jp/',
+        category: 'trekking', activities: ['trekking', 'nature'],
+        bestMonths: [5, 6, 10, 11],
+        difficulty: 1, courseTime: '2時間', features: ['あいち さいこうほう', 'シバザクラ', 'ファミリーむけ'],
+        hut: 'なし', tent: 'なし', water: '豊富'
+    },
     // --- ⚔️ 中級（Lv.3〜4 / ベテラン級） ---
+    {
+        id: 'gozaisho',
+        name: '御在所岳',
+        lat: 35.0206, long: 136.4172, elevation: 1212,
+        area: '三重県', url: 'https://www.gozaisho.co.jp/',
+        category: 'trekking', activities: ['trekking', 'nature', 'gondola'],
+        bestMonths: [4, 5, 10, 11],
+        difficulty: 3, courseTime: '5時間', features: ['ロープウェイあり', 'いわば', 'きガン・ちガン'],
+        hut: 'あり(有人)', tent: 'なし', water: '要かくにん'
+    },
+    {
+        id: 'enasan',
+        name: '恵那山',
+        lat: 35.4419, long: 137.5956, elevation: 2191,
+        area: '岐阜県', url: 'https://kankou-ena.jp/',
+        category: 'trekking', activities: ['trekking', 'nature'],
+        bestMonths: [6, 7, 8, 9, 10],
+        difficulty: 4, courseTime: '7時間', features: ['日本百名山', 'やぶこぎ', 'ながいコース'],
+        hut: '避難小屋のみ', tent: 'なし', water: 'なし'
+    },
+    {
+        id: 'amagisan',
+        name: '天城山',
+        lat: 34.8647, long: 139.0064, elevation: 1406,
+        area: '静岡県', url: 'https://amagigoe.jp/',
+        category: 'trekking', activities: ['trekking', 'nature'],
+        bestMonths: [4, 5, 10, 11],
+        difficulty: 3, courseTime: '4時間30分', features: ['日本百名山', 'シャクナゲ', 'うっそうとした もり'],
+        hut: 'なし', tent: 'なし', water: 'なし'
+    },
     {
         id: 'yatsugatake-akadake',
         name: '八ヶ岳（赤岳）',
