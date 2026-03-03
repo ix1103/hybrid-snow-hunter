@@ -390,6 +390,259 @@ export const SUMMER_SPOTS: SummerSpot[] = [
         difficulty: 3, courseTime: '4時間30分', features: ['日本百名山', 'ロープウェイあり', 'カムイミンタラ'],
         hut: '避難小屋のみ', tent: 'あり', water: '要かくにん'
     },
+
+    // ====================================
+    // 🗾 東海4県 登山スポット 超強化
+    // ====================================
+
+    // --- 🏔️ 愛知県 ---
+    {
+        id: 'mikuni-aichi',
+        name: '三国山',
+        lat: 35.1403, long: 137.5189, elevation: 701,
+        area: '愛知県', url: 'https://www.shinshiro.lg.jp/',
+        category: 'trekking', activities: ['trekking', 'nature'],
+        bestMonths: [4, 5, 10, 11],
+        difficulty: 1, courseTime: '2時間30分', features: ['あいちの さとやま', 'のどかな おさんぽ'],
+        hut: 'なし', tent: 'なし', water: 'なし'
+    },
+    {
+        id: 'hongusan',
+        name: '本宮山',
+        lat: 34.9192, long: 137.4233, elevation: 789,
+        area: '愛知県', url: 'https://www.toyokawashi.org/',
+        category: 'trekking', activities: ['trekking', 'nature'],
+        bestMonths: [3, 4, 5, 10, 11],
+        difficulty: 2, courseTime: '3時間30分', features: ['みかわ さんぎょうの やま', 'かいだん おおい', 'じんじゃ あり'],
+        hut: 'なし', tent: 'なし', water: 'なし'
+    },
+    {
+        id: 'sanageyama',
+        name: '猿投山',
+        lat: 35.1556, long: 137.1492, elevation: 629,
+        area: '愛知県', url: 'https://www.city.toyota.aichi.jp/',
+        category: 'trekking', activities: ['trekking', 'nature'],
+        bestMonths: [3, 4, 5, 10, 11, 12],
+        difficulty: 1, courseTime: '3時間', features: ['なごやからアクセス◎', 'トレランにんき', 'さんぽみち'],
+        hut: 'なし', tent: 'なし', water: 'なし'
+    },
+    {
+        id: 'miyajiyama',
+        name: '宮路山',
+        lat: 34.8381, long: 137.3156, elevation: 362,
+        area: '愛知県', url: 'https://www.toyokawashi.org/',
+        category: 'trekking', activities: ['trekking', 'nature'],
+        bestMonths: [1, 2, 3, 4, 11, 12],
+        difficulty: 1, courseTime: '1時間30分', features: ['こうよう', 'ファミリーむけ', 'みかわわん てんぼう'],
+        hut: 'なし', tent: 'なし', water: 'なし'
+    },
+    {
+        id: 'nyudogatake',
+        name: '入道ヶ岳(愛知側)',
+        lat: 35.2806, long: 137.0714, elevation: 906,
+        area: '愛知県', url: 'https://www.city.seto.aichi.jp/',
+        category: 'trekking', activities: ['trekking', 'nature'],
+        bestMonths: [4, 5, 10, 11],
+        difficulty: 2, courseTime: '4時間', features: ['くさ のはら', 'ひらけた てんぼう', 'しゅうかいくい あり'],
+        hut: 'なし', tent: 'なし', water: 'なし'
+    },
+
+    // --- 🏔️ 岐阜県 ---
+    {
+        id: 'norikuradake',
+        name: '乗鞍岳',
+        lat: 36.1064, long: 137.5531, elevation: 3026,
+        area: '岐阜県', url: 'https://norikuradake.jp/',
+        category: 'trekking', activities: ['trekking', 'nature'],
+        bestMonths: [7, 8, 9],
+        difficulty: 1, courseTime: '2時間30分', features: ['日本百名山', 'バスでいける 3000m', 'らいちょう'],
+        hut: 'あり(有人)', tent: 'なし', water: '要かくにん'
+    },
+    {
+        id: 'ibukiyama',
+        name: '伊吹山',
+        lat: 35.4167, long: 136.4069, elevation: 1377,
+        area: '岐阜県', url: 'https://www.ibukiyama-driveway.jp/',
+        category: 'trekking', activities: ['trekking', 'nature', 'flower'],
+        bestMonths: [4, 5, 7, 8, 10],
+        difficulty: 2, courseTime: '5時間30分', features: ['日本百名山', 'はなの めいざん', 'ドライブウェイあり'],
+        hut: 'なし', tent: 'なし', water: 'なし'
+    },
+    {
+        id: 'ontakedake',
+        name: '御嶽山',
+        lat: 35.8936, long: 137.4810, elevation: 3067,
+        area: '岐阜県', url: 'https://www.vill.otaki.nagano.jp/',
+        category: 'trekking', activities: ['trekking', 'nature'],
+        bestMonths: [7, 8, 9],
+        difficulty: 4, courseTime: '8時間', features: ['日本百名山', 'きけんじょうほう ようかくにん', 'しんこうの やま'],
+        hut: 'あり(有人)', tent: 'なし', water: '要かくにん'
+    },
+    {
+        id: 'kinkazan',
+        name: '金華山',
+        lat: 35.4350, long: 136.7819, elevation: 329,
+        area: '岐阜県', url: 'https://www.gifucvb.or.jp/',
+        category: 'trekking', activities: ['trekking', 'nature'],
+        bestMonths: [3, 4, 5, 10, 11, 12],
+        difficulty: 1, courseTime: '1時間30分', features: ['ぎふじょう', 'ロープウェイあり', 'ながらがわ てんぼう'],
+        hut: 'なし', tent: 'なし', water: 'なし'
+    },
+    {
+        id: 'nanakiyama',
+        name: '納古山',
+        lat: 35.5469, long: 137.0500, elevation: 633,
+        area: '岐阜県', url: 'https://www.kankou-gifu.jp/',
+        category: 'trekking', activities: ['trekking', 'nature'],
+        bestMonths: [4, 5, 10, 11],
+        difficulty: 1, courseTime: '2時間30分', features: ['ひだのやま パノラマ', 'てがるに のぼれる', '初心者おすすめ'],
+        hut: 'なし', tent: 'なし', water: 'なし'
+    },
+    {
+        id: 'yarigatake-gifu',
+        name: '笠ヶ岳',
+        lat: 36.3031, long: 137.5319, elevation: 2898,
+        area: '岐阜県', url: 'https://www.kasagatake.info/',
+        category: 'trekking', activities: ['trekking', 'nature'],
+        bestMonths: [7, 8, 9],
+        difficulty: 5, courseTime: '16時間(1〜2泊)', features: ['日本百名山', 'ちょう ろんぐコース', 'かさの かたち'],
+        hut: 'あり(有人)', tent: 'あり', water: '要かくにん'
+    },
+    {
+        id: 'hodaka-gifu',
+        name: '焼岳',
+        lat: 36.2269, long: 137.5862, elevation: 2455,
+        area: '岐阜県', url: 'https://www.kamikochi.or.jp/',
+        category: 'trekking', activities: ['trekking', 'nature'],
+        bestMonths: [6, 7, 8, 9, 10],
+        difficulty: 3, courseTime: '6時間', features: ['かつかざん', 'かみこうちから アクセス', 'けむりが でてる'],
+        hut: '避難小屋のみ', tent: 'なし', water: 'なし'
+    },
+
+    // --- 🏔️ 三重県 ---
+    {
+        id: 'odaigahara',
+        name: '大台ヶ原',
+        lat: 34.1814, long: 136.1081, elevation: 1695,
+        area: '三重県', url: 'https://kinki.env.go.jp/nature/odaigahara/',
+        category: 'trekking', activities: ['trekking', 'nature'],
+        bestMonths: [5, 6, 10, 11],
+        difficulty: 1, courseTime: '3時間30分', features: ['日本百名山', 'にほんいちの たうりょう', 'たいらな さんちょう'],
+        hut: 'なし', tent: 'なし', water: 'なし'
+    },
+    {
+        id: 'aoyama-kogen',
+        name: '青山高原',
+        lat: 34.6944, long: 136.3028, elevation: 756,
+        area: '三重県', url: 'https://www.kankomie.or.jp/',
+        category: 'trekking', activities: ['trekking', 'nature'],
+        bestMonths: [4, 5, 6, 10, 11],
+        difficulty: 1, courseTime: '2時間', features: ['ふうしゃ が みえる', 'はいきんぐ コース', 'すすき のはら'],
+        hut: 'なし', tent: 'なし', water: 'なし'
+    },
+    {
+        id: 'ryozenzan',
+        name: '霊山',
+        lat: 34.6853, long: 136.2464, elevation: 766,
+        area: '三重県', url: 'https://www.kankomie.or.jp/',
+        category: 'trekking', activities: ['trekking', 'nature'],
+        bestMonths: [4, 5, 10, 11],
+        difficulty: 2, courseTime: '3時間30分', features: ['いわば', 'くさり・ロープ', 'しゅぎょうの やま'],
+        hut: 'なし', tent: 'なし', water: 'なし'
+    },
+    {
+        id: 'fujiwara',
+        name: '藤原岳',
+        lat: 35.1383, long: 136.4133, elevation: 1140,
+        area: '三重県', url: 'https://www.kankomie.or.jp/',
+        category: 'trekking', activities: ['trekking', 'nature', 'flower'],
+        bestMonths: [3, 4, 5, 10, 11],
+        difficulty: 2, courseTime: '5時間', features: ['すずかやまけい', 'フクジュソウ', 'カレンフェルト'],
+        hut: '避難小屋のみ', tent: 'なし', water: 'なし'
+    },
+    {
+        id: 'amagidake-mie',
+        name: '竜ヶ岳',
+        lat: 35.0600, long: 136.4244, elevation: 1100,
+        area: '三重県', url: 'https://www.kankomie.or.jp/',
+        category: 'trekking', activities: ['trekking', 'nature'],
+        bestMonths: [5, 6, 10, 11],
+        difficulty: 3, courseTime: '5時間30分', features: ['すずかやまけい', 'しらひげ草 ぐんせい', 'やまびこ'],
+        hut: 'なし', tent: 'なし', water: 'なし'
+    },
+    {
+        id: 'suzuka-nyudo',
+        name: '入道ヶ岳(鈴鹿)',
+        lat: 34.9697, long: 136.4267, elevation: 906,
+        area: '三重県', url: 'https://www.kankomie.or.jp/',
+        category: 'trekking', activities: ['trekking', 'nature'],
+        bestMonths: [4, 5, 10, 11],
+        difficulty: 2, courseTime: '4時間', features: ['すずかセブン', 'ススキ のはら', 'おおきな とりい'],
+        hut: 'なし', tent: 'なし', water: 'なし'
+    },
+
+    // --- 🏔️ 静岡県 ---
+    {
+        id: 'ryusozan',
+        name: '竜爪山',
+        lat: 35.0856, long: 138.4375, elevation: 1051,
+        area: '静岡県', url: 'https://www.city.shizuoka.lg.jp/',
+        category: 'trekking', activities: ['trekking', 'nature'],
+        bestMonths: [3, 4, 5, 10, 11],
+        difficulty: 2, courseTime: '4時間', features: ['しずおかの さとやま', 'ふじさん てんぼう', 'じんじゃ あり'],
+        hut: 'なし', tent: 'なし', water: 'なし'
+    },
+    {
+        id: 'maruyama-shizuoka',
+        name: '満観峰',
+        lat: 34.9247, long: 138.2839, elevation: 470,
+        area: '静岡県', url: 'https://www.city.yaizu.lg.jp/',
+        category: 'trekking', activities: ['trekking', 'nature'],
+        bestMonths: [1, 2, 3, 4, 11, 12],
+        difficulty: 1, courseTime: '2時間30分', features: ['ふじさん ぜっけい', 'するがわん てんぼう', '初心者おすすめ'],
+        hut: 'なし', tent: 'なし', water: 'なし'
+    },
+    {
+        id: 'ryugatouge',
+        name: '竜頭山',
+        lat: 34.9689, long: 137.8281, elevation: 1352,
+        area: '静岡県', url: 'https://www.city.hamamatsu.shizuoka.jp/',
+        category: 'trekking', activities: ['trekking', 'nature'],
+        bestMonths: [4, 5, 10, 11],
+        difficulty: 3, courseTime: '5時間', features: ['えんしゅうの めいほう', 'きゅうとう あり', 'しずかな やま'],
+        hut: 'なし', tent: 'なし', water: 'なし'
+    },
+    {
+        id: 'ashitaka',
+        name: '愛鷹山',
+        lat: 35.1986, long: 138.8089, elevation: 1504,
+        area: '静岡県', url: 'https://numazu-kankou.jp/',
+        category: 'trekking', activities: ['trekking', 'nature'],
+        bestMonths: [4, 5, 10, 11],
+        difficulty: 2, courseTime: '4時間30分', features: ['ふじさんの となり', 'つつじ', 'ぬまづから アクセス'],
+        hut: 'なし', tent: 'なし', water: 'なし'
+    },
+    {
+        id: 'kitadake-shizuoka',
+        name: '北岳（静岡側）',
+        lat: 35.6747, long: 138.2367, elevation: 3193,
+        area: '静岡県', url: 'https://www.pref.shizuoka.jp/',
+        category: 'trekking', activities: ['trekking', 'nature'],
+        bestMonths: [7, 8, 9],
+        difficulty: 5, courseTime: '14時間(1〜2泊)', features: ['にほん だい2い', 'みなみアルプス', 'きたがわの かべ'],
+        hut: 'あり(有人)', tent: 'あり', water: '豊富'
+    },
+    {
+        id: 'hijirisan',
+        name: '聖岳',
+        lat: 35.4536, long: 138.1478, elevation: 3013,
+        area: '静岡県', url: 'https://www.pref.shizuoka.jp/',
+        category: 'trekking', activities: ['trekking', 'nature'],
+        bestMonths: [7, 8, 9],
+        difficulty: 5, courseTime: '20時間(2〜3泊)', features: ['日本百名山', 'みなみアルプス すいせん', 'ちょうロングコース'],
+        hut: 'あり(有人)', tent: 'あり', water: '豊富'
+    },
+
     // --- 🐉 上級（Lv.5 / でんせつ級） ---
     {
         id: 'kaikomagadake',
