@@ -74,9 +74,6 @@ export default function ResortDetailModal({
     const aiComment = isSummer
         ? generateSummerAnalysis(resort.name, resort.area, resort.weather)
         : generateAIAnalysis(resort.name, resort.area, resort.weather);
-    const { summary: weekSummary } = isSummer
-        ? generateSummerWeekSummary(resort.weather.forecast)
-        : generateWeekSummary(resort.weather.forecast);
 
     // 公式サイトURL（季節対応）
     const officialUrl = isSummer
@@ -212,20 +209,7 @@ export default function ResortDetailModal({
                 {/* ===== スクロール可能コンテンツ ===== */}
                 <div style={{ overflowY: 'auto', flex: 1, paddingTop: '12px' }}>
 
-                    {/* 週間サマリー */}
-                    {weekSummary && (
-                        <div style={{
-                            background: 'rgba(255, 215, 0, 0.08)',
-                            border: '1px solid rgba(255, 215, 0, 0.2)',
-                            borderRadius: '6px',
-                            padding: '8px 12px',
-                            fontSize: '12px',
-                            color: 'var(--dq-text-gold)',
-                            marginBottom: '12px',
-                        }}>
-                            {weekSummary}
-                        </div>
-                    )}
+
 
                     {/* 夏モード: アクティビティバッジ（activitiesから読み取り） */}
                     {isSummer && resort.activities && resort.activities.length > 0 && (
