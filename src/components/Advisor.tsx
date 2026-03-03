@@ -7,12 +7,14 @@ import { calculateSummerScore } from '@/lib/scoring_summer';
 import { useSeason } from '@/lib/season';
 
 interface AdvisorProps {
-    resorts: (Resort & { weather: WeatherData })[];
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    resorts: any[];
     onFilterChange: (criteria: 'all' | 'powder' | 'calm' | 'cold' | 'favorites') => void;
     currentFilter: string;
     onSearchChange: (query: string) => void;
     searchQuery: string;
-    onResortClick: (resort: Resort & { weather: WeatherData }) => void;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    onResortClick: (resort: any) => void;
     favorites: Set<string>;
     onToggleFavorite: (id: string) => void;
 }
@@ -52,9 +54,9 @@ export default function Advisor({ resorts, onFilterChange, currentFilter, onSear
 
         // 3. 季節別フィルター
         if (isSummer && selectedActivity !== 'all') {
-            // 夏モード: アクティビティフィルター
+            // 夏モード: アクティビティフィルター（activitiesフィールドで見る）
             filtered = filtered.filter(r =>
-                r.summer_activities && r.summer_activities.includes(selectedActivity)
+                r.activities && r.activities.includes(selectedActivity)
             );
         } else if (!isSummer && currentFilter !== 'all' && currentFilter !== 'favorites') {
             // 冬モード: 元のコンディションフィルター
@@ -69,9 +71,13 @@ export default function Advisor({ resorts, onFilterChange, currentFilter, onSear
             filtered = filtered.filter(r => favorites.has(r.id));
         }
 
-        // 4. スコア順ソート（季節対応）
+        // 4. スコア順ソート（季節対応・bestMonths/elevation も渡す）
         const sorted = filtered
-            .map(r => ({ ...r, score: calcScore(r.weather) }))
+            .map(r => ({
+                ...r, score: isSummer
+                    ? calculateSummerScore(r.weather, r.bestMonths, r.elevation)
+                    : calcScore(r.weather)
+            }))
             .sort((a, b) => b.score.score - a.score.score);
 
         // 5. 上位5件 or 全件
