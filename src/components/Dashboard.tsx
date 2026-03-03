@@ -154,7 +154,7 @@ export default function Dashboard({ initialResorts, initialSummerSpots }: Dashbo
             if (filter === 'favorites') result = result.filter(r => favorites.has(r.id));
             else if (filter !== 'all') {
                 // 夏のアクティビティフィルター
-                result = result.filter(r => r.activities && r.activities.includes(filter));
+                result = result.filter(r => r.category === filter || (r.activities && r.activities.includes(filter)));
             }
         }
         return result;

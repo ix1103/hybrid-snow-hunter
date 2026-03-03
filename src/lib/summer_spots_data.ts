@@ -521,7 +521,7 @@ export const SUMMER_SPOTS: SummerSpot[] = [
 
     // --- 🏔️ 三重県 ---
     {
-        id: 'odaigahara',
+        id: 'odaigahara-mie',
         name: '大台ヶ原',
         lat: 34.1814, long: 136.1081, elevation: 1695,
         area: '三重県', url: 'https://kinki.env.go.jp/nature/odaigahara/',
@@ -1029,7 +1029,7 @@ export const SUMMER_SPOTS: SummerSpot[] = [
         hut: 'あり(有人)', tent: 'なし', water: '要かくにん'
     },
     {
-        id: 'odaigahara',
+        id: 'odaigahara-nara',
         name: '大台ケ原',
         lat: 34.1828, long: 136.1072, elevation: 1695,
         area: '奈良県', url: 'https://www.odaigahara.jp/',
