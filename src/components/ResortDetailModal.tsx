@@ -270,28 +270,66 @@ export default function ResortDetailModal({
                                     {/* 難易度ヘッダー: DQランク名 + ★表示 */}
                                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
                                         <div>
-                                            <div style={{ fontSize: '10px', color: 'var(--dq-text-dim)', marginBottom: '2px' }}>⚔️ なんいど</div>
+                                            <div style={{ fontSize: '10px', color: 'var(--dq-text-dim)', marginBottom: '2px' }}>
+                                                ⚔️ なんいど
+                                                {/* バリエーション・アルパインの場合は💀バッジ */}
+                                                {(resort.climbingStyle === 'variation' || resort.climbingStyle === 'alpine') && (
+                                                    <span style={{
+                                                        marginLeft: '8px', padding: '2px 6px',
+                                                        background: 'rgba(255, 0, 0, 0.2)', border: '1px solid #ff4444',
+                                                        borderRadius: '4px', color: '#ff4444', fontSize: '10px',
+                                                        animation: 'dq-blink 1.5s infinite'
+                                                    }}>
+                                                        💀 {resort.climbingStyle === 'alpine' ? 'アルパイン' : 'バリエーション'}
+                                                    </span>
+                                                )}
+                                            </div>
                                             <div style={{
                                                 fontSize: '16px', fontWeight: 'bold',
-                                                color: resort.difficulty >= 5 ? '#ff4444' :
-                                                    resort.difficulty >= 4 ? 'var(--dq-text-gold)' :
-                                                        resort.difficulty >= 3 ? 'var(--dq-text-green)' :
-                                                            'var(--dq-text-blue)',
+                                                color: resort.climbingStyle === 'alpine' ? '#cc0000' :
+                                                    resort.climbingStyle === 'variation' ? '#ff4444' :
+                                                        resort.difficulty >= 5 ? '#ff4444' :
+                                                            resort.difficulty >= 4 ? 'var(--dq-text-gold)' :
+                                                                resort.difficulty >= 3 ? 'var(--dq-text-green)' :
+                                                                    'var(--dq-text-blue)',
                                             }}>
-                                                {resort.difficulty >= 5 ? 'でんせつきゅう' :
-                                                    resort.difficulty >= 4 ? 'ベテランきゅう' :
-                                                        resort.difficulty >= 3 ? 'ちゅうきゅうしゃ' :
-                                                            resort.difficulty >= 2 ? 'しょしん＋' :
-                                                                'スライムきゅう'}
+                                                {resort.climbingStyle === 'alpine' ? 'しんわきゅう' :
+                                                    resort.climbingStyle === 'variation' ? 'まおうきゅう' :
+                                                        resort.difficulty >= 5 ? 'でんせつきゅう' :
+                                                            resort.difficulty >= 4 ? 'ベテランきゅう' :
+                                                                resort.difficulty >= 3 ? 'ちゅうきゅうしゃ' :
+                                                                    resort.difficulty >= 2 ? 'しょしん＋' :
+                                                                        'スライムきゅう'}
                                             </div>
                                         </div>
                                         <div style={{ textAlign: 'right' }}>
                                             <div style={{ fontSize: '16px', color: 'var(--dq-text-gold)', letterSpacing: '2px' }}>
                                                 {'★'.repeat(resort.difficulty)}{'☆'.repeat(5 - resort.difficulty)}
                                             </div>
-                                            <div style={{ fontSize: '10px', color: 'var(--dq-text-dim)' }}>Lv.{resort.difficulty}</div>
+                                            <div style={{ fontSize: '10px', color: 'var(--dq-text-dim)' }}>
+                                                {resort.climbingStyle === 'alpine' ? 'Lv.∞' :
+                                                    resort.climbingStyle === 'variation' ? 'Lv.6' :
+                                                        `Lv.${resort.difficulty}`}
+                                            </div>
                                         </div>
                                     </div>
+
+                                    {/* 高難度ルート警告バナー */}
+                                    {(resort.climbingStyle === 'variation' || resort.climbingStyle === 'alpine') && (
+                                        <div style={{
+                                            background: 'rgba(255, 0, 0, 0.1)',
+                                            borderLeft: '4px solid #ff4444',
+                                            padding: '8px',
+                                            marginBottom: '12px',
+                                            fontSize: '11px',
+                                            color: '#ffdddd',
+                                            lineHeight: '1.4'
+                                        }}>
+                                            ⚠️ <b>けいこく</b><br />
+                                            このルートは いっぱんの やまのぼりでは ありません。<br />
+                                            読図（どくず）、ロープワーク、岩壁登攀（がんぺきとうはん）などの <b>せんもんてきな クライミング ぎじゅつ</b> が ひつようです。
+                                        </div>
+                                    )}
 
                                     {/* コースタイム + スタミナゲージ */}
                                     {resort.courseTime && (

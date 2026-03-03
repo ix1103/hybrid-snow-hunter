@@ -24,6 +24,12 @@ export interface SummerSpot {
     hut?: 'あり(有人)' | '避難小屋のみ' | 'なし';
     tent?: 'あり' | 'なし';
     water?: '豊富' | '要かくにん' | 'なし';
+    // 登山スタイル（難易度5を超えるルート区分）
+    climbingStyle?: 'trekking' | 'scrambling' | 'variation' | 'alpine';
+    // trekking  = 一般ルート（ガイドなし可）
+    // scrambling = クサリ・ロープ補助あり一般ルート
+    // variation  = バリエーションルート（読図・ロープ必須）
+    // alpine     = アルパインルート（岩壁クライミング技術必須）
 }
 
 // --- 夏スポット一覧（約40件） ---
@@ -1315,5 +1321,75 @@ export const SUMMER_SPOTS: SummerSpot[] = [
         area: '長野県', url: 'https://www.yatsugatake.gr.jp/',
         category: 'highland', activities: ['nature', 'trekking', 'camp'],
         bestMonths: [5, 6, 7, 8, 9, 10],
+    },
+
+    // ============================================
+    // ☠️ バリエーション・アルパインルート（Lv.5超）
+    // ロープ・クライミング技術が必須のルート
+    // ============================================
+    {
+        id: 'ichinokurasawa',
+        name: '谷川岳 一ノ倉沢',
+        lat: 36.8558, long: 138.7580, elevation: 1200,
+        area: '群馬県', url: 'https://tanigawadake-rw.com/',
+        category: 'trekking', activities: ['trekking', 'nature'],
+        bestMonths: [7, 8, 9],
+        difficulty: 5,
+        courseTime: 'ガイドツアーのみ',
+        features: ['日本最大の岩壁', 'しゃべつ きんしku あり', '日本一 そうなんじゃけつ'],
+        climbingStyle: 'alpine',
+        hut: '避難小屋のみ', tent: 'なし', water: '要かくにん'
+    },
+    {
+        id: 'tsurugidake-genjiro',
+        name: '剱岳 源次郎尾根',
+        lat: 36.6233, long: 137.6172, elevation: 2999,
+        area: '富山県', url: 'https://toyama-angeltour.co.jp/',
+        category: 'trekking', activities: ['trekking', 'nature'],
+        bestMonths: [7, 8, 9],
+        difficulty: 5,
+        courseTime: '18時間(2泊)',
+        features: ['バリエーション Ⅱ〜Ⅲ級', 'ロープ・クライミング 必須', '岩の クライマーの あこがれ'],
+        climbingStyle: 'variation',
+        hut: 'あり(有人)', tent: 'あり', water: '要かくにん'
+    },
+    {
+        id: 'maehoda-kitaone',
+        name: '前穂高岳 北尾根',
+        lat: 36.3014, long: 137.6475, elevation: 3090,
+        area: '長野県', url: 'https://www.kamikochi.or.jp/',
+        category: 'trekking', activities: ['trekking', 'nature'],
+        bestMonths: [7, 8, 9],
+        difficulty: 5,
+        courseTime: '16時間(2〜3泊)',
+        features: ['Ⅴ・Ⅵ峰 〜Ⅰ峰 じゅうたいき', '北アルプス Lv.バリエーション 中級', 'どくりつほう かくとう ひつよう'],
+        climbingStyle: 'variation',
+        hut: 'あり(有人)', tent: 'あり', water: '豊富'
+    },
+    {
+        id: 'kitahotaka-higashiryo',
+        name: '北穂高岳 東稜',
+        lat: 36.2978, long: 137.6486, elevation: 3106,
+        area: '長野県', url: 'https://www.kamikochi.or.jp/',
+        category: 'trekking', activities: ['trekking', 'nature'],
+        bestMonths: [7, 8, 9],
+        difficulty: 5,
+        courseTime: '14時間(1〜2泊)',
+        features: ['ゴジラの背 (ナイフリッジ)', 'バリエーション Ⅲ〜Ⅳ級', 'けいけん しゃのみ'],
+        climbingStyle: 'variation',
+        hut: 'あり(有人)', tent: 'あり', water: '豊富'
+    },
+    {
+        id: 'byobuiwa',
+        name: '屏風岩（上高地）',
+        lat: 36.2875, long: 137.6539, elevation: 2565,
+        area: '長野県', url: 'https://www.kamikochi.or.jp/',
+        category: 'trekking', activities: ['trekking', 'nature'],
+        bestMonths: [7, 8, 9],
+        difficulty: 5,
+        courseTime: 'ガイドツアーのみ',
+        features: ['フリークライミング 5.10〜5.13', 'かみこうちの にし いわかべ', 'アルパイン登攀 必須'],
+        climbingStyle: 'alpine',
+        hut: '避難小屋のみ', tent: 'なし', water: 'なし'
     },
 ];

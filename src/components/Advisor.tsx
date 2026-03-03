@@ -231,10 +231,10 @@ export default function Advisor({ resorts, onFilterChange, currentFilter, onSear
                             {isSummer ? [
                                 // 夏モード: カテゴリフィルター（山関連のみ）
                                 { key: 'all', label: '🗺️ すべての やまへ' },
-                                { key: 'highland', label: '🏔️ ひしょち' },
                                 { key: 'trekking', label: '🥾 やまのぼり' },
                                 { key: 'camp', label: '🏕️ キャンプ' },
                                 { key: 'mtb', label: '🚵 MTB' },
+                                { key: 'highland', label: '🏔️ ひしょち' },
                             ].map(item => (
                                 <button
                                     key={item.key}
@@ -393,8 +393,14 @@ export default function Advisor({ resorts, onFilterChange, currentFilter, onSear
                                                     fontSize: '13px',
                                                     color: 'var(--dq-text)',
                                                     fontWeight: 'bold',
+                                                    display: 'flex',
+                                                    alignItems: 'center',
+                                                    gap: '4px'
                                                 }}>
                                                     {resort.name}
+                                                    {(resort.climbingStyle === 'variation' || resort.climbingStyle === 'alpine') && (
+                                                        <span style={{ fontSize: '10px' }} title="ロープ・岩壁技術必須の高難度ルート">💀</span>
+                                                    )}
                                                 </div>
                                                 <div style={{
                                                     fontSize: '10px',
