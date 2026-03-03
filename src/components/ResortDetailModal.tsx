@@ -256,169 +256,80 @@ export default function ResortDetailModal({
                     {isSummer ? (
                         /* ===== 夏モード専用ステータス ===== */
                         <>
-                            {/* カテゴリ・標高・ベストシーズン */}
-                            <div style={{
-                                display: 'grid',
-                                gridTemplateColumns: '1fr 1fr 1fr',
-                                gap: '8px',
-                                marginBottom: '12px',
-                            }}>
-                                {/* カテゴリ */}
+                            {/* ========================================== */}
+                            {/* 1. 難易度 + コースタイム（最上部・最優先） */}
+                            {/* ========================================== */}
+                            {resort.category === 'trekking' && resort.difficulty && (
                                 <div style={{
-                                    background: 'rgba(0, 0, 0, 0.3)',
-                                    borderRadius: '6px', padding: '10px', textAlign: 'center',
+                                    background: 'rgba(0,0,0,0.4)',
+                                    borderRadius: '8px',
                                     border: '1px solid var(--dq-window-border-inner)',
+                                    padding: '12px',
+                                    marginBottom: '12px',
                                 }}>
-                                    <div style={{ fontSize: '18px', marginBottom: '4px' }}>
-                                        {(() => {
-                                            const catIcons: Record<string, string> = {
-                                                highland: '🏔️', trekking: '🥾', camp: '🏕️',
-                                                mtb: '🚵', river: '🌊', flower: '🌸', onsen: '♨️',
-                                            };
-                                            return catIcons[resort.category || ''] || '🗺️';
-                                        })()}
-                                    </div>
-                                    <div style={{ fontSize: '12px', fontWeight: 'bold', color: 'var(--dq-text-green)' }}>
-                                        {(() => {
-                                            const catLabels: Record<string, string> = {
-                                                highland: 'ひしょち', trekking: 'やまのぼり', camp: 'キャンプ',
-                                                mtb: 'MTB', river: 'けいこく', flower: 'はなばたけ', onsen: 'おんせん',
-                                            };
-                                            return catLabels[resort.category || ''] || 'スポット';
-                                        })()}
-                                    </div>
-                                    <div style={{ fontSize: '10px', color: 'var(--dq-text-dim)' }}>カテゴリ</div>
-                                </div>
-                                {/* 標高 */}
-                                <div style={{
-                                    background: 'rgba(0, 0, 0, 0.3)',
-                                    borderRadius: '6px', padding: '10px', textAlign: 'center',
-                                    border: '1px solid var(--dq-window-border-inner)',
-                                }}>
-                                    <div style={{ fontSize: '18px', marginBottom: '4px' }}>📍</div>
-                                    <div style={{ fontSize: '18px', fontWeight: 'bold', color: 'var(--dq-text)' }}>
-                                        {resort.elevation ?? '--'}<span style={{ fontSize: '10px', fontWeight: 'normal' }}>m</span>
-                                    </div>
-                                    <div style={{ fontSize: '10px', color: 'var(--dq-text-dim)' }}>ひょうこう</div>
-                                </div>
-                                {/* 気温差 */}
-                                <div style={{
-                                    background: 'rgba(0, 0, 0, 0.3)',
-                                    borderRadius: '6px', padding: '10px', textAlign: 'center',
-                                    border: '1px solid var(--dq-window-border-inner)',
-                                }}>
-                                    <div style={{ fontSize: '18px', marginBottom: '4px' }}>🌡️</div>
-                                    <div style={{ fontSize: '18px', fontWeight: 'bold', color: 'var(--dq-text-blue)' }}>
-                                        -{Math.max(0, Math.round(28 - resort.weather.temp))}<span style={{ fontSize: '10px', fontWeight: 'normal' }}>℃</span>
-                                    </div>
-                                    <div style={{ fontSize: '10px', color: 'var(--dq-text-dim)' }}>とかいとのさ</div>
-                                </div>
-                            </div>
-
-                            {/* 登山・トレッキング専用ステータス（山頂気温・雷風アラート） */}
-                            {resort.category === 'trekking' && resort.elevation && (
-                                <div style={{
-                                    padding: '8px 12px',
-                                    background: 'rgba(0,0,0,0.3)',
-                                    borderRadius: '6px',
-                                    border: '1px solid var(--dq-window-border-inner)',
-                                    marginBottom: '12px'
-                                }}>
-                                    {/* アラート */}
-                                    {(resort.weather.weather_code >= 95 || resort.weather.wind >= 10) && (
-                                        <div className="dq-glow" style={{ color: 'var(--dq-text-red)', fontWeight: 'bold', fontSize: '13px', marginBottom: '8px', textAlign: 'center' }}>
-                                            ⚠️ いのちのきき！ {resort.weather.weather_code >= 95 ? 'かみなり ' : ''}{resort.weather.wind >= 10 ? 'ぼうふう' : ''}
-                                        </div>
-                                    )}
-                                    {/* 山頂気温・高度別気温予想 */}
-                                    {resort.elevation > 2000 ? (
-                                        <div style={{ marginTop: '4px', marginBottom: '8px', padding: '6px', background: 'rgba(0,0,0,0.5)', borderRadius: '4px', border: '1px solid rgba(255,255,255,0.1)' }}>
-                                            <div style={{ fontSize: '10px', color: 'var(--dq-text-dim)', marginBottom: '4px', textAlign: 'center' }}>📉 こうどべつ きおんよそう</div>
-                                            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '11px', color: 'var(--dq-text)' }}>
-                                                <span>ふもと<br />{resort.weather.temp}℃</span>
-                                                <span style={{ display: 'flex', alignItems: 'center', color: 'var(--dq-text-dim)' }}>▶</span>
-                                                <span>2000m<br />{Math.round(resort.weather.temp - (2000 / 100 * 0.6))}℃</span>
-                                                <span style={{ display: 'flex', alignItems: 'center', color: 'var(--dq-text-dim)' }}>▶</span>
-                                                <span style={{ color: resort.weather.temp - (resort.elevation / 100 * 0.6) < 0 ? 'var(--dq-text-blue)' : 'var(--dq-text-orange)' }}>
-                                                    さんちょう<br />{Math.round(resort.weather.temp - (resort.elevation / 100 * 0.6))}℃
-                                                </span>
+                                    {/* 難易度ヘッダー: DQランク名 + ★表示 */}
+                                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+                                        <div>
+                                            <div style={{ fontSize: '10px', color: 'var(--dq-text-dim)', marginBottom: '2px' }}>⚔️ なんいど</div>
+                                            <div style={{
+                                                fontSize: '16px', fontWeight: 'bold',
+                                                color: resort.difficulty >= 5 ? '#ff4444' :
+                                                    resort.difficulty >= 4 ? 'var(--dq-text-gold)' :
+                                                        resort.difficulty >= 3 ? 'var(--dq-text-green)' :
+                                                            'var(--dq-text-blue)',
+                                            }}>
+                                                {resort.difficulty >= 5 ? 'でんせつきゅう' :
+                                                    resort.difficulty >= 4 ? 'ベテランきゅう' :
+                                                        resort.difficulty >= 3 ? 'ちゅうきゅうしゃ' :
+                                                            resort.difficulty >= 2 ? 'しょしん＋' :
+                                                                'スライムきゅう'}
                                             </div>
-                                            {(Math.round((resort.weather.temp - (resort.elevation / 100 * 0.6)) - resort.weather.wind)) < 0 && (
-                                                <div style={{ fontSize: '11px', color: 'var(--dq-text-blue)', textAlign: 'center', marginTop: '6px', fontWeight: 'bold' }}>
-                                                    ❄️ とうけつリスクあり！（たいかん {Math.round((resort.weather.temp - (resort.elevation / 100 * 0.6)) - resort.weather.wind)}℃）
-                                                </div>
-                                            )}
                                         </div>
-                                    ) : (
-                                        <>
-                                            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px', marginBottom: '4px' }}>
-                                                <span style={{ color: 'var(--dq-text-dim)' }}>さんちょうの きおん</span>
-                                                <span style={{ color: 'var(--dq-text-blue)' }}>
-                                                    {Math.round(resort.weather.temp - (resort.elevation / 100 * 0.6))}℃
-                                                </span>
-                                            </div>
-                                            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px', marginBottom: '4px' }}>
-                                                <span style={{ color: 'var(--dq-text-dim)' }}>たいかん (かぜ考慮)</span>
-                                                <span style={{ color: 'var(--dq-text-orange)' }}>
-                                                    {Math.round((resort.weather.temp - (resort.elevation / 100 * 0.6)) - resort.weather.wind)}℃
-                                                </span>
-                                            </div>
-                                        </>
-                                    )}
-
-                                    {/* 施設情報 (山小屋・テント・水場) */}
-                                    {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
-                                    {((resort as any).hut || (resort as any).tent || (resort as any).water) && (
-                                        <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', marginBottom: '8px', borderTop: '1px dashed var(--dq-text-dim)', paddingTop: '8px' }}>
-                                            {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
-                                            {(resort as any).hut && (
-                                                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px' }}>
-                                                    <span style={{ color: 'var(--dq-text-dim)' }}>🏠 やまごや</span>
-                                                    {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
-                                                    <span style={{ color: 'var(--dq-text)' }}>{(resort as any).hut}</span>
-                                                </div>
-                                            )}
-                                            {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
-                                            {(resort as any).tent && (
-                                                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px' }}>
-                                                    <span style={{ color: 'var(--dq-text-dim)' }}>⛺ テントば</span>
-                                                    {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
-                                                    <span style={{ color: 'var(--dq-text)' }}>{(resort as any).tent}</span>
-                                                </div>
-                                            )}
-                                            {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
-                                            {(resort as any).water && (
-                                                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px' }}>
-                                                    <span style={{ color: 'var(--dq-text-dim)' }}>💧 みずば</span>
-                                                    {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
-                                                    <span style={{ color: 'var(--dq-text)' }}>{(resort as any).water}</span>
-                                                </div>
-                                            )}
-                                        </div>
-                                    )}
-
-                                    {/* 難易度とコースタイム */}
-                                    {resort.difficulty && (
-                                        <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px', marginBottom: '4px', borderTop: '1px dashed var(--dq-text-dim)', paddingTop: '8px' }}>
-                                            <span style={{ color: 'var(--dq-text-dim)' }}>なんいど</span>
-                                            <span style={{ color: 'var(--dq-text-gold)' }}>
+                                        <div style={{ textAlign: 'right' }}>
+                                            <div style={{ fontSize: '16px', color: 'var(--dq-text-gold)', letterSpacing: '2px' }}>
                                                 {'★'.repeat(resort.difficulty)}{'☆'.repeat(5 - resort.difficulty)}
-                                            </span>
+                                            </div>
+                                            <div style={{ fontSize: '10px', color: 'var(--dq-text-dim)' }}>Lv.{resort.difficulty}</div>
                                         </div>
-                                    )}
+                                    </div>
+
+                                    {/* コースタイム + スタミナゲージ */}
                                     {resort.courseTime && (
-                                        <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px', marginBottom: '4px' }}>
-                                            <span style={{ color: 'var(--dq-text-dim)' }}>コースタイム</span>
-                                            <span style={{ color: 'var(--dq-text)' }}>{resort.courseTime}</span>
+                                        <div style={{ marginTop: '4px' }}>
+                                            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px', marginBottom: '4px' }}>
+                                                <span style={{ color: 'var(--dq-text-dim)' }}>🕐 コースタイム</span>
+                                                <span style={{ color: 'var(--dq-text)', fontWeight: 'bold' }}>{resort.courseTime}</span>
+                                            </div>
+                                            {/* スタミナゲージ（HPバー風） */}
+                                            <div style={{ position: 'relative', height: '12px', background: 'rgba(0,0,0,0.6)', borderRadius: '6px', overflow: 'hidden', border: '1px solid rgba(255,255,255,0.1)' }}>
+                                                <div style={{
+                                                    height: '100%',
+                                                    width: `${Math.min(100, (resort.difficulty / 5) * 100)}%`,
+                                                    background: resort.difficulty >= 5 ? 'linear-gradient(90deg, #ff4444, #ff8800)' :
+                                                        resort.difficulty >= 4 ? 'linear-gradient(90deg, #ffd700, #ff8800)' :
+                                                            resort.difficulty >= 3 ? 'linear-gradient(90deg, #44ff88, #ffd700)' :
+                                                                'linear-gradient(90deg, #44aaff, #44ff88)',
+                                                    borderRadius: '6px',
+                                                    transition: 'width 0.5s ease',
+                                                }} />
+                                                <div style={{ position: 'absolute', top: 0, left: '6px', fontSize: '9px', color: '#fff', lineHeight: '12px', textShadow: '0 0 2px rgba(0,0,0,0.8)' }}>
+                                                    ST（スタミナ）
+                                                </div>
+                                            </div>
                                         </div>
                                     )}
+
                                     {/* 特徴タグ */}
-                                    {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
                                     {resort.features && resort.features.length > 0 && (
                                         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px', marginTop: '8px' }}>
                                             {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
                                             {resort.features.map((f: any) => (
-                                                <span key={f} style={{ fontSize: '10px', padding: '2px 6px', background: 'var(--dq-bg-dark)', border: '1px solid var(--dq-text-dim)', borderRadius: '4px', color: 'var(--dq-text-dim)' }}>
+                                                <span key={f} style={{
+                                                    fontSize: '10px', padding: '2px 8px',
+                                                    background: 'rgba(255, 215, 0, 0.1)',
+                                                    border: '1px solid rgba(255, 215, 0, 0.3)',
+                                                    borderRadius: '10px', color: 'var(--dq-text-gold)',
+                                                }}>
                                                     {f}
                                                 </span>
                                             ))}
@@ -427,27 +338,138 @@ export default function ResortDetailModal({
                                 </div>
                             )}
 
-                            {/* ベストシーズン＋現在気温＋天気の詳細行 */}
+                            {/* ========================================== */}
+                            {/* 2. 標高 + 山頂気温 + 凍結リスク            */}
+                            {/* ========================================== */}
+                            <div style={{
+                                display: 'grid',
+                                gridTemplateColumns: resort.category === 'trekking' ? '1fr 1fr' : '1fr 1fr 1fr',
+                                gap: '8px',
+                                marginBottom: '12px',
+                            }}>
+                                {/* 標高 */}
+                                <div style={{
+                                    background: 'rgba(0, 0, 0, 0.3)',
+                                    borderRadius: '6px', padding: '10px', textAlign: 'center',
+                                    border: '1px solid var(--dq-window-border-inner)',
+                                }}>
+                                    <div style={{ fontSize: '18px', marginBottom: '4px' }}>⛰️</div>
+                                    <div style={{ fontSize: '18px', fontWeight: 'bold', color: 'var(--dq-text)' }}>
+                                        {resort.elevation ?? '--'}<span style={{ fontSize: '10px', fontWeight: 'normal' }}>m</span>
+                                    </div>
+                                    <div style={{ fontSize: '10px', color: 'var(--dq-text-dim)' }}>ひょうこう</div>
+                                </div>
+                                {resort.category === 'trekking' && resort.elevation ? (
+                                    /* やまのぼり: 山頂気温を表示 */
+                                    <div style={{
+                                        background: 'rgba(0, 0, 0, 0.3)',
+                                        borderRadius: '6px', padding: '10px', textAlign: 'center',
+                                        border: '1px solid var(--dq-window-border-inner)',
+                                    }}>
+                                        <div style={{ fontSize: '18px', marginBottom: '4px' }}>🏔️</div>
+                                        <div style={{
+                                            fontSize: '18px', fontWeight: 'bold',
+                                            color: (resort.weather.temp - (resort.elevation / 100 * 0.6)) < 0 ? 'var(--dq-text-blue)' : 'var(--dq-text)',
+                                        }}>
+                                            {Math.round(resort.weather.temp - (resort.elevation / 100 * 0.6))}<span style={{ fontSize: '10px', fontWeight: 'normal' }}>℃</span>
+                                        </div>
+                                        <div style={{ fontSize: '10px', color: 'var(--dq-text-dim)' }}>さんちょう きおん</div>
+                                    </div>
+                                ) : (
+                                    /* その他カテゴリ用 */
+                                    <>
+                                        <div style={{
+                                            background: 'rgba(0, 0, 0, 0.3)',
+                                            borderRadius: '6px', padding: '10px', textAlign: 'center',
+                                            border: '1px solid var(--dq-window-border-inner)',
+                                        }}>
+                                            <div style={{ fontSize: '18px', marginBottom: '4px' }}>
+                                                {(() => {
+                                                    const catIcons: Record<string, string> = {
+                                                        highland: '🏔️', trekking: '🥾', camp: '🏕️', mtb: '🚵',
+                                                    };
+                                                    return catIcons[resort.category || ''] || '🗺️';
+                                                })()}
+                                            </div>
+                                            <div style={{ fontSize: '12px', fontWeight: 'bold', color: 'var(--dq-text-green)' }}>
+                                                {(() => {
+                                                    const catLabels: Record<string, string> = {
+                                                        highland: 'ひしょち', trekking: 'やまのぼり', camp: 'キャンプ', mtb: 'MTB',
+                                                    };
+                                                    return catLabels[resort.category || ''] || 'スポット';
+                                                })()}
+                                            </div>
+                                            <div style={{ fontSize: '10px', color: 'var(--dq-text-dim)' }}>カテゴリ</div>
+                                        </div>
+                                        <div style={{
+                                            background: 'rgba(0, 0, 0, 0.3)',
+                                            borderRadius: '6px', padding: '10px', textAlign: 'center',
+                                            border: '1px solid var(--dq-window-border-inner)',
+                                        }}>
+                                            <div style={{ fontSize: '18px', marginBottom: '4px' }}>🌡️</div>
+                                            <div style={{ fontSize: '18px', fontWeight: 'bold', color: 'var(--dq-text-blue)' }}>
+                                                -{Math.max(0, Math.round(28 - resort.weather.temp))}<span style={{ fontSize: '10px', fontWeight: 'normal' }}>℃</span>
+                                            </div>
+                                            <div style={{ fontSize: '10px', color: 'var(--dq-text-dim)' }}>とかいとのさ</div>
+                                        </div>
+                                    </>
+                                )}
+                            </div>
+
+                            {/* ========================================== */}
+                            {/* 3. ⚠️ 雷・暴風アラート（トレッキング時） */}
+                            {/* ========================================== */}
+                            {resort.category === 'trekking' && (resort.weather.weather_code >= 95 || resort.weather.wind >= 10) && (
+                                <div className="dq-glow" style={{
+                                    color: 'var(--dq-text-red)', fontWeight: 'bold', fontSize: '14px',
+                                    textAlign: 'center', padding: '10px', marginBottom: '12px',
+                                    background: 'rgba(255, 0, 0, 0.1)', border: '2px solid rgba(255, 0, 0, 0.4)',
+                                    borderRadius: '6px',
+                                }}>
+                                    ⚠️ いのちのきき！ {resort.weather.weather_code >= 95 ? '⚡ かみなり ' : ''}{resort.weather.wind >= 10 ? '🌀 ぼうふう' : ''}
+                                    <div style={{ fontSize: '11px', fontWeight: 'normal', color: 'var(--dq-text)', marginTop: '4px' }}>
+                                        にゅうざんは きけんです。てったいを けんとうしてください。
+                                    </div>
+                                </div>
+                            )}
+
+                            {/* ========================================== */}
+                            {/* 4. 高度別気温予想（2000m超のトレッキング） */}
+                            {/* ========================================== */}
+                            {resort.category === 'trekking' && resort.elevation && resort.elevation > 2000 && (
+                                <div style={{ marginBottom: '12px', padding: '8px', background: 'rgba(0,0,0,0.4)', borderRadius: '6px', border: '1px solid rgba(255,255,255,0.1)' }}>
+                                    <div style={{ fontSize: '10px', color: 'var(--dq-text-dim)', marginBottom: '6px', textAlign: 'center' }}>📉 こうどべつ きおんよそう</div>
+                                    <div style={{ display: 'flex', justifyContent: 'space-around', fontSize: '11px', color: 'var(--dq-text)', textAlign: 'center' }}>
+                                        <span>ふもと<br />{resort.weather.temp}℃</span>
+                                        <span style={{ display: 'flex', alignItems: 'center', color: 'var(--dq-text-dim)' }}>→</span>
+                                        <span>2000m<br />{Math.round(resort.weather.temp - 12)}℃</span>
+                                        <span style={{ display: 'flex', alignItems: 'center', color: 'var(--dq-text-dim)' }}>→</span>
+                                        <span style={{ color: (resort.weather.temp - (resort.elevation / 100 * 0.6)) < 0 ? 'var(--dq-text-blue)' : 'var(--dq-text-orange)', fontWeight: 'bold' }}>
+                                            さんちょう<br />{Math.round(resort.weather.temp - (resort.elevation / 100 * 0.6))}℃
+                                        </span>
+                                    </div>
+                                    {(Math.round((resort.weather.temp - (resort.elevation / 100 * 0.6)) - resort.weather.wind)) < 0 && (
+                                        <div style={{ fontSize: '11px', color: 'var(--dq-text-blue)', textAlign: 'center', marginTop: '6px', fontWeight: 'bold' }}>
+                                            ❄️ とうけつリスクあり！（たいかん {Math.round((resort.weather.temp - (resort.elevation / 100 * 0.6)) - resort.weather.wind)}℃）
+                                        </div>
+                                    )}
+                                </div>
+                            )}
+
+                            {/* ========================================== */}
+                            {/* 5. 天気 + 降水確率 + 風速                  */}
+                            {/* ========================================== */}
                             <div style={{
                                 display: 'flex', flexDirection: 'column', gap: '4px', marginBottom: '12px',
                             }}>
-                                {resort.bestMonths && resort.bestMonths.length > 0 && (
-                                    <div style={{
-                                        display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-                                        padding: '6px 8px', background: 'rgba(68, 255, 136, 0.08)',
-                                        border: '1px solid rgba(68, 255, 136, 0.2)',
-                                        borderRadius: '4px', fontSize: '12px',
-                                    }}>
-                                        <span style={{ color: 'var(--dq-text-green)' }}>📅 ベストシーズン</span>
-                                        <span style={{ color: 'var(--dq-text)' }}>
-                                            {resort.bestMonths[0]}月〜{resort.bestMonths[resort.bestMonths.length - 1]}月
-                                        </span>
-                                    </div>
-                                )}
                                 {[
                                     { label: 'げんざいきおん', value: `🌡️ ${resort.weather.temp}°C` },
                                     { label: 'てんき', value: weatherLabel },
-                                    { label: 'ふうそく', value: `💨 ${resort.weather.wind} m/s` },
+                                    { label: 'ふうそく', value: `💨 ${resort.weather.wind} m/s${resort.weather.wind >= 8 ? ' ⚠️' : ''}` },
+                                    ...(resort.weather.forecast && resort.weather.forecast[0] ? [{
+                                        label: '☔ こうすいかくりつ',
+                                        value: `${resort.weather.forecast[0].precipitationProb}%${resort.weather.forecast[0].precipitationProb >= 60 ? ' ⚠️あめに ちゅうい' : ''}`
+                                    }] : []),
                                 ].map(item => (
                                     <div key={item.label} style={{
                                         display: 'flex', justifyContent: 'space-between', alignItems: 'center',
@@ -455,22 +477,122 @@ export default function ResortDetailModal({
                                         borderRadius: '4px', fontSize: '12px',
                                     }}>
                                         <span style={{ color: 'var(--dq-text-dim)' }}>{item.label}</span>
-                                        <span style={{ color: 'var(--dq-text)' }}>{item.value}</span>
+                                        <span style={{
+                                            color: item.label === '☔ こうすいかくりつ' && resort.weather.forecast?.[0]?.precipitationProb >= 60
+                                                ? 'var(--dq-text-red)' : 'var(--dq-text)',
+                                            fontWeight: item.label === '☔ こうすいかくりつ' && resort.weather.forecast?.[0]?.precipitationProb >= 60
+                                                ? 'bold' : 'normal',
+                                        }}>{item.value}</span>
                                     </div>
                                 ))}
-                                {/* 夏のもちものアドバイス */}
+                            </div>
+
+                            {/* ========================================== */}
+                            {/* 6. 山小屋・テント場・水場                  */}
+                            {/* ========================================== */}
+                            {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+                            {resort.category === 'trekking' && ((resort as any).hut || (resort as any).tent || (resort as any).water) && (
                                 <div style={{
-                                    padding: '6px 8px',
-                                    background: 'rgba(68, 255, 136, 0.08)',
-                                    border: '1px solid rgba(68, 255, 136, 0.2)',
-                                    borderRadius: '4px', fontSize: '12px',
-                                    color: 'var(--dq-text-green)',
+                                    display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '6px',
+                                    marginBottom: '12px',
                                 }}>
-                                    🎒 もちもの: {resort.weather.temp > 25 ? '日焼け止め・帽子・水分' :
-                                        resort.weather.temp > 15 ? '薄手の上着・日焼け止め' :
-                                            '防寒着・レインウェア・水分'}
+                                    {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+                                    {(resort as any).hut && (
+                                        <div style={{
+                                            background: 'rgba(0,0,0,0.3)', borderRadius: '6px', padding: '8px',
+                                            textAlign: 'center', border: '1px solid var(--dq-window-border-inner)',
+                                        }}>
+                                            <div style={{ fontSize: '16px' }}>🏠</div>
+                                            <div style={{ fontSize: '10px', color: 'var(--dq-text-dim)' }}>やまごや</div>
+                                            {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+                                            <div style={{ fontSize: '11px', color: 'var(--dq-text)', fontWeight: 'bold', marginTop: '2px' }}>{(resort as any).hut}</div>
+                                        </div>
+                                    )}
+                                    {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+                                    {(resort as any).tent && (
+                                        <div style={{
+                                            background: 'rgba(0,0,0,0.3)', borderRadius: '6px', padding: '8px',
+                                            textAlign: 'center', border: '1px solid var(--dq-window-border-inner)',
+                                        }}>
+                                            <div style={{ fontSize: '16px' }}>⛺</div>
+                                            <div style={{ fontSize: '10px', color: 'var(--dq-text-dim)' }}>テントば</div>
+                                            {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+                                            <div style={{ fontSize: '11px', color: 'var(--dq-text)', fontWeight: 'bold', marginTop: '2px' }}>{(resort as any).tent}</div>
+                                        </div>
+                                    )}
+                                    {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+                                    {(resort as any).water && (
+                                        <div style={{
+                                            background: 'rgba(0,0,0,0.3)', borderRadius: '6px', padding: '8px',
+                                            textAlign: 'center', border: '1px solid var(--dq-window-border-inner)',
+                                        }}>
+                                            <div style={{ fontSize: '16px' }}>💧</div>
+                                            <div style={{ fontSize: '10px', color: 'var(--dq-text-dim)' }}>みずば</div>
+                                            {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+                                            <div style={{ fontSize: '11px', color: 'var(--dq-text)', fontWeight: 'bold', marginTop: '2px' }}>{(resort as any).water}</div>
+                                        </div>
+                                    )}
+                                </div>
+                            )}
+
+                            {/* ========================================== */}
+                            {/* 7. 持ち物アドバイス（登山特化版）           */}
+                            {/* ========================================== */}
+                            <div style={{
+                                padding: '8px 10px',
+                                background: 'rgba(68, 255, 136, 0.08)',
+                                border: '1px solid rgba(68, 255, 136, 0.2)',
+                                borderRadius: '6px', fontSize: '12px',
+                                color: 'var(--dq-text-green)',
+                                marginBottom: '12px',
+                            }}>
+                                <div style={{ fontWeight: 'bold', marginBottom: '4px' }}>🎒 もちものリスト</div>
+                                <div style={{ lineHeight: '1.8', fontSize: '11px' }}>
+                                    {resort.category === 'trekking' ? (
+                                        <>
+                                            {/* 必須装備 */}
+                                            ✅ レインウェア・ヘッドライト・ちず<br />
+                                            {/* 気温対応 */}
+                                            {resort.weather.temp > 25
+                                                ? '✅ たいりょうの みず(2L↑)・ぼうし・ひやけどめ'
+                                                : resort.weather.temp > 15
+                                                    ? '✅ はおりもの・ひやけどめ・みず'
+                                                    : '✅ ぼうかんぎ・ダウン・てぶくろ'}
+                                            <br />
+                                            {/* 高山対応 */}
+                                            {resort.elevation && resort.elevation > 2500 && '✅ ぼうかんぎ（さんちょうは さむい）\n'}
+                                            {/* 雪渓・岩場 */}
+                                            {resort.features?.includes('アイゼン 必要') && '✅ けいアイゼン・トレッキングポール\n'}
+                                            {resort.features?.some((f: string) => f.includes('くさり') || f.includes('いわば')) && '✅ グローブ（いわば むき）\n'}
+                                            {/* 降水確率対応 */}
+                                            {resort.weather.forecast?.[0]?.precipitationProb >= 60 && '⚠️ あめよそう！ザックカバー ひっす'}
+                                        </>
+                                    ) : (
+                                        <>
+                                            {resort.weather.temp > 25 ? '✅ ひやけどめ・ぼうし・すいぶん' :
+                                                resort.weather.temp > 15 ? '✅ うすでの うわぎ・ひやけどめ' :
+                                                    '✅ ぼうかんぎ・レインウェア・すいぶん'}
+                                        </>
+                                    )}
                                 </div>
                             </div>
+
+                            {/* ========================================== */}
+                            {/* 8. ベストシーズン                          */}
+                            {/* ========================================== */}
+                            {resort.bestMonths && resort.bestMonths.length > 0 && (
+                                <div style={{
+                                    display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+                                    padding: '6px 8px', background: 'rgba(68, 255, 136, 0.08)',
+                                    border: '1px solid rgba(68, 255, 136, 0.2)',
+                                    borderRadius: '4px', fontSize: '12px', marginBottom: '12px',
+                                }}>
+                                    <span style={{ color: 'var(--dq-text-green)' }}>📅 ベストシーズン</span>
+                                    <span style={{ color: 'var(--dq-text)' }}>
+                                        {resort.bestMonths[0]}月〜{resort.bestMonths[resort.bestMonths.length - 1]}月
+                                    </span>
+                                </div>
+                            )}
                         </>
                     ) : (
                         /* ===== 冬モード（従来のまま） ===== */
