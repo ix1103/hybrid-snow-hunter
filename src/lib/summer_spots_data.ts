@@ -57,7 +57,7 @@ export const SUMMER_SPOTS: SummerSpot[] = [
         bestMonths: [5, 6, 7, 8, 9, 10],
     },
     {
-        id: 'tateshina',
+        id: 'tateshina-kogen',
         name: '蓼科高原',
         lat: 36.0833, long: 138.2833, elevation: 1200,
         area: '長野県', url: 'https://www.tateshinakougen.gr.jp/',
