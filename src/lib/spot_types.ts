@@ -29,6 +29,12 @@ export type SpotWithWeather = SpotBase & {
     category?: SummerSpot['category'];
     activities?: string[];
     bestMonths?: number[];
+    difficulty?: number;
+    courseTime?: string;
+    features?: string[];
+    hut?: string;
+    tent?: string;
+    water?: string;
     summer_url?: string;
     summer_activities?: string[];
 };
@@ -49,5 +55,11 @@ export function summerSpotToSpot(spot: SummerSpot & { weather: WeatherData }): S
         category: spot.category,
         activities: spot.activities,
         bestMonths: spot.bestMonths,
+        difficulty: spot.difficulty,
+        courseTime: spot.courseTime,
+        features: spot.features,
+        hut: spot.hut,
+        tent: spot.tent,
+        water: spot.water,
     };
 }

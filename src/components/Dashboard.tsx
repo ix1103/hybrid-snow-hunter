@@ -139,7 +139,8 @@ export default function Dashboard({ initialResorts, initialSummerSpots }: Dashbo
         if (searchQuery) {
             result = result.filter(r =>
                 r.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                r.area.toLowerCase().includes(searchQuery.toLowerCase())
+                r.area.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                (r.features && r.features.some(f => f.toLowerCase().includes(searchQuery.toLowerCase())))
             );
         }
         if (selectedArea !== 'all') {

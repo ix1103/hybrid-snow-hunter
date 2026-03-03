@@ -593,6 +593,16 @@ export const SUMMER_SPOTS: SummerSpot[] = [
         hut: 'なし', tent: 'なし', water: 'なし'
     },
     {
+        id: 'warashina-kogen',
+        name: '藁科高原 (オクシズ)',
+        lat: 35.0355, long: 138.3344, elevation: 800,
+        area: '静岡県', url: 'https://shizuoka-city.lg.jp/',
+        category: 'highland', activities: ['nature', 'trekking', 'camp'],
+        bestMonths: [4, 5, 10, 11],
+        difficulty: 1, courseTime: '3時間', features: ['オクシズ', 'わらしな', 'しずおかの さとやま'],
+        hut: 'なし', tent: 'あり', water: '豊富'
+    },
+    {
         id: 'maruyama-shizuoka',
         name: '満観峰',
         lat: 34.9247, long: 138.2839, elevation: 470,
@@ -1030,7 +1040,7 @@ export const SUMMER_SPOTS: SummerSpot[] = [
     },
     {
         id: 'odaigahara-nara',
-        name: '大台ケ原',
+        name: '大台ヶ原',
         lat: 34.1828, long: 136.1072, elevation: 1695,
         area: '奈良県', url: 'https://www.odaigahara.jp/',
         category: 'trekking', activities: ['trekking', 'nature'],

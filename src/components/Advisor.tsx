@@ -42,9 +42,10 @@ export default function Advisor({ resorts, onFilterChange, currentFilter, onSear
             }))
             .sort((a, b) => b.score.score - a.score.score);
 
-        // 上位5件 or 全件
-        return showAll ? sorted : sorted.slice(0, 5);
-    }, [resorts, showAll, isSummer]);
+        // 上位5件 or 全件（検索・エリア・カテゴリ指定時は全件表示）
+        const isFiltering = searchQuery !== '' || selectedArea !== 'all' || currentFilter !== 'all';
+        return (showAll || isFiltering) ? sorted : sorted.slice(0, 5);
+    }, [resorts, showAll, isSummer, searchQuery, selectedArea, currentFilter]);
 
     // スコアからDQ3風のレベル色を返す
     const getLevelColor = (score: number) => {
