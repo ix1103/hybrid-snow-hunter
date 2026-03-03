@@ -150,11 +150,17 @@ export function generateSummerAnalysis(resortName: string, area: string, data: W
     const cityTemp = getCityTemp();
     const tempDiff = Math.round(cityTemp - data.temp);
 
-    // 1. 避暑コメント
-    if (tempDiff >= 15) {
+    // 1. 避暑コメント（絶対気温も加味して現実的に）
+    if (data.temp <= 0) {
+        parts.push(`${resortName}は今、気温${Math.round(data.temp)}℃と氷点下です！いくら夏モードでも、完全な冬の装備が必要です。命を守る行動を。`);
+    } else if (data.temp <= 12) {
+        parts.push(`${resortName}は今、気温${Math.round(data.temp)}℃とかなり冷え込んでいます。下界より${tempDiff}℃も低いので、しっかりとした防寒着を用意しましょう。`);
+    } else if (tempDiff >= 15 && data.temp <= 25) {
         parts.push(`${resortName}は今、下界より${tempDiff}℃も涼しい！まさに天然のクーラーです。ひんやりした空気を思い切り楽しみましょう。`);
-    } else if (tempDiff >= 8) {
+    } else if (tempDiff >= 8 && data.temp <= 28) {
         parts.push(`都会より${tempDiff}℃涼しい環境です。心地よい風が吹き抜けるはず。`);
+    } else if (data.temp > 28) {
+        parts.push(`気温${Math.round(data.temp)}℃と暑いです。標高の恩恵は少なめなので、熱中症対策を万全にしてください。`);
     } else {
         parts.push(`標高の恩恵で少し涼しいですが、水分補給は忘れずに。`);
     }
