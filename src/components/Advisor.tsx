@@ -507,71 +507,114 @@ export default function Advisor({ resorts, onFilterChange, currentFilter, onSear
                         onClick={e => e.stopPropagation()}>
                         {/* タイトル */}
                         <div style={{
-                            display: 'flex',
-                            justifyContent: 'space-between',
-                            alignItems: 'center',
-                            marginBottom: '12px',
+                            display: 'flex', justifyContent: 'space-between',
+                            alignItems: 'center', marginBottom: '12px',
                         }}>
-                            <span style={{
-                                fontSize: '14px',
-                                color: 'var(--dq-text-gold)',
-                                fontWeight: 'bold',
-                            }}>
-                                📖 レベルの きじゅん
+                            <span style={{ fontSize: '14px', color: 'var(--dq-text-gold)', fontWeight: 'bold' }}>
+                                📖 {isSummer ? '☀️ スコアの きじゅん' : '❄️ レベルの きじゅん'}
                             </span>
                             <button
                                 onClick={() => setShowScoreInfo(false)}
-                                style={{
-                                    background: 'none',
-                                    border: 'none',
-                                    color: 'var(--dq-text-dim)',
-                                    cursor: 'pointer',
-                                    fontSize: '16px',
-                                }}
-                            >
-                                ✕
-                            </button>
+                                style={{ background: 'none', border: 'none', color: 'var(--dq-text-dim)', cursor: 'pointer', fontSize: '16px' }}
+                            >✕</button>
                         </div>
 
                         <div style={{ fontSize: '12px', color: 'var(--dq-text-dim)', marginBottom: '12px' }}>
-                            どくじアルゴリズムで けいさんしています。
+                            {isSummer
+                                ? 'きおんの「かいてきゾーン」を もとに ☀️0〜100で ひょうか。'
+                                : 'どくじアルゴリズムで けいさんしています。'}
                         </div>
 
                         <hr className="dq-divider" />
 
-                        {/* 降雪量 */}
-                        <div style={{ marginBottom: '10px' }}>
-                            <div style={{ color: 'var(--dq-text-blue)', fontWeight: 'bold', fontSize: '13px', marginBottom: '4px' }}>
-                                ❄️ こうせつりょう (+さいだい40)
-                            </div>
-                            <div style={{ paddingLeft: '16px', fontSize: '11px', color: 'var(--dq-text)', lineHeight: '1.8' }}>
-                                ・30cm いじょう: <span style={{ color: 'var(--dq-text-gold)' }}>かいしんの いちげき！(+40)</span><br />
-                                ・15cm いじょう: <span style={{ color: 'var(--dq-text-green)' }}>よい こうげき (+20)</span><br />
-                                ・5cm いじょう: <span style={{ color: 'var(--dq-text-blue)' }}>ちょっとした ゆき (+10)</span>
-                            </div>
-                        </div>
+                        {isSummer ? (
+                            /* ===== 夏モードのスコア基準 ===== */
+                            <>
+                                {/* 快適ゾーン */}
+                                <div style={{ marginBottom: '10px' }}>
+                                    <div style={{ color: 'var(--dq-text-green)', fontWeight: 'bold', fontSize: '13px', marginBottom: '4px' }}>
+                                        🌡️ かいてきゾーン（さいじゅうよう）
+                                    </div>
+                                    <div style={{ paddingLeft: '16px', fontSize: '11px', color: 'var(--dq-text)', lineHeight: '1.8' }}>
+                                        ・15〜22℃: <span style={{ color: 'var(--dq-text-gold)' }}>さいこうに きもちいい！(+25)</span><br />
+                                        ・22〜28℃: <span style={{ color: 'var(--dq-text-green)' }}>かいてき・すごしやすい (+15)</span><br />
+                                        ・10〜15℃: <span style={{ color: 'var(--dq-text-blue)' }}>うわぎが あればOK (+5)</span><br />
+                                        ・0℃みまん: <span style={{ color: 'var(--dq-text-dim)' }}>さむすぎて むり！(-40)</span>
+                                    </div>
+                                </div>
 
-                        {/* 気温 */}
-                        <div style={{ marginBottom: '10px' }}>
-                            <div style={{ color: 'var(--dq-text-orange)', fontWeight: 'bold', fontSize: '13px', marginBottom: '4px' }}>
-                                🌡️ きおん・ゆきしつ (+10 / -20)
-                            </div>
-                            <div style={{ paddingLeft: '16px', fontSize: '11px', color: 'var(--dq-text)', lineHeight: '1.8' }}>
-                                ・-5℃ いか: <span style={{ color: 'var(--dq-text-blue)' }}>ごくじょうゆき (+10)</span><br />
-                                ・5℃ いじょう: <span style={{ color: 'var(--dq-text-red)' }}>シャバゆき (-20)</span>
-                            </div>
-                        </div>
+                                {/* ベストシーズン */}
+                                <div style={{ marginBottom: '10px' }}>
+                                    <div style={{ color: 'var(--dq-text-gold)', fontWeight: 'bold', fontSize: '13px', marginBottom: '4px' }}>
+                                        📅 シーズンてきせい (+10 / -15)
+                                    </div>
+                                    <div style={{ paddingLeft: '16px', fontSize: '11px', color: 'var(--dq-text)', lineHeight: '1.8' }}>
+                                        ・ベストシーズン中: <span style={{ color: 'var(--dq-text-gold)' }}>ベストシーズン！(+10)</span><br />
+                                        ・シーズン外: <span style={{ color: 'var(--dq-text-dim)' }}>じゅんびが ひつよう (-15)</span>
+                                    </div>
+                                </div>
 
-                        {/* 風速 */}
-                        <div style={{ marginBottom: '10px' }}>
-                            <div style={{ color: 'var(--dq-text-green)', fontWeight: 'bold', fontSize: '13px', marginBottom: '4px' }}>
-                                💨 ふうそく (-10 / -30)
-                            </div>
-                            <div style={{ paddingLeft: '16px', fontSize: '11px', color: 'var(--dq-text)', lineHeight: '1.8' }}>
-                                ・8m/s いじょう: <span style={{ color: 'var(--dq-text-dim)' }}>さむくて つらい (-10)</span><br />
-                                ・15m/s いじょう: <span style={{ color: 'var(--dq-text-red)' }}>うんきゅうリスク大 (-30)</span>
-                            </div>
-                        </div>
+                                {/* 晴天 */}
+                                <div style={{ marginBottom: '10px' }}>
+                                    <div style={{ color: 'var(--dq-text-orange)', fontWeight: 'bold', fontSize: '13px', marginBottom: '4px' }}>
+                                        ☀️ てんき・こうすいリスク
+                                    </div>
+                                    <div style={{ paddingLeft: '16px', fontSize: '11px', color: 'var(--dq-text)', lineHeight: '1.8' }}>
+                                        ・かいせい: <span style={{ color: 'var(--dq-text-gold)' }}>そとにんかん！(+15)</span><br />
+                                        ・あめ: <span style={{ color: 'var(--dq-text-dim)' }}>トレッキングむずかしい (-15)</span><br />
+                                        ・かみなり: <span style={{ color: 'var(--dq-text-red)' }}>やまは きけん！(-25)</span>
+                                    </div>
+                                </div>
+
+                                {/* 風 */}
+                                <div style={{ marginBottom: '10px' }}>
+                                    <div style={{ color: 'var(--dq-text-blue)', fontWeight: 'bold', fontSize: '13px', marginBottom: '4px' }}>
+                                        💨 そよかぜ / つよかぜ
+                                    </div>
+                                    <div style={{ paddingLeft: '16px', fontSize: '11px', color: 'var(--dq-text)', lineHeight: '1.8' }}>
+                                        ・1〜4m/s（そよかぜ）: <span style={{ color: 'var(--dq-text-green)' }}>きもちよすぎる (+10)</span><br />
+                                        ・10m/s いじょう: <span style={{ color: 'var(--dq-text-red)' }}>つよかぜ注意 (-15)</span>
+                                    </div>
+                                </div>
+                            </>
+                        ) : (
+                            /* ===== 冬モードのスコア基準（従来） ===== */
+                            <>
+                                {/* 降雪量 */}
+                                <div style={{ marginBottom: '10px' }}>
+                                    <div style={{ color: 'var(--dq-text-blue)', fontWeight: 'bold', fontSize: '13px', marginBottom: '4px' }}>
+                                        ❄️ こうせつりょう (+さいだい40)
+                                    </div>
+                                    <div style={{ paddingLeft: '16px', fontSize: '11px', color: 'var(--dq-text)', lineHeight: '1.8' }}>
+                                        ・30cm いじょう: <span style={{ color: 'var(--dq-text-gold)' }}>かいしんの いちげき！(+40)</span><br />
+                                        ・15cm いじょう: <span style={{ color: 'var(--dq-text-green)' }}>よい こうげき (+20)</span><br />
+                                        ・5cm いじょう: <span style={{ color: 'var(--dq-text-blue)' }}>ちょっとした ゆき (+10)</span>
+                                    </div>
+                                </div>
+
+                                {/* 気温 */}
+                                <div style={{ marginBottom: '10px' }}>
+                                    <div style={{ color: 'var(--dq-text-orange)', fontWeight: 'bold', fontSize: '13px', marginBottom: '4px' }}>
+                                        🌡️ きおん・ゆきしつ (+10 / -20)
+                                    </div>
+                                    <div style={{ paddingLeft: '16px', fontSize: '11px', color: 'var(--dq-text)', lineHeight: '1.8' }}>
+                                        ・-5℃ いか: <span style={{ color: 'var(--dq-text-blue)' }}>ごくじょうゆき (+10)</span><br />
+                                        ・5℃ いじょう: <span style={{ color: 'var(--dq-text-red)' }}>シャバゆき (-20)</span>
+                                    </div>
+                                </div>
+
+                                {/* 風速 */}
+                                <div style={{ marginBottom: '10px' }}>
+                                    <div style={{ color: 'var(--dq-text-green)', fontWeight: 'bold', fontSize: '13px', marginBottom: '4px' }}>
+                                        💨 ふうそく (-10 / -30)
+                                    </div>
+                                    <div style={{ paddingLeft: '16px', fontSize: '11px', color: 'var(--dq-text)', lineHeight: '1.8' }}>
+                                        ・8m/s いじょう: <span style={{ color: 'var(--dq-text-dim)' }}>さむくて つらい (-10)</span><br />
+                                        ・15m/s いじょう: <span style={{ color: 'var(--dq-text-red)' }}>うんきゅうリスク大 (-30)</span>
+                                    </div>
+                                </div>
+                            </>
+                        )}
 
                         <hr className="dq-divider" />
 
