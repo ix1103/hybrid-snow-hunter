@@ -418,7 +418,7 @@ export default function Advisor({ resorts, onFilterChange, currentFilter, onSear
                                                 fontWeight: 'bold',
                                                 color: getLevelColor(resort.score.score),
                                             }}>
-                                                {isSummer ? `避${resort.score.score}℃` : `Lv.${resort.score.score}`}
+                                                {isSummer ? `☀️${resort.score.score}` : `Lv.${resort.score.score}`}
                                             </span>
                                         </div>
                                     </div>

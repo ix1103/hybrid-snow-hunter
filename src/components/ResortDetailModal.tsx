@@ -190,7 +190,7 @@ export default function ResortDetailModal({
                             fontWeight: 'bold',
                             color: getLevelColor(condition.score),
                         }} className="dq-glow">
-                            {isSummer ? `避${condition.score}℃` : `Lv.${condition.score}`}
+                            {isSummer ? `☀️${condition.score}` : `Lv.${condition.score}`}
                         </div>
                         <div style={{ fontSize: '10px', color: 'var(--dq-text-dim)' }}>/ 100</div>
                     </div>
