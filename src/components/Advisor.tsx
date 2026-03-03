@@ -102,26 +102,61 @@ export default function Advisor({ resorts, onFilterChange, currentFilter, onSear
                     />
                 )}
 
-                {/* きせつを かえる ボタン */}
-                <button
-                    onClick={toggleSeason}
-                    className="dq-window"
-                    style={{
-                        padding: '6px 16px',
-                        cursor: 'pointer',
-                        fontSize: '11px',
-                        color: season === 'winter' ? 'var(--dq-text-blue)' : 'var(--dq-text-green)',
-                        border: `1px solid ${season === 'winter' ? 'var(--dq-text-blue)' : 'var(--dq-text-green)'}`,
-                        borderRadius: '6px',
-                        background: season === 'winter'
-                            ? 'rgba(102, 187, 255, 0.1)'
-                            : 'rgba(68, 255, 136, 0.1)',
-                        transition: 'all 0.3s ease',
-                    }}
-                >
-                    {season === 'winter' ? '❄️ ふゆの せかい' : '🌿 なつの せかい'}
-                    ▶ きせつを かえる
-                </button>
+                {/* きせつ セグメントコントロール */}
+                <div style={{
+                    display: 'flex',
+                    border: '1px solid var(--dq-window-border)',
+                    borderRadius: '8px',
+                    overflow: 'hidden',
+                    flexShrink: 0,
+                }}>
+                    {/* ふゆ */}
+                    <button
+                        onClick={() => season !== 'winter' && toggleSeason()}
+                        style={{
+                            padding: '6px 14px',
+                            cursor: season === 'winter' ? 'default' : 'pointer',
+                            fontSize: '12px',
+                            fontWeight: 'bold',
+                            border: 'none',
+                            outline: 'none',
+                            background: season === 'winter'
+                                ? 'rgba(102, 187, 255, 0.25)'
+                                : 'transparent',
+                            color: season === 'winter'
+                                ? 'var(--dq-text-blue)'
+                                : 'var(--dq-text-dim)',
+                            transition: 'all 0.25s ease',
+                            letterSpacing: '0.05em',
+                        }}
+                    >
+                        ❄️ ふゆ
+                    </button>
+                    {/* 仕切り線 */}
+                    <div style={{ width: '1px', background: 'var(--dq-window-border)', flexShrink: 0 }} />
+                    {/* なつ */}
+                    <button
+                        onClick={() => season !== 'summer' && toggleSeason()}
+                        style={{
+                            padding: '6px 14px',
+                            cursor: season === 'summer' ? 'default' : 'pointer',
+                            fontSize: '12px',
+                            fontWeight: 'bold',
+                            border: 'none',
+                            outline: 'none',
+                            background: season === 'summer'
+                                ? 'rgba(68, 255, 136, 0.2)'
+                                : 'transparent',
+                            color: season === 'summer'
+                                ? 'var(--dq-text-green)'
+                                : 'var(--dq-text-dim)',
+                            transition: 'all 0.25s ease',
+                            letterSpacing: '0.05em',
+                        }}
+                    >
+                        🌿 なつ
+                    </button>
+                </div>
 
                 {/* スコア情報ボタン */}
                 <button
