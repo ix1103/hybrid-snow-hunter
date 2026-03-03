@@ -105,8 +105,8 @@ export default function Advisor({ resorts, onFilterChange, currentFilter, onSear
                 {/* きせつ セグメントコントロール */}
                 <div style={{
                     display: 'flex',
-                    border: '1px solid var(--dq-window-border)',
-                    borderRadius: '8px',
+                    border: '2px solid var(--dq-window-border)',
+                    borderRadius: '10px',
                     overflow: 'hidden',
                     flexShrink: 0,
                 }}>
@@ -114,46 +114,60 @@ export default function Advisor({ resorts, onFilterChange, currentFilter, onSear
                     <button
                         onClick={() => season !== 'winter' && toggleSeason()}
                         style={{
-                            padding: '6px 14px',
+                            padding: '10px 20px',
                             cursor: season === 'winter' ? 'default' : 'pointer',
-                            fontSize: '12px',
+                            fontSize: '14px',
                             fontWeight: 'bold',
                             border: 'none',
                             outline: 'none',
                             background: season === 'winter'
-                                ? 'rgba(102, 187, 255, 0.25)'
+                                ? 'rgba(102, 187, 255, 0.28)'
                                 : 'transparent',
                             color: season === 'winter'
                                 ? 'var(--dq-text-blue)'
                                 : 'var(--dq-text-dim)',
                             transition: 'all 0.25s ease',
                             letterSpacing: '0.05em',
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '4px',
                         }}
                     >
+                        {/* 非アクティブ時のみ▶を表示して点滅 */}
+                        {season !== 'winter' && (
+                            <span className="dq-blink" style={{ fontSize: '12px', color: 'var(--dq-text-blue)' }}>▶</span>
+                        )}
                         ❄️ ふゆ
                     </button>
                     {/* 仕切り線 */}
-                    <div style={{ width: '1px', background: 'var(--dq-window-border)', flexShrink: 0 }} />
+                    <div style={{ width: '2px', background: 'var(--dq-window-border)', flexShrink: 0 }} />
                     {/* なつ */}
                     <button
                         onClick={() => season !== 'summer' && toggleSeason()}
                         style={{
-                            padding: '6px 14px',
+                            padding: '10px 20px',
                             cursor: season === 'summer' ? 'default' : 'pointer',
-                            fontSize: '12px',
+                            fontSize: '14px',
                             fontWeight: 'bold',
                             border: 'none',
                             outline: 'none',
                             background: season === 'summer'
-                                ? 'rgba(68, 255, 136, 0.2)'
+                                ? 'rgba(68, 255, 136, 0.22)'
                                 : 'transparent',
                             color: season === 'summer'
                                 ? 'var(--dq-text-green)'
                                 : 'var(--dq-text-dim)',
                             transition: 'all 0.25s ease',
                             letterSpacing: '0.05em',
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '4px',
                         }}
                     >
+                        {/* 非アクティブ時のみ▶を表示して点滅 */}
+                        {season !== 'summer' && (
+                            <span className="dq-blink" style={{ fontSize: '12px', color: 'var(--dq-text-green)' }}>▶</span>
+                        )}
                         🌿 なつ
                     </button>
                 </div>

@@ -330,3 +330,20 @@ body {
     border-width: 2px;
   }
 }
+
+/* --- ▶ 点滅アニメーション（きせつトグル用） --- */
+@keyframes dq-blink {
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0;
+  }
+}
+
+.dq-blink {
+  animation: dq-blink 0.8s step-start infinite;
+}
