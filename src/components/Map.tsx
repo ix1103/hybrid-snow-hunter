@@ -5,6 +5,8 @@ import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 import { Resort } from '@/lib/resorts_data';
 import { WeatherData, calculateConditionScore } from '@/lib/scoring';
+import { calculateSummerScore } from '@/lib/scoring_summer';
+import { useSeason } from '@/lib/season';
 import { useEffect } from 'react';
 
 export interface MapProps {
@@ -31,8 +33,8 @@ function MapController({ selectedResort }: { selectedResort: (Resort & { weather
     return null;
 }
 
-// レベル別の5段階カラー
-const getScoreColor = (score: number) => {
+// 冬モード: 5段階カラー（氷の世界）
+const getWinterColor = (score: number) => {
     if (score >= 80) return '#ffd700'; // ゴールド（でんせつきゅう）
     if (score >= 60) return '#44ff88'; // 緑（ベテラン）
     if (score >= 40) return '#66bbff'; // 青（いっぱしの）
@@ -40,9 +42,19 @@ const getScoreColor = (score: number) => {
     return '#8899bb';                   // グレー（かけだし）
 };
 
-// ▼マーカー + ラベルのアイコン生成
-const createDQMarkerIcon = (score: number, name: string) => {
-    const color = getScoreColor(score);
+// 夏モード: 5段階カラー（草原の世界）
+const getSummerColor = (score: number) => {
+    if (score >= 80) return '#ffd700'; // ゴールド（さいこうの ひしょち）
+    if (score >= 60) return '#00ff88'; // 明るい緑（快適）
+    if (score >= 40) return '#44dd44'; // 緑（まあまあ）
+    if (score >= 20) return '#88aa44'; // 黄緑（ふつう）
+    return '#557755';                  // 暗い緑（イマイチ）
+};
+
+// ▼マーカー + ラベルのアイコン生成（季節対応）
+const createDQMarkerIcon = (score: number, name: string, isSummer: boolean) => {
+    const color = isSummer ? getSummerColor(score) : getWinterColor(score);
+    const levelLabel = isSummer ? `避${score}℃` : `Lv${score}`;
     const html = `
     <div style="
         display: flex;
@@ -80,7 +92,7 @@ const createDQMarkerIcon = (score: number, name: string) => {
                 color: ${color};
                 line-height: 1.2;
                 margin-top: 2px;
-            ">Lv${score}</span>
+            ">${levelLabel}</span>
         </div>
         <span style="
             font-size: 20px;
@@ -100,12 +112,16 @@ const createDQMarkerIcon = (score: number, name: string) => {
     });
 };
 
-function ResortMarker({ resort, onResortClick }: {
+function ResortMarker({ resort, onResortClick, isSummer }: {
     resort: Resort & { weather: WeatherData },
-    onResortClick?: (resort: Resort & { weather: WeatherData }) => void
+    onResortClick?: (resort: Resort & { weather: WeatherData }) => void,
+    isSummer: boolean,
 }) {
-    const condition = calculateConditionScore(resort.weather);
-    const markerIcon = createDQMarkerIcon(condition.score, resort.name);
+    // 季節に応じてスコア計算を切り替え
+    const condition = isSummer
+        ? calculateSummerScore(resort.weather)
+        : calculateConditionScore(resort.weather);
+    const markerIcon = createDQMarkerIcon(condition.score, resort.name, isSummer);
 
     return (
         <Marker
@@ -125,6 +141,9 @@ function ResortMarker({ resort, onResortClick }: {
 const JAPAN_CENTER: [number, number] = [36.2048, 138.2529];
 
 export default function Map({ resorts, selectedResort, favorites, onToggleFavorite, onResortClick }: MapProps) {
+    const { season } = useSeason();
+    const isSummer = season === 'summer';
+
     return (
         <MapContainer
             center={JAPAN_CENTER}
@@ -137,8 +156,8 @@ export default function Map({ resorts, selectedResort, favorites, onToggleFavori
             <svg width="0" height="0" style={{ position: 'absolute', zIndex: -1 }}>
                 <defs>
                     <filter id="retro-posterize" colorInterpolationFilters="sRGB">
+                        {/* R/G/Bの階調を極端に落としてベタ塗りのようなルックにする */}
                         <feComponentTransfer>
-                            {/* R/G/Bの階調を極端に落としてベタ塗りのようなルックにする */}
                             <feFuncR type="discrete" tableValues="0.1 0.4 0.7 0.9" />
                             <feFuncG type="discrete" tableValues="0.2 0.5 0.8 1.0" />
                             <feFuncB type="discrete" tableValues="0.3 0.6 0.9 1.0" />
@@ -161,6 +180,7 @@ export default function Map({ resorts, selectedResort, favorites, onToggleFavori
                     key={resort.id}
                     resort={resort}
                     onResortClick={onResortClick}
+                    isSummer={isSummer}
                 />
             ))}
         </MapContainer>

@@ -21,10 +21,12 @@ export default function Advisor({ resorts, onFilterChange, currentFilter, onSear
     const [showAll, setShowAll] = useState(false);
     const [selectedArea, setSelectedArea] = useState<string>('all');
     const [showScoreInfo, setShowScoreInfo] = useState(false);
+    const [selectedActivity, setSelectedActivity] = useState<string>('all');
     const { season, toggleSeason } = useSeason();
+    const isSummer = season === 'summer';
 
     // 季節に応じたスコア計算関数を選択
-    const calcScore = season === 'winter' ? calculateConditionScore : calculateSummerScore;
+    const calcScore = isSummer ? calculateSummerScore : calculateConditionScore;
 
     // ユニークなエリアを取得
     const uniqueAreas = useMemo(() => {
@@ -48,14 +50,33 @@ export default function Advisor({ resorts, onFilterChange, currentFilter, onSear
             filtered = filtered.filter(r => r.area === selectedArea);
         }
 
-        // 3. スコア順ソート（季節対応）
+        // 3. 季節別フィルター
+        if (isSummer && selectedActivity !== 'all') {
+            // 夏モード: アクティビティフィルター
+            filtered = filtered.filter(r =>
+                r.summer_activities && r.summer_activities.includes(selectedActivity)
+            );
+        } else if (!isSummer && currentFilter !== 'all' && currentFilter !== 'favorites') {
+            // 冬モード: 元のコンディションフィルター
+            if (currentFilter === 'powder') {
+                filtered = filtered.filter(r => r.weather.snowfall_24h > 10);
+            } else if (currentFilter === 'calm') {
+                filtered = filtered.filter(r => r.weather.wind <= 5);
+            } else if (currentFilter === 'cold') {
+                filtered = filtered.filter(r => r.weather.temp < -5);
+            }
+        } else if (currentFilter === 'favorites') {
+            filtered = filtered.filter(r => favorites.has(r.id));
+        }
+
+        // 4. スコア順ソート（季節対応）
         const sorted = filtered
             .map(r => ({ ...r, score: calcScore(r.weather) }))
             .sort((a, b) => b.score.score - a.score.score);
 
-        // 4. 上位5件 or 全件
+        // 5. 上位5件 or 全件
         return showAll ? sorted : sorted.slice(0, 5);
-    }, [resorts, searchQuery, showAll, selectedArea]);
+    }, [resorts, searchQuery, showAll, selectedArea, isSummer, selectedActivity, currentFilter, favorites]);
 
     // スコアからDQ3風のレベル色を返す
     const getLevelColor = (score: number) => {
@@ -180,7 +201,7 @@ export default function Advisor({ resorts, onFilterChange, currentFilter, onSear
             {/* ===== さくせん（フィルター）エリア ===== */}
             {!searchQuery && (
                 <div style={{ padding: '8px 12px 0' }}>
-                    {/* コンディションフィルター */}
+                    {/* コンディションフィルター（季節対応） */}
                     <div className="dq-window" style={{ padding: '12px' }}>
                         <div style={{
                             fontSize: '12px',
@@ -188,25 +209,41 @@ export default function Advisor({ resorts, onFilterChange, currentFilter, onSear
                             marginBottom: '8px',
                             letterSpacing: '0.1em',
                         }}>
-                            ▼ さくせん
+                            {isSummer ? '▼ アクティビティ' : '▼ さくせん'}
                         </div>
 
                         {/* コマンド選択リスト */}
                         <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
-                            {[
-                                { key: 'favorites' as const, label: `⭐ なかまリスト (${favorites.size})`, },
-                                { key: 'all' as const, label: '🗺️ すべてのまち', },
-                                { key: 'powder' as const, label: '❄️ ちからのゆき', },
-                                { key: 'calm' as const, label: '🛡️ かぜの まもり', },
-                                { key: 'cold' as const, label: '🧊 こおりの けっかい', },
+                            {isSummer ? [
+                                // 夏モード: アクティビティフィルター
+                                { key: 'all', label: '🗺️ すべての やまへ' },
+                                { key: 'mtb', label: '🚵 マウンテンバイク' },
+                                { key: 'trekking', label: '🥾 トレッキング' },
+                                { key: 'camp', label: '🏕️ キャンプ・グランピング' },
+                                { key: 'nature', label: '🌸 しぜん・こうざん' },
+                                { key: 'gondola', label: '🚡 ゴンドラ・リフト' },
+                            ].map(item => (
+                                <button
+                                    key={item.key}
+                                    onClick={() => setSelectedActivity(item.key)}
+                                    className={`dq-command ${selectedActivity === item.key ? 'active' : ''}`}
+                                    style={{ paddingLeft: '20px' }}
+                                >
+                                    {item.label}
+                                </button>
+                            )) : [
+                                // 冬モード: 従来のコンディションフィルター
+                                { key: 'favorites' as const, label: `⭐ なかまリスト (${favorites.size})` },
+                                { key: 'all' as const, label: '🗺️ すべてのまち' },
+                                { key: 'powder' as const, label: '❄️ ちからのゆき' },
+                                { key: 'calm' as const, label: '🛡️ かぜの まもり' },
+                                { key: 'cold' as const, label: '🧊 こおりの けっかい' },
                             ].map(item => (
                                 <button
                                     key={item.key}
                                     onClick={() => onFilterChange(currentFilter === item.key ? 'all' : item.key)}
                                     className={`dq-command ${currentFilter === item.key ? 'active' : ''}`}
-                                    style={{
-                                        paddingLeft: currentFilter === item.key ? '20px' : '20px',
-                                    }}
+                                    style={{ paddingLeft: '20px' }}
                                 >
                                     {item.label}
                                 </button>
