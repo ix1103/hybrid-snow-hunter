@@ -30,7 +30,7 @@ interface DashboardProps {
 export default function Dashboard({ initialResorts, initialSummerSpots }: DashboardProps) {
     const [spots, setSpots] = useState<SpotWithWeather[]>([]);
     const [isLoading, setIsLoading] = useState(true);
-    const [filter, setFilter] = useState<'all' | 'powder' | 'calm' | 'cold' | 'favorites'>('all');
+    const [filter, setFilter] = useState<string>('all');
     const [searchQuery, setSearchQuery] = useState('');
     const [selectedSpot, setSelectedSpot] = useState<SpotWithWeather | null>(null);
     const [detailSpot, setDetailSpot] = useState<SpotWithWeather | null>(null);
@@ -122,11 +122,15 @@ export default function Dashboard({ initialResorts, initialSummerSpots }: Dashbo
             else if (filter === 'favorites') result = result.filter(r => favorites.has(r.id));
         } else {
             if (filter === 'favorites') result = result.filter(r => favorites.has(r.id));
+            else if (filter !== 'all') {
+                // 夏のアクティビティフィルター (trekking, camp, mtb など)
+                result = result.filter(r => r.activities && r.activities.includes(filter));
+            }
         }
         return result;
     }, [spots, filter, searchQuery, favorites, isSummer]);
 
-    const handleFilterChange = (newFilter: 'all' | 'powder' | 'calm' | 'cold' | 'favorites') => {
+    const handleFilterChange = (newFilter: string) => {
         setFilter(newFilter);
         setIsSidebarOpen(false);
     };

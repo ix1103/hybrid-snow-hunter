@@ -9,7 +9,7 @@ import { useSeason } from '@/lib/season';
 interface AdvisorProps {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     resorts: any[];
-    onFilterChange: (criteria: 'all' | 'powder' | 'calm' | 'cold' | 'favorites') => void;
+    onFilterChange: (criteria: string) => void;
     currentFilter: string;
     onSearchChange: (query: string) => void;
     searchQuery: string;
@@ -23,7 +23,6 @@ export default function Advisor({ resorts, onFilterChange, currentFilter, onSear
     const [showAll, setShowAll] = useState(false);
     const [selectedArea, setSelectedArea] = useState<string>('all');
     const [showScoreInfo, setShowScoreInfo] = useState(false);
-    const [selectedActivity, setSelectedActivity] = useState<string>('all');
     const { season, toggleSeason } = useSeason();
     const isSummer = season === 'summer';
 
@@ -53,10 +52,10 @@ export default function Advisor({ resorts, onFilterChange, currentFilter, onSear
         }
 
         // 3. 季節別フィルター
-        if (isSummer && selectedActivity !== 'all') {
+        if (isSummer && currentFilter !== 'all' && currentFilter !== 'favorites') {
             // 夏モード: アクティビティフィルター（activitiesフィールドで見る）
             filtered = filtered.filter(r =>
-                r.activities && r.activities.includes(selectedActivity)
+                r.activities && r.activities.includes(currentFilter)
             );
         } else if (!isSummer && currentFilter !== 'all' && currentFilter !== 'favorites') {
             // 冬モード: 元のコンディションフィルター
@@ -82,7 +81,7 @@ export default function Advisor({ resorts, onFilterChange, currentFilter, onSear
 
         // 5. 上位5件 or 全件
         return showAll ? sorted : sorted.slice(0, 5);
-    }, [resorts, searchQuery, showAll, selectedArea, isSummer, selectedActivity, currentFilter, favorites]);
+    }, [resorts, searchQuery, showAll, selectedArea, isSummer, currentFilter, favorites]);
 
     // スコアからDQ3風のレベル色を返す
     const getLevelColor = (score: number) => {
@@ -231,8 +230,8 @@ export default function Advisor({ resorts, onFilterChange, currentFilter, onSear
                             ].map(item => (
                                 <button
                                     key={item.key}
-                                    onClick={() => setSelectedActivity(item.key)}
-                                    className={`dq-command ${selectedActivity === item.key ? 'active' : ''}`}
+                                    onClick={() => onFilterChange(currentFilter === item.key ? 'all' : item.key)}
+                                    className={`dq-command ${currentFilter === item.key ? 'active' : ''}`}
                                     style={{ paddingLeft: '20px' }}
                                 >
                                     {item.label}
