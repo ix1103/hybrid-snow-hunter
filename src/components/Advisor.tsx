@@ -215,13 +215,15 @@ export default function Advisor({ resorts, onFilterChange, currentFilter, onSear
                         {/* コマンド選択リスト */}
                         <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
                             {isSummer ? [
-                                // 夏モード: アクティビティフィルター
+                                // 夏モード: カテゴリフィルター
                                 { key: 'all', label: '🗺️ すべての やまへ' },
-                                { key: 'mtb', label: '🚵 マウンテンバイク' },
+                                { key: 'highland', label: '🏔️ ひしょち' },
                                 { key: 'trekking', label: '🥾 やまのぼり' },
-                                { key: 'camp', label: '🏕️ キャンプ・グランピング' },
-                                { key: 'nature', label: '🌸 しぜん・こうざん' },
-                                { key: 'gondola', label: '🚡 ゴンドラ・リフト' },
+                                { key: 'camp', label: '🏕️ キャンプ' },
+                                { key: 'mtb', label: '🚵 MTB' },
+                                { key: 'river', label: '🌊 けいこく' },
+                                { key: 'flower', label: '🌸 はなばたけ' },
+                                { key: 'onsen', label: '♨️ おんせん' },
                             ].map(item => (
                                 <button
                                     key={item.key}

@@ -142,8 +142,8 @@ export default function Dashboard({ initialResorts, initialSummerSpots }: Dashbo
         } else {
             if (filter === 'favorites') result = result.filter(r => favorites.has(r.id));
             else if (filter !== 'all') {
-                // 夏のアクティビティフィルター (trekking, camp, mtb など)
-                result = result.filter(r => r.activities && r.activities.includes(filter));
+                // 夏のアクティビティフィルター（詳細カードのカテゴリと完全に一致させる）
+                result = result.filter(r => r.category === filter);
             }
         }
         return result;
