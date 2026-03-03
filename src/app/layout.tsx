@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { DotGothic16 } from "next/font/google";
 import "./globals.css";
+import Providers from "./providers";
 
 // DQ3風ピクセルフォント
 const dotGothic = DotGothic16({
@@ -37,8 +38,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ja">
-      <body className={`${dotGothic.variable} antialiased`} style={{ fontFamily: "var(--font-pixel)" }}>
-        {children}
+      <body className={`${dotGothic.variable} antialiased season-winter`} style={{ fontFamily: "var(--font-pixel)" }}>
+        <Providers>
+          {children}
+        </Providers>
       </body>
     </html>
   );

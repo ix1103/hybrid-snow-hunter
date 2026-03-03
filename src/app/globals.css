@@ -6,7 +6,7 @@
    CSS変数・ユーティリティクラス定義
    =================================== */
 
-/* --- カラーパレット --- */
+/* --- カラーパレット（冬モード = デフォルト） --- */
 :root {
   /* DQ3ウィンドウの青系グラデーション */
   --dq-window-outer: #1a1a2e;
@@ -38,6 +38,25 @@
 
   /* フォント */
   --font-pixel: 'DotGothic16', 'MS Gothic', monospace;
+}
+
+/* --- カラーパレット（夏モード = 草原テーマ） --- */
+body.season-summer {
+  --dq-window-outer: #1a2e1a;
+  --dq-window-bg: #0d3e1b;
+  --dq-window-bg-light: #145229;
+  --dq-window-border: #a8d8b8;
+  --dq-window-border-inner: #4a9a6a;
+
+  --dq-bg: #0a140a;
+  --dq-bg-dark: #051005;
+
+  --dq-text-dim: #88bb99;
+  --dq-text-blue: #66ffbb;
+  --dq-text-red: #ff6644;
+
+  --dq-hp-bar: #44cc22;
+  --dq-mp-bar: #44ff88;
 }
 
 /* --- グローバルリセット --- */

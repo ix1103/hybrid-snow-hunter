@@ -3,6 +3,8 @@
 import { useState, useMemo } from 'react';
 import { Resort } from '@/lib/resorts_data';
 import { WeatherData, calculateConditionScore } from '@/lib/scoring';
+import { calculateSummerScore } from '@/lib/scoring_summer';
+import { useSeason } from '@/lib/season';
 
 interface AdvisorProps {
     resorts: (Resort & { weather: WeatherData })[];
@@ -19,6 +21,10 @@ export default function Advisor({ resorts, onFilterChange, currentFilter, onSear
     const [showAll, setShowAll] = useState(false);
     const [selectedArea, setSelectedArea] = useState<string>('all');
     const [showScoreInfo, setShowScoreInfo] = useState(false);
+    const { season, toggleSeason } = useSeason();
+
+    // 季節に応じたスコア計算関数を選択
+    const calcScore = season === 'winter' ? calculateConditionScore : calculateSummerScore;
 
     // ユニークなエリアを取得
     const uniqueAreas = useMemo(() => {
@@ -34,7 +40,7 @@ export default function Advisor({ resorts, onFilterChange, currentFilter, onSear
         if (searchQuery) {
             return filtered
                 .filter(r => r.name.includes(searchQuery) || r.area.includes(searchQuery))
-                .map(r => ({ ...r, score: calculateConditionScore(r.weather) }));
+                .map(r => ({ ...r, score: calcScore(r.weather) }));
         }
 
         // 2. エリアフィルター
@@ -42,9 +48,9 @@ export default function Advisor({ resorts, onFilterChange, currentFilter, onSear
             filtered = filtered.filter(r => r.area === selectedArea);
         }
 
-        // 3. スコア順ソート
+        // 3. スコア順ソート（季節対応）
         const sorted = filtered
-            .map(r => ({ ...r, score: calculateConditionScore(r.weather) }))
+            .map(r => ({ ...r, score: calcScore(r.weather) }))
             .sort((a, b) => b.score.score - a.score.score);
 
         // 4. 上位5件 or 全件
@@ -77,20 +83,59 @@ export default function Advisor({ resorts, onFilterChange, currentFilter, onSear
                 textAlign: 'center',
                 position: 'relative',
                 display: 'flex',
-                justifyContent: 'center',
+                flexDirection: 'column',
                 alignItems: 'center',
+                gap: '8px',
             }}>
-                {/* タイトルロゴ画像 */}
-                <img
-                    src="/title-logo.png"
-                    alt="SNOW CONDITION HUNTER"
+                {/* タイトルロゴ画像（季節対応） */}
+                {season === 'winter' ? (
+                    <img
+                        src="/title-logo.png"
+                        alt="SNOW CONDITION HUNTER"
+                        style={{
+                            width: '100%',
+                            maxWidth: '240px',
+                            objectFit: 'contain',
+                            filter: 'drop-shadow(0px 2px 4px rgba(0,0,0,0.4))',
+                        }}
+                    />
+                ) : (
+                    <img
+                        src="/title-logo-summer.png"
+                        alt="GREEN ADVENTURE HUNTER"
+                        style={{
+                            width: '100%',
+                            maxWidth: '240px',
+                            objectFit: 'contain',
+                            filter: 'drop-shadow(0px 2px 4px rgba(0,0,0,0.4))',
+                        }}
+                        onError={(e) => {
+                            // 夏ロゴがまだない場合はテキストにフォールバック
+                            (e.target as HTMLImageElement).style.display = 'none';
+                        }}
+                    />
+                )}
+
+                {/* きせつを かえる ボタン */}
+                <button
+                    onClick={toggleSeason}
+                    className="dq-window"
                     style={{
-                        width: '100%',
-                        maxWidth: '240px', // 枠がない分すこし大きく配置
-                        objectFit: 'contain',
-                        filter: 'drop-shadow(0px 2px 4px rgba(0,0,0,0.4))', // 少し影をつけて浮き立たせる
+                        padding: '6px 16px',
+                        cursor: 'pointer',
+                        fontSize: '11px',
+                        color: season === 'winter' ? 'var(--dq-text-blue)' : 'var(--dq-text-green)',
+                        border: `1px solid ${season === 'winter' ? 'var(--dq-text-blue)' : 'var(--dq-text-green)'}`,
+                        borderRadius: '6px',
+                        background: season === 'winter'
+                            ? 'rgba(102, 187, 255, 0.1)'
+                            : 'rgba(68, 255, 136, 0.1)',
+                        transition: 'all 0.3s ease',
                     }}
-                />
+                >
+                    {season === 'winter' ? '❄️ ふゆの せかい' : '🌿 なつの せかい'}
+                    ▶ きせつを かえる
+                </button>
 
                 {/* スコア情報ボタン */}
                 <button
