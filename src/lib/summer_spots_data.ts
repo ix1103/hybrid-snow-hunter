@@ -369,4 +369,180 @@ export const SUMMER_SPOTS: SummerSpot[] = [
         category: 'onsen', activities: ['onsen', 'trekking', 'gondola'],
         bestMonths: [6, 7, 8, 9, 10],
     },
+
+    // ============================
+    // 🏕️ キャンプ 追加 (camp)
+    // ============================
+    {
+        id: 'asagiri-jamboree',
+        name: '朝霧ジャンボリーオートキャンプ場',
+        lat: 35.3667, long: 138.5667, elevation: 900,
+        area: '静岡県', url: 'https://asagiri-camp.net/',
+        category: 'camp', activities: ['camp', 'nature'],
+        bestMonths: [4, 5, 6, 9, 10, 11],
+    },
+    {
+        id: 'hottarakashi',
+        name: 'ほったらかしキャンプ場',
+        lat: 35.7333, long: 138.6833, elevation: 700,
+        area: '山梨県', url: 'https://hottarakashicamp.com/',
+        category: 'camp', activities: ['camp', 'nature', 'onsen'],
+        bestMonths: [4, 5, 6, 9, 10, 11],
+    },
+    {
+        id: 'snowpeak-hq',
+        name: 'Snow Peak Headquarters',
+        lat: 37.3833, long: 138.9167, elevation: 250,
+        area: '新潟県', url: 'https://www.snowpeak.co.jp/locations/hq/',
+        category: 'camp', activities: ['camp', 'nature'],
+        bestMonths: [5, 6, 7, 8, 9, 10],
+    },
+    {
+        id: 'akagi-camp',
+        name: '赤城山オートキャンプ場',
+        lat: 36.5500, long: 139.1667, elevation: 800,
+        area: '群馬県', url: 'https://www.autocamp.jp/',
+        category: 'camp', activities: ['camp', 'nature', 'trekking'],
+        bestMonths: [5, 6, 7, 8, 9, 10],
+    },
+    {
+        id: 'uchiyama-camp',
+        name: '内山牧場キャンプ場',
+        lat: 36.2333, long: 138.5500, elevation: 1200,
+        area: '長野県', url: 'https://www.uchiyama-bokujou.com/',
+        category: 'camp', activities: ['camp', 'nature'],
+        bestMonths: [5, 6, 7, 8, 9],
+    },
+    {
+        id: 'marunuma-camp',
+        name: '丸沼高原オートキャンプ場',
+        lat: 36.8164, long: 139.3400, elevation: 1500,
+        area: '群馬県', url: 'https://www.marunuma.jp/green/',
+        category: 'camp', activities: ['camp', 'nature', 'gondola'],
+        bestMonths: [5, 6, 7, 8, 9, 10],
+    },
+
+    // ============================
+    // 🥾 登山・トレッキング 追加 (trekking)
+    // ============================
+    {
+        id: 'tanigawadake',
+        name: '谷川岳',
+        lat: 36.8317, long: 138.9283, elevation: 1977,
+        area: '群馬県', url: 'https://www.tanigawadake-rw.com/',
+        category: 'trekking', activities: ['trekking', 'gondola', 'nature'],
+        bestMonths: [6, 7, 8, 9, 10],
+    },
+    {
+        id: 'hakuba-daisekkei',
+        name: '白馬大雪渓',
+        lat: 36.7583, long: 137.7583, elevation: 2100,
+        area: '長野県', url: 'https://www.hakuba-happo.or.jp/',
+        category: 'trekking', activities: ['trekking', 'nature'],
+        bestMonths: [7, 8, 9],
+    },
+    {
+        id: 'tsubakurodake',
+        name: '燕岳',
+        lat: 36.4167, long: 137.7167, elevation: 2763,
+        area: '長野県', url: 'https://www.enzanso.co.jp/',
+        category: 'trekking', activities: ['trekking', 'nature'],
+        bestMonths: [7, 8, 9],
+    },
+    {
+        id: 'chogatake',
+        name: '蝶ヶ岳',
+        lat: 36.3167, long: 137.7167, elevation: 2677,
+        area: '長野県', url: 'https://www.kamikochi.or.jp/',
+        category: 'trekking', activities: ['trekking', 'nature'],
+        bestMonths: [7, 8, 9],
+    },
+    {
+        id: 'kisokomagatake',
+        name: '木曽駒ヶ岳',
+        lat: 35.7889, long: 137.8167, elevation: 2956,
+        area: '長野県', url: 'https://www.chuo-alps.com/',
+        category: 'trekking', activities: ['trekking', 'gondola', 'nature'],
+        bestMonths: [7, 8, 9],
+    },
+    {
+        id: 'kitadake',
+        name: '北岳',
+        lat: 35.6750, long: 138.2389, elevation: 3193,
+        area: '山梨県', url: 'https://www.ashiyasu.gr.jp/',
+        category: 'trekking', activities: ['trekking', 'nature'],
+        bestMonths: [7, 8, 9],
+    },
+    {
+        id: 'chokaisan',
+        name: '鳥海山',
+        lat: 39.0972, long: 140.0472, elevation: 2236,
+        area: '山形県', url: 'https://www.choukai.jp/',
+        category: 'trekking', activities: ['trekking', 'nature'],
+        bestMonths: [7, 8, 9],
+    },
+
+    // ============================
+    // 🌊 渓谷 追加 (river)
+    // ============================
+    {
+        id: 'shosenkyo',
+        name: '昇仙峡',
+        lat: 35.7500, long: 138.5667, elevation: 500,
+        area: '山梨県', url: 'https://www.shosenkyo-kankoukyokai.com/',
+        category: 'river', activities: ['trekking', 'nature'],
+        bestMonths: [5, 6, 7, 8, 9, 10, 11],
+    },
+    {
+        id: 'mitake-valley',
+        name: '御岳渓谷',
+        lat: 35.7986, long: 139.1633, elevation: 250,
+        area: '東京都', url: 'https://www.omekanko.gr.jp/',
+        category: 'river', activities: ['river', 'trekking', 'nature'],
+        bestMonths: [5, 6, 7, 8, 9, 10],
+    },
+    {
+        id: 'takachiho',
+        name: '高千穂峡',
+        lat: 32.7250, long: 131.3056, elevation: 300,
+        area: '宮崎県', url: 'https://takachiho-kanko.info/',
+        category: 'river', activities: ['river', 'nature'],
+        bestMonths: [4, 5, 6, 7, 8, 9, 10],
+    },
+
+    // ============================
+    // 🏔️ 高原 追加 (highland)
+    // ============================
+    {
+        id: 'sugadaira-highland',
+        name: '菅平高原',
+        lat: 36.5414, long: 138.3589, elevation: 1300,
+        area: '長野県', url: 'https://sugadaira.com/',
+        category: 'highland', activities: ['nature', 'camp', 'trekking'],
+        bestMonths: [5, 6, 7, 8, 9],
+    },
+    {
+        id: 'togakushi-highland',
+        name: '戸隠高原',
+        lat: 36.7583, long: 138.0750, elevation: 1200,
+        area: '長野県', url: 'https://www.togakushi-21.jp/',
+        category: 'highland', activities: ['nature', 'trekking', 'camp'],
+        bestMonths: [5, 6, 7, 8, 9, 10],
+    },
+    {
+        id: 'shiga-summer',
+        name: '志賀高原サマー',
+        lat: 36.7214, long: 138.5076, elevation: 1800,
+        area: '長野県', url: 'https://www.shigakogen.co.jp/',
+        category: 'highland', activities: ['trekking', 'nature'],
+        bestMonths: [6, 7, 8, 9],
+    },
+    {
+        id: 'yatsugatake',
+        name: '八ヶ岳エリア',
+        lat: 35.9711, long: 138.3694, elevation: 1500,
+        area: '長野県', url: 'https://www.yatsugatake.gr.jp/',
+        category: 'highland', activities: ['nature', 'trekking', 'camp'],
+        bestMonths: [5, 6, 7, 8, 9, 10],
+    },
 ];
