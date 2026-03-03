@@ -397,13 +397,43 @@ export const SUMMER_SPOTS: SummerSpot[] = [
 
     // --- 🏔️ 愛知県 ---
     {
+        id: 'myojinzan',
+        name: '三ツ瀬明神山',
+        lat: 34.9731, long: 137.7164, elevation: 1016,
+        area: '愛知県', url: 'https://www.shinshiro.lg.jp/tourism/',
+        category: 'trekking', activities: ['trekking', 'nature'],
+        bestMonths: [4, 5, 10, 11],
+        difficulty: 4, courseTime: '7時間', features: ['とうかいの やまじんぐった', 'きゅうな いわば', 'くさり・ロープ多数'],
+        hut: 'なし', tent: 'なし', water: 'なし'
+    },
+    {
+        id: 'urenzan',
+        name: '宇連山',
+        lat: 34.9536, long: 137.7044, elevation: 929,
+        area: '愛知県', url: 'https://www.shinshiro.lg.jp/tourism/',
+        category: 'trekking', activities: ['trekking', 'nature'],
+        bestMonths: [3, 4, 5, 10, 11],
+        difficulty: 3, courseTime: '6時間', features: ['おくみかわの もり', 'たきがある', 'けもの みち'],
+        hut: 'なし', tent: 'なし', water: '要かくにん'
+    },
+    {
+        id: 'dandosan',
+        name: '段戸山（段戸裏谷）',
+        lat: 35.1094, long: 137.4306, elevation: 1152,
+        area: '愛知県', url: 'https://www.bes.or.jp/uragoya/',
+        category: 'trekking', activities: ['trekking', 'nature'],
+        bestMonths: [5, 6, 10, 11],
+        difficulty: 2, courseTime: '4時間', features: ['げんせいりん', 'こけ むしろ', 'きりもや の もり'],
+        hut: 'なし', tent: 'なし', water: '豊富'
+    },
+    {
         id: 'mikuni-aichi',
         name: '三国山',
         lat: 35.1403, long: 137.5189, elevation: 701,
         area: '愛知県', url: 'https://www.shinshiro.lg.jp/',
         category: 'trekking', activities: ['trekking', 'nature'],
         bestMonths: [4, 5, 10, 11],
-        difficulty: 1, courseTime: '2時間30分', features: ['あいちの さとやま', 'のどかな おさんぽ'],
+        difficulty: 1, courseTime: '2時間30分', features: ['あいちの さとやま', '3県さかい（あいち・しずおか・ながの）', 'のどかな おさんぽ'],
         hut: 'なし', tent: 'なし', water: 'なし'
     },
     {
@@ -413,7 +443,7 @@ export const SUMMER_SPOTS: SummerSpot[] = [
         area: '愛知県', url: 'https://www.toyokawashi.org/',
         category: 'trekking', activities: ['trekking', 'nature'],
         bestMonths: [3, 4, 5, 10, 11],
-        difficulty: 2, courseTime: '3時間30分', features: ['みかわ さんぎょうの やま', 'かいだん おおい', 'じんじゃ あり'],
+        difficulty: 2, courseTime: '3時間30分', features: ['みかわ さんぎょうの やま', 'かいだん1500だん', 'みかわいちのみや'],
         hut: 'なし', tent: 'なし', water: 'なし'
     },
     {
@@ -423,8 +453,8 @@ export const SUMMER_SPOTS: SummerSpot[] = [
         area: '愛知県', url: 'https://www.city.toyota.aichi.jp/',
         category: 'trekking', activities: ['trekking', 'nature'],
         bestMonths: [3, 4, 5, 10, 11, 12],
-        difficulty: 1, courseTime: '3時間', features: ['なごやからアクセス◎', 'トレランにんき', 'さんぽみち'],
-        hut: 'なし', tent: 'なし', water: 'なし'
+        difficulty: 1, courseTime: '3時間', features: ['なごやから1時間', 'トレランにんき No.1', 'みずの しぜん かんさつ'],
+        hut: 'なし', tent: 'なし', water: '豊富'
     },
     {
         id: 'miyajiyama',
@@ -433,21 +463,61 @@ export const SUMMER_SPOTS: SummerSpot[] = [
         area: '愛知県', url: 'https://www.toyokawashi.org/',
         category: 'trekking', activities: ['trekking', 'nature'],
         bestMonths: [1, 2, 3, 4, 11, 12],
-        difficulty: 1, courseTime: '1時間30分', features: ['こうよう', 'ファミリーむけ', 'みかわわん てんぼう'],
+        difficulty: 1, courseTime: '1時間30分', features: ['こうようの めいさん', 'みかわわん てんぼう', 'ファミリーむけ'],
         hut: 'なし', tent: 'なし', water: 'なし'
     },
     {
-        id: 'nyudogatake',
-        name: '入道ヶ岳(愛知側)',
-        lat: 35.2806, long: 137.0714, elevation: 906,
-        area: '愛知県', url: 'https://www.city.seto.aichi.jp/',
+        id: 'horaiji',
+        name: '鳳来寺山',
+        lat: 34.9494, long: 137.6003, elevation: 684,
+        area: '愛知県', url: 'https://www.horaiji.com/',
         category: 'trekking', activities: ['trekking', 'nature'],
         bestMonths: [4, 5, 10, 11],
-        difficulty: 2, courseTime: '4時間', features: ['くさ のはら', 'ひらけた てんぼう', 'しゅうかいくい あり'],
-        hut: 'なし', tent: 'なし', water: 'なし'
+        difficulty: 1, courseTime: '3時間', features: ['しぜんきねんぶつ', '1425段のかいだん', 'こけのもり'],
+        hut: 'なし', tent: 'なし', water: '豊富'
     },
 
     // --- 🏔️ 岐阜県 ---
+    {
+        id: 'nougohakusan',
+        name: '能郷白山',
+        lat: 35.7789, long: 136.6297, elevation: 1617,
+        area: '岐阜県', url: 'https://www.kankou-gifu.jp/',
+        category: 'trekking', activities: ['trekking', 'nature'],
+        bestMonths: [6, 7, 8, 9, 10],
+        difficulty: 4, courseTime: '8時間', features: ['200名山', 'にほんの ひゃくさん にちかい', 'はくさん れんぽう'],
+        hut: '避難小屋のみ', tent: 'なし', water: '要かくにん'
+    },
+    {
+        id: 'kohideyama',
+        name: '小秀山',
+        lat: 35.7492, long: 137.4481, elevation: 1982,
+        area: '岐阜県', url: 'https://www.vill.otaki.nagano.jp/',
+        category: 'trekking', activities: ['trekking', 'nature'],
+        bestMonths: [6, 7, 8, 9, 10],
+        difficulty: 4, courseTime: '9時間', features: ['おんたけさんの ぜっけい', 'なんちゅう きゅうしゃ', 'さんちょう かいけんし'],
+        hut: 'なし', tent: 'なし', water: 'なし'
+    },
+    {
+        id: 'dainichidake',
+        name: '大日ヶ岳',
+        lat: 35.9125, long: 136.8722, elevation: 1709,
+        area: '岐阜県', url: 'https://www.vill.shirakawa.lg.jp/',
+        category: 'trekking', activities: ['trekking', 'nature'],
+        bestMonths: [6, 7, 8, 9, 10],
+        difficulty: 3, courseTime: '6時間', features: ['はくさん が みえる', 'いわま・はなのさと', 'ひだのやまやまけい'],
+        hut: 'なし', tent: 'なし', water: '要かくにん'
+    },
+    {
+        id: 'kuraiyama',
+        name: '位山',
+        lat: 36.1694, long: 137.1842, elevation: 1529,
+        area: '岐阜県', url: 'https://www.city.hida.gifu.jp/',
+        category: 'trekking', activities: ['trekking', 'nature'],
+        bestMonths: [5, 6, 7, 8, 9, 10],
+        difficulty: 2, courseTime: '4時間', features: ['ひだいちのみや', 'しんぴの もり', 'きょだい いわじん'],
+        hut: 'なし', tent: 'なし', water: '豊富'
+    },
     {
         id: 'norikuradake',
         name: '乗鞍岳',
@@ -455,7 +525,7 @@ export const SUMMER_SPOTS: SummerSpot[] = [
         area: '岐阜県', url: 'https://norikuradake.jp/',
         category: 'trekking', activities: ['trekking', 'nature'],
         bestMonths: [7, 8, 9],
-        difficulty: 1, courseTime: '2時間30分', features: ['日本百名山', 'バスでいける 3000m', 'らいちょう'],
+        difficulty: 1, courseTime: '2時間30分', features: ['日本百名山', 'バスで いける 3026m', 'らいちょう に あえる'],
         hut: 'あり(有人)', tent: 'なし', water: '要かくにん'
     },
     {
@@ -465,7 +535,7 @@ export const SUMMER_SPOTS: SummerSpot[] = [
         area: '岐阜県', url: 'https://www.ibukiyama-driveway.jp/',
         category: 'trekking', activities: ['trekking', 'nature', 'flower'],
         bestMonths: [4, 5, 7, 8, 10],
-        difficulty: 2, courseTime: '5時間30分', features: ['日本百名山', 'はなの めいざん', 'ドライブウェイあり'],
+        difficulty: 2, courseTime: '5時間30分', features: ['日本百名山', 'はなの めいさん 1000しゅ', 'ドライブウェイあり'],
         hut: 'なし', tent: 'なし', water: 'なし'
     },
     {
@@ -475,7 +545,7 @@ export const SUMMER_SPOTS: SummerSpot[] = [
         area: '岐阜県', url: 'https://www.vill.otaki.nagano.jp/',
         category: 'trekking', activities: ['trekking', 'nature'],
         bestMonths: [7, 8, 9],
-        difficulty: 4, courseTime: '8時間', features: ['日本百名山', 'きけんじょうほう ようかくにん', 'しんこうの やま'],
+        difficulty: 4, courseTime: '8時間', features: ['日本百名山', 'きけんじょうほう かくにんを', 'しんこうの せいやま'],
         hut: 'あり(有人)', tent: 'なし', water: '要かくにん'
     },
     {
@@ -485,28 +555,8 @@ export const SUMMER_SPOTS: SummerSpot[] = [
         area: '岐阜県', url: 'https://www.gifucvb.or.jp/',
         category: 'trekking', activities: ['trekking', 'nature'],
         bestMonths: [3, 4, 5, 10, 11, 12],
-        difficulty: 1, courseTime: '1時間30分', features: ['ぎふじょう', 'ロープウェイあり', 'ながらがわ てんぼう'],
+        difficulty: 1, courseTime: '1時間30分', features: ['ぎふじょう てんぼう', 'ロープウェイあり', 'ながらがわ が みえる'],
         hut: 'なし', tent: 'なし', water: 'なし'
-    },
-    {
-        id: 'nanakiyama',
-        name: '納古山',
-        lat: 35.5469, long: 137.0500, elevation: 633,
-        area: '岐阜県', url: 'https://www.kankou-gifu.jp/',
-        category: 'trekking', activities: ['trekking', 'nature'],
-        bestMonths: [4, 5, 10, 11],
-        difficulty: 1, courseTime: '2時間30分', features: ['ひだのやま パノラマ', 'てがるに のぼれる', '初心者おすすめ'],
-        hut: 'なし', tent: 'なし', water: 'なし'
-    },
-    {
-        id: 'yarigatake-gifu',
-        name: '笠ヶ岳',
-        lat: 36.3031, long: 137.5319, elevation: 2898,
-        area: '岐阜県', url: 'https://www.kasagatake.info/',
-        category: 'trekking', activities: ['trekking', 'nature'],
-        bestMonths: [7, 8, 9],
-        difficulty: 5, courseTime: '16時間(1〜2泊)', features: ['日本百名山', 'ちょう ろんぐコース', 'かさの かたち'],
-        hut: 'あり(有人)', tent: 'あり', water: '要かくにん'
     },
     {
         id: 'hodaka-gifu',
@@ -515,40 +565,60 @@ export const SUMMER_SPOTS: SummerSpot[] = [
         area: '岐阜県', url: 'https://www.kamikochi.or.jp/',
         category: 'trekking', activities: ['trekking', 'nature'],
         bestMonths: [6, 7, 8, 9, 10],
-        difficulty: 3, courseTime: '6時間', features: ['かつかざん', 'かみこうちから アクセス', 'けむりが でてる'],
+        difficulty: 3, courseTime: '6時間', features: ['日本百名山', 'かみこうちから アクセス', 'けむりが でてる かつかざん'],
         hut: '避難小屋のみ', tent: 'なし', water: 'なし'
+    },
+    {
+        id: 'kasagatake-gifu',
+        name: '笠ヶ岳',
+        lat: 36.3031, long: 137.5319, elevation: 2898,
+        area: '岐阜県', url: 'https://www.kasagatake.info/',
+        category: 'trekking', activities: ['trekking', 'nature'],
+        bestMonths: [7, 8, 9],
+        difficulty: 5, courseTime: '16時間(1〜2泊)', features: ['日本百名山', 'ちょうロングコース', 'かさの かたち'],
+        hut: 'あり(有人)', tent: 'あり', water: '要かくにん'
     },
 
     // --- 🏔️ 三重県 ---
     {
-        id: 'odaigahara-mie',
-        name: '大台ヶ原',
-        lat: 34.1814, long: 136.1081, elevation: 1695,
-        area: '三重県', url: 'https://kinki.env.go.jp/nature/odaigahara/',
-        category: 'trekking', activities: ['trekking', 'nature'],
-        bestMonths: [5, 6, 10, 11],
-        difficulty: 1, courseTime: '3時間30分', features: ['日本百名山', 'にほんいちの たうりょう', 'たいらな さんちょう'],
-        hut: 'なし', tent: 'なし', water: 'なし'
-    },
-    {
-        id: 'aoyama-kogen',
-        name: '青山高原',
-        lat: 34.6944, long: 136.3028, elevation: 756,
-        area: '三重県', url: 'https://www.kankomie.or.jp/',
-        category: 'trekking', activities: ['trekking', 'nature'],
-        bestMonths: [4, 5, 6, 10, 11],
-        difficulty: 1, courseTime: '2時間', features: ['ふうしゃ が みえる', 'はいきんぐ コース', 'すすき のはら'],
-        hut: 'なし', tent: 'なし', water: 'なし'
-    },
-    {
-        id: 'ryozenzan',
-        name: '霊山',
-        lat: 34.6853, long: 136.2464, elevation: 766,
+        id: 'miike-suzuka',
+        name: '御池岳',
+        lat: 35.1947, long: 136.4419, elevation: 1247,
         area: '三重県', url: 'https://www.kankomie.or.jp/',
         category: 'trekking', activities: ['trekking', 'nature'],
         bestMonths: [4, 5, 10, 11],
-        difficulty: 2, courseTime: '3時間30分', features: ['いわば', 'くさり・ロープ', 'しゅぎょうの やま'],
+        difficulty: 3, courseTime: '6時間', features: ['鈴鹿 さいこうほう', 'テーブルランド', 'ドリーネ（円形くぼち）'],
+        hut: 'なし', tent: 'なし', water: '要かくにん'
+    },
+    {
+        id: 'kamagatake',
+        name: '鎌ヶ岳',
+        lat: 35.0250, long: 136.4400, elevation: 1161,
+        area: '三重県', url: 'https://www.kankomie.or.jp/',
+        category: 'trekking', activities: ['trekking', 'nature'],
+        bestMonths: [4, 5, 10, 11],
+        difficulty: 3, courseTime: '5時間', features: ['鈴鹿の マッターホルン', 'とがった さんちょう', 'いわば・くさり'],
         hut: 'なし', tent: 'なし', water: 'なし'
+    },
+    {
+        id: 'odoyama-mie',
+        name: '大洞山',
+        lat: 34.6781, long: 136.2783, elevation: 1013,
+        area: '三重県', url: 'https://www.kankomie.or.jp/',
+        category: 'trekking', activities: ['trekking', 'nature'],
+        bestMonths: [4, 5, 10, 11],
+        difficulty: 2, courseTime: '3時間', features: ['360どパノラマ', 'かみなり いわ', 'みえの やまやまけい'],
+        hut: 'なし', tent: 'なし', water: 'なし'
+    },
+    {
+        id: 'gozaisho',
+        name: '御在所岳',
+        lat: 35.0206, long: 136.4172, elevation: 1212,
+        area: '三重県', url: 'https://www.gozaisho.co.jp/',
+        category: 'trekking', activities: ['trekking', 'nature', 'gondola'],
+        bestMonths: [4, 5, 10, 11],
+        difficulty: 3, courseTime: '5時間', features: ['鈴鹿のシンボル', 'ロープウェイあり', 'おもて道いわばナビ'],
+        hut: 'あり(有人)', tent: 'なし', water: '要かくにん'
     },
     {
         id: 'fujiwara',
@@ -557,7 +627,7 @@ export const SUMMER_SPOTS: SummerSpot[] = [
         area: '三重県', url: 'https://www.kankomie.or.jp/',
         category: 'trekking', activities: ['trekking', 'nature', 'flower'],
         bestMonths: [3, 4, 5, 10, 11],
-        difficulty: 2, courseTime: '5時間', features: ['すずかやまけい', 'フクジュソウ', 'カレンフェルト'],
+        difficulty: 2, courseTime: '5時間', features: ['すずかやまけい', 'フクジュソウ・セツブンソウ', 'カレンフェルト'],
         hut: '避難小屋のみ', tent: 'なし', water: 'なし'
     },
     {
@@ -567,12 +637,12 @@ export const SUMMER_SPOTS: SummerSpot[] = [
         area: '三重県', url: 'https://www.kankomie.or.jp/',
         category: 'trekking', activities: ['trekking', 'nature'],
         bestMonths: [5, 6, 10, 11],
-        difficulty: 3, courseTime: '5時間30分', features: ['すずかやまけい', 'しらひげ草 ぐんせい', 'やまびこ'],
+        difficulty: 3, courseTime: '5時間30分', features: ['しらひげ草が まっしろに', 'すずかやまけい にんき NO.1', 'ひろい さんちょう'],
         hut: 'なし', tent: 'なし', water: 'なし'
     },
     {
         id: 'suzuka-nyudo',
-        name: '入道ヶ岳(鈴鹿)',
+        name: '入道ヶ岳',
         lat: 34.9697, long: 136.4267, elevation: 906,
         area: '三重県', url: 'https://www.kankomie.or.jp/',
         category: 'trekking', activities: ['trekking', 'nature'],
@@ -580,8 +650,48 @@ export const SUMMER_SPOTS: SummerSpot[] = [
         difficulty: 2, courseTime: '4時間', features: ['すずかセブン', 'ススキ のはら', 'おおきな とりい'],
         hut: 'なし', tent: 'なし', water: 'なし'
     },
+    {
+        id: 'odaigahara-mie',
+        name: '大台ヶ原',
+        lat: 34.1814, long: 136.1081, elevation: 1695,
+        area: '三重県', url: 'https://kinki.env.go.jp/nature/odaigahara/',
+        category: 'trekking', activities: ['trekking', 'nature'],
+        bestMonths: [5, 6, 10, 11],
+        difficulty: 1, courseTime: '3時間30分', features: ['日本百名山', 'にほんいち おおあめ', '日出ヶ岳からの てんぼう'],
+        hut: 'なし', tent: 'なし', water: 'なし'
+    },
 
     // --- 🏔️ 静岡県 ---
+    {
+        id: 'kenanashi',
+        name: '毛無山',
+        lat: 35.3636, long: 138.5358, elevation: 1945,
+        area: '静岡県', url: 'https://www.fujisan-lt.jp/',
+        category: 'trekking', activities: ['trekking', 'nature'],
+        bestMonths: [5, 6, 9, 10, 11],
+        difficulty: 4, courseTime: '7時間', features: ['ふじさん 真正面', 'きゅうしゃ 急登', 'すみれ山塊きゅうじょう'],
+        hut: 'なし', tent: 'なし', water: 'なし'
+    },
+    {
+        id: 'echizendake',
+        name: '越前岳（愛鷹山）',
+        lat: 35.2219, long: 138.8139, elevation: 1504,
+        area: '静岡県', url: 'https://numazu-kankou.jp/',
+        category: 'trekking', activities: ['trekking', 'nature'],
+        bestMonths: [4, 5, 10, 11],
+        difficulty: 3, courseTime: '5時間', features: ['あしだかやまけい さいこうほう', 'ふじさん 眼前に', 'ブナの もり'],
+        hut: 'なし', tent: 'なし', water: 'なし'
+    },
+    {
+        id: 'kintokiyama',
+        name: '金時山',
+        lat: 35.3294, long: 139.0033, elevation: 1213,
+        area: '静岡県', url: 'https://www.hakone.or.jp/',
+        category: 'trekking', activities: ['trekking', 'nature'],
+        bestMonths: [4, 5, 10, 11],
+        difficulty: 2, courseTime: '4時間', features: ['ふじさん & はこねの てんぼう', 'まさかりもつ きんたろう', 'さんちょうに おてんき もとむ'],
+        hut: 'あり(有人)', tent: 'なし', water: 'なし'
+    },
     {
         id: 'ryusozan',
         name: '竜爪山',
@@ -589,18 +699,8 @@ export const SUMMER_SPOTS: SummerSpot[] = [
         area: '静岡県', url: 'https://www.city.shizuoka.lg.jp/',
         category: 'trekking', activities: ['trekking', 'nature'],
         bestMonths: [3, 4, 5, 10, 11],
-        difficulty: 2, courseTime: '4時間', features: ['しずおかの さとやま', 'ふじさん てんぼう', 'じんじゃ あり'],
+        difficulty: 2, courseTime: '4時間', features: ['しずおかの やまやまけい', 'ふじさん てんぼう', 'じんじゃ あり'],
         hut: 'なし', tent: 'なし', water: 'なし'
-    },
-    {
-        id: 'warashina-kogen',
-        name: '藁科高原 (オクシズ)',
-        lat: 35.0355, long: 138.3344, elevation: 800,
-        area: '静岡県', url: 'https://shizuoka-city.lg.jp/',
-        category: 'highland', activities: ['nature', 'trekking', 'camp'],
-        bestMonths: [4, 5, 10, 11],
-        difficulty: 1, courseTime: '3時間', features: ['オクシズ', 'わらしな', 'しずおかの さとやま'],
-        hut: 'なし', tent: 'あり', water: '豊富'
     },
     {
         id: 'maruyama-shizuoka',
@@ -609,7 +709,7 @@ export const SUMMER_SPOTS: SummerSpot[] = [
         area: '静岡県', url: 'https://www.city.yaizu.lg.jp/',
         category: 'trekking', activities: ['trekking', 'nature'],
         bestMonths: [1, 2, 3, 4, 11, 12],
-        difficulty: 1, courseTime: '2時間30分', features: ['ふじさん ぜっけい', 'するがわん てんぼう', '初心者おすすめ'],
+        difficulty: 1, courseTime: '2時間30分', features: ['ふじさん ぜっけい', 'するがわん てんぼう', 'はじめてのやまに ぴったり'],
         hut: 'なし', tent: 'なし', water: 'なし'
     },
     {
@@ -619,17 +719,7 @@ export const SUMMER_SPOTS: SummerSpot[] = [
         area: '静岡県', url: 'https://www.city.hamamatsu.shizuoka.jp/',
         category: 'trekking', activities: ['trekking', 'nature'],
         bestMonths: [4, 5, 10, 11],
-        difficulty: 3, courseTime: '5時間', features: ['えんしゅうの めいほう', 'きゅうとう あり', 'しずかな やま'],
-        hut: 'なし', tent: 'なし', water: 'なし'
-    },
-    {
-        id: 'ashitaka',
-        name: '愛鷹山',
-        lat: 35.1986, long: 138.8089, elevation: 1504,
-        area: '静岡県', url: 'https://numazu-kankou.jp/',
-        category: 'trekking', activities: ['trekking', 'nature'],
-        bestMonths: [4, 5, 10, 11],
-        difficulty: 2, courseTime: '4時間30分', features: ['ふじさんの となり', 'つつじ', 'ぬまづから アクセス'],
+        difficulty: 3, courseTime: '5時間', features: ['えんしゅうの めいほう', 'きゅうとう あり', 'あきのやまの しめい'],
         hut: 'なし', tent: 'なし', water: 'なし'
     },
     {
@@ -653,7 +743,6 @@ export const SUMMER_SPOTS: SummerSpot[] = [
         hut: 'あり(有人)', tent: 'あり', water: '豊富'
     },
 
-    // --- 🐉 上級（Lv.5 / でんせつ級） ---
     {
         id: 'kaikomagadake',
         name: '甲斐駒ヶ岳',
