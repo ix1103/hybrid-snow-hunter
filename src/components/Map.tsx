@@ -51,10 +51,29 @@ const getSummerColor = (score: number) => {
     return '#557755';                  // 暗い緑（イマイチ）
 };
 
-// ▼マーカー + ラベルのアイコン生成（季節対応）
-const createDQMarkerIcon = (score: number, name: string, isSummer: boolean) => {
-    const color = isSummer ? getSummerColor(score) : getWinterColor(score);
-    const levelLabel = isSummer ? `避${score}℃` : `Lv${score}`;
+// ▼マーカー + ラベルのアイコン生成（季節対応・難易度対応）
+const createDQMarkerIcon = (score: number, resort: any, isSummer: boolean) => {
+    let color = isSummer ? getSummerColor(score) : getWinterColor(score);
+    let levelLabel = isSummer ? `避${score}℃` : `Lv${score}`;
+    let iconSymbol = '▼';
+
+    if (isSummer && resort.category === 'trekking') {
+        const diff = resort.difficulty || 1;
+        if (diff <= 2) {
+            color = '#44ff88';
+            iconSymbol = '🔰';
+            levelLabel = `難★${diff}`;
+        } else if (diff <= 4) {
+            color = '#ffd700';
+            iconSymbol = '⚔️';
+            levelLabel = `難★${diff}`;
+        } else {
+            color = '#ff4444';
+            iconSymbol = '💀';
+            levelLabel = `難★${diff}`;
+        }
+    }
+
     const html = `
     <div style="
         display: flex;
@@ -85,7 +104,7 @@ const createDQMarkerIcon = (score: number, name: string, isSummer: boolean) => {
                 white-space: pre-wrap;
                 word-break: keep-all;
                 text-shadow: 1px 1px 0 #000;
-            ">${name}</span>
+            ">${resort.name}</span>
             <span style="
                 font-size: 10px;
                 font-weight: bold;
@@ -100,7 +119,7 @@ const createDQMarkerIcon = (score: number, name: string, isSummer: boolean) => {
             line-height: 1;
             margin-top: -2px;
             text-shadow: 0 1px 3px rgba(0,0,0,0.8);
-        ">▼</span>
+        ">${iconSymbol}</span>
     </div>
     `;
 
@@ -121,7 +140,7 @@ function ResortMarker({ resort, onResortClick, isSummer }: {
     const condition = isSummer
         ? calculateSummerScore(resort.weather, (resort as any).bestMonths, resort.elevation)
         : calculateConditionScore(resort.weather);
-    const markerIcon = createDQMarkerIcon(condition.score, resort.name, isSummer);
+    const markerIcon = createDQMarkerIcon(condition.score, resort, isSummer);
 
     return (
         <Marker

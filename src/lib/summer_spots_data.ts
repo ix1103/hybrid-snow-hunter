@@ -21,6 +21,9 @@ export interface SummerSpot {
     difficulty?: 1 | 2 | 3 | 4 | 5; // 1:初心者〜5:上級・プロ級
     courseTime?: string;       // 例: "5時間30分"
     features?: string[];       // 例: ["日本百名山", "山小屋あり", "岩場あり"]
+    hut?: 'あり(有人)' | '避難小屋のみ' | 'なし';
+    tent?: 'あり' | 'なし';
+    water?: '豊富' | '要かくにん' | 'なし';
 }
 
 // --- 夏スポット一覧（約40件） ---
@@ -113,7 +116,8 @@ export const SUMMER_SPOTS: SummerSpot[] = [
         area: '東京都', url: 'https://mttakaomagazine.com/',
         category: 'trekking', activities: ['trekking', 'nature'],
         bestMonths: [4, 5, 10, 11],
-        difficulty: 1, courseTime: '3時間30分', features: ['はじめてのやま', 'ケーブルカーあり', 'みせが おおい']
+        difficulty: 1, courseTime: '3時間30分', features: ['はじめてのやま', 'ケーブルカーあり', 'みせが おおい'],
+        hut: 'あり(有人)', tent: 'なし', water: '豊富'
     },
     {
         id: 'tsukuba',
@@ -122,7 +126,8 @@ export const SUMMER_SPOTS: SummerSpot[] = [
         area: '茨城県', url: 'https://www.mt-tsukuba.com/',
         category: 'trekking', activities: ['trekking', 'nature', 'gondola'],
         bestMonths: [4, 5, 9, 10, 11],
-        difficulty: 1, courseTime: '4時間', features: ['日本百名山', 'ロープウェイあり', 'いわばが すこし']
+        difficulty: 1, courseTime: '4時間', features: ['日本百名山', 'ロープウェイあり', 'いわばが すこし'],
+        hut: 'あり(有人)', tent: 'なし', water: '豊富'
     },
     {
         id: 'oyama',
@@ -131,7 +136,8 @@ export const SUMMER_SPOTS: SummerSpot[] = [
         area: '神奈川県', url: 'https://www.oyamakankou.jp/',
         category: 'trekking', activities: ['trekking', 'nature'],
         bestMonths: [4, 5, 10, 11],
-        difficulty: 2, courseTime: '4時間30分', features: ['ケーブルカーあり', 'かいだんが おおい']
+        difficulty: 2, courseTime: '4時間30分', features: ['ケーブルカーあり', 'かいだんが おおい'],
+        hut: 'あり(有人)', tent: 'なし', water: '要かくにん'
     },
     {
         id: 'mitake',
@@ -140,7 +146,8 @@ export const SUMMER_SPOTS: SummerSpot[] = [
         area: '東京都', url: 'https://www.mt-mitake.gr.jp/',
         category: 'trekking', activities: ['trekking', 'nature'],
         bestMonths: [4, 5, 6, 9, 10, 11],
-        difficulty: 1, courseTime: '4時間', features: ['ケーブルカーあり', 'たきが ある', 'しゅくぼう']
+        difficulty: 1, courseTime: '4時間', features: ['ケーブルカーあり', 'たきが ある', 'しゅくぼう'],
+        hut: 'あり(有人)', tent: 'なし', water: '豊富'
     },
     {
         id: 'oze',
@@ -149,7 +156,8 @@ export const SUMMER_SPOTS: SummerSpot[] = [
         area: '群馬県', url: 'https://www.oze-fnd.or.jp/',
         category: 'trekking', activities: ['trekking', 'nature'],
         bestMonths: [5, 6, 7, 8, 9, 10],
-        difficulty: 1, courseTime: '6時間', features: ['日本百名山', 'きどう あるき', 'みずばしょう']
+        difficulty: 1, courseTime: '6時間', features: ['日本百名山', 'きどう あるき', 'みずばしょう'],
+        hut: 'あり(有人)', tent: 'あり', water: '豊富'
     },
     // --- ⚔️ 中級（Lv.3〜4 / ベテラン級） ---
     {
@@ -159,7 +167,8 @@ export const SUMMER_SPOTS: SummerSpot[] = [
         area: '長野県', url: 'https://yatsugatake.gr.jp/',
         category: 'trekking', activities: ['trekking', 'nature'],
         bestMonths: [6, 7, 8, 9, 10],
-        difficulty: 4, courseTime: '8時間30分', features: ['日本百名山', 'やまごや おおい', 'いわば あり']
+        difficulty: 4, courseTime: '8時間30分', features: ['日本百名山', 'やまごや おおい', 'いわば あり'],
+        hut: 'あり(有人)', tent: 'あり', water: '豊富'
     },
     {
         id: 'chokaisan',
@@ -168,7 +177,8 @@ export const SUMMER_SPOTS: SummerSpot[] = [
         area: '山形県', url: 'https://chokaizan.com/',
         category: 'trekking', activities: ['trekking', 'nature'],
         bestMonths: [7, 8, 9],
-        difficulty: 4, courseTime: '9時間', features: ['日本百名山', 'うみ が みえる', 'コチコチの ゆき渓']
+        difficulty: 4, courseTime: '9時間', features: ['日本百名山', 'うみ が みえる', 'コチコチの ゆき渓'],
+        hut: 'あり(有人)', tent: 'なし', water: '要かくにん'
     },
     {
         id: 'hakusan',
@@ -177,7 +187,8 @@ export const SUMMER_SPOTS: SummerSpot[] = [
         area: '石川県', url: 'https://www.kagahakusan.jp/',
         category: 'trekking', activities: ['trekking', 'nature', 'flower'],
         bestMonths: [7, 8, 9],
-        difficulty: 3, courseTime: '10時間', features: ['日本百名山', 'はなばたけ', 'やまごや あり']
+        difficulty: 3, courseTime: '10時間', features: ['日本百名山', 'はなばたけ', 'やまごや あり'],
+        hut: 'あり(有人)', tent: 'あり', water: '豊富'
     },
     {
         id: 'kujurenzan',
@@ -186,7 +197,8 @@ export const SUMMER_SPOTS: SummerSpot[] = [
         area: '大分県', url: 'https://kuju.jp/',
         category: 'trekking', activities: ['trekking', 'nature', 'flower'],
         bestMonths: [5, 6, 9, 10, 11],
-        difficulty: 3, courseTime: '7時間', features: ['日本百名山', 'ミヤマキリシマ', 'おんせん']
+        difficulty: 3, courseTime: '7時間', features: ['日本百名山', 'ミヤマキリシマ', 'おんせん'],
+        hut: 'あり(有人)', tent: 'あり', water: '豊富'
     },
     {
         id: 'kisokomagadake',
@@ -195,7 +207,8 @@ export const SUMMER_SPOTS: SummerSpot[] = [
         area: '長野県', url: 'https://www.chuo-alps.com/',
         category: 'trekking', activities: ['trekking', 'nature', 'gondola'],
         bestMonths: [7, 8, 9, 10],
-        difficulty: 2, courseTime: '4時間', features: ['日本百名山', 'ロープウェイあり', '3000mきゅう']
+        difficulty: 2, courseTime: '4時間', features: ['日本百名山', 'ロープウェイあり', '3000mきゅう'],
+        hut: 'あり(有人)', tent: 'あり', water: '要かくにん'
     },
     {
         id: 'tateyama-murodo',
@@ -204,7 +217,8 @@ export const SUMMER_SPOTS: SummerSpot[] = [
         area: '富山県', url: 'https://www.alpen-route.com/',
         category: 'trekking', activities: ['trekking', 'nature', 'gondola'],
         bestMonths: [7, 8, 9, 10],
-        difficulty: 3, courseTime: '5時間', features: ['日本百名山', 'ケーブルカーあり', 'いわば']
+        difficulty: 3, courseTime: '5時間', features: ['日本百名山', 'ケーブルカーあり', 'いわば'],
+        hut: 'あり(有人)', tent: 'あり', water: 'なし'
     },
     {
         id: 'karasawa',
@@ -213,7 +227,8 @@ export const SUMMER_SPOTS: SummerSpot[] = [
         area: '長野県', url: 'https://www.kamikochi.or.jp/',
         category: 'trekking', activities: ['trekking', 'nature'],
         bestMonths: [7, 8, 9, 10],
-        difficulty: 3, courseTime: '12時間', features: ['やまごや だいにんき', 'テントはく', 'こうよう']
+        difficulty: 3, courseTime: '12時間', features: ['やまごや だいにんき', 'テントはく', 'こうよう'],
+        hut: 'あり(有人)', tent: 'あり', water: '豊富'
     },
     {
         id: 'daisetsuzan',
@@ -222,7 +237,8 @@ export const SUMMER_SPOTS: SummerSpot[] = [
         area: '北海道', url: 'https://asahidake.hokkaido.jp/',
         category: 'trekking', activities: ['trekking', 'nature', 'gondola'],
         bestMonths: [7, 8, 9],
-        difficulty: 3, courseTime: '4時間30分', features: ['日本百名山', 'ロープウェイあり', 'カムイミンタラ']
+        difficulty: 3, courseTime: '4時間30分', features: ['日本百名山', 'ロープウェイあり', 'カムイミンタラ'],
+        hut: '避難小屋のみ', tent: 'あり', water: '要かくにん'
     },
     // --- 🐉 上級（Lv.5 / でんせつ級） ---
     {
@@ -232,7 +248,8 @@ export const SUMMER_SPOTS: SummerSpot[] = [
         area: '長野県', url: 'https://www.yarigatake.co.jp/',
         category: 'trekking', activities: ['trekking', 'nature'],
         bestMonths: [7, 8, 9],
-        difficulty: 5, courseTime: '18時間(2泊)', features: ['日本百名山', 'きけんないわば', 'はしご・くさり']
+        difficulty: 5, courseTime: '18時間(2泊)', features: ['日本百名山', 'きけんないわば', 'はしご・くさり'],
+        hut: 'あり(有人)', tent: 'あり', water: '豊富'
     },
     {
         id: 'hotakadake',
@@ -241,7 +258,8 @@ export const SUMMER_SPOTS: SummerSpot[] = [
         area: '長野県', url: 'https://www.kamikochi.or.jp/',
         category: 'trekking', activities: ['trekking', 'nature'],
         bestMonths: [7, 8, 9],
-        difficulty: 5, courseTime: '16時間(2泊)', features: ['日本百名山', 'きけんないわば', 'にほん だい3い']
+        difficulty: 5, courseTime: '16時間(2泊)', features: ['日本百名山', 'きけんないわば', 'にほん だい3い'],
+        hut: 'あり(有人)', tent: 'あり', water: '豊富'
     },
     {
         id: 'tsurugidake',
@@ -250,7 +268,8 @@ export const SUMMER_SPOTS: SummerSpot[] = [
         area: '富山県', url: 'https://toyama-angeltour.co.jp/',
         category: 'trekking', activities: ['trekking', 'nature'],
         bestMonths: [7, 8, 9],
-        difficulty: 5, courseTime: '15時間(1〜2泊)', features: ['日本百名山', 'いっぱんルート さいこうなんど', 'カニのタテバイ']
+        difficulty: 5, courseTime: '15時間(1〜2泊)', features: ['日本百名山', 'いっぱんルート さいこうなんど', 'カニのタテバイ'],
+        hut: 'あり(有人)', tent: 'あり', water: '要かくにん'
     },
     {
         id: 'fujisan',
@@ -259,7 +278,8 @@ export const SUMMER_SPOTS: SummerSpot[] = [
         area: '静岡県', url: 'https://www.fujisan-climb.jp/',
         category: 'trekking', activities: ['trekking', 'nature'],
         bestMonths: [7, 8],
-        difficulty: 4, courseTime: '12時間(1泊)', features: ['日本百名山', 'にほん いちの やま', 'こうざんびょうに ちゅうい']
+        difficulty: 4, courseTime: '12時間(1泊)', features: ['日本百名山', 'にほん いちの やま', 'こうざんびょうに ちゅうい'],
+        hut: 'あり(有人)', tent: 'なし', water: '要かくにん'
     },
 
     // ============================

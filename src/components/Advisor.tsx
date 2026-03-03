@@ -428,6 +428,25 @@ export default function Advisor({ resorts, onFilterChange, currentFilter, onSear
                                         </div>
                                     </div>
 
+                                    {/* AIからの強い警告 (雷や暴風) */}
+                                    {isSummer && resort.category === 'trekking' && (resort.weather.weather_code >= 95 || resort.weather.wind >= 10) && (
+                                        <div style={{
+                                            marginTop: '6px',
+                                            padding: '6px',
+                                            background: 'rgba(255, 0, 0, 0.15)',
+                                            border: '1px dashed var(--dq-text-red)',
+                                            borderRadius: '4px',
+                                            color: 'var(--dq-text-red)',
+                                            fontSize: '11px',
+                                            fontWeight: 'bold',
+                                            lineHeight: '1.4',
+                                        }}>
+                                            {resort.weather.weather_code >= 95
+                                                ? '💬 ＡＩの げき：\nごごから かみなりが あれるらしい。\nきょうは ぜったいに やめておけ！'
+                                                : '💬 ＡＩの げき：\nやま は ぼうふうだ。いのちの きき。\nはやてのリング（はやで）が ひつようだ。'}
+                                        </div>
+                                    )}
+
                                     {/* 下段: ステータスバー */}
                                     <div style={{
                                         marginTop: '6px',
