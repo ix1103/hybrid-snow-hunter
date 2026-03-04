@@ -11,6 +11,7 @@ const dotGothic = DotGothic16({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://yamakon.vercel.app'),
   title: "やま▲こん～やまのゆうしゃたち～",
   description: "日本全国の名峰のコンディションをRPG風に冒険しよう！山の勇者よ、最高の景色を求めて旅立て！",
   icons: {

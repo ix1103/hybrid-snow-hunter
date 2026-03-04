@@ -1,5 +1,6 @@
 'use client';
 
+import { useEffect } from 'react';
 import { useSeason } from '@/lib/season';
 import { SpotWithWeather } from '@/lib/spot_types';
 import {
@@ -42,6 +43,17 @@ export default function ResortDetailModal({
     const { season } = useSeason();
     const isSummer = season === 'summer';
 
+    // --- アクセシビリティ：Escapeキーで閉じる ---
+    useEffect(() => {
+        const handleKeyDown = (e: KeyboardEvent) => {
+            if (e.key === 'Escape') {
+                onClose();
+            }
+        };
+        window.addEventListener('keydown', handleKeyDown);
+        return () => window.removeEventListener('keydown', handleKeyDown);
+    }, [onClose]);
+
     // --- 各種計算 ---
     const condition = isSummer
         ? calculateSummerScore(resort.weather, resort.bestMonths, resort.elevation)
@@ -61,6 +73,8 @@ export default function ResortDetailModal({
             className="fixed inset-0 z-[2000] flex items-center justify-center p-4 dq-fade-in"
             style={{ background: 'rgba(0, 0, 0, 0.75)' }}
             onClick={onClose}
+            role="dialog"
+            aria-modal="true"
         >
             <div
                 className="dq-window relative flex flex-col"

@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "test": "jest"
+    "test": "jest",
+    "verify-links": "npx --yes tsx scripts/verify_links.ts"
   },
   "dependencies": {
     "leaflet": "^1.9.4",

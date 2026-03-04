@@ -29,6 +29,7 @@ interface DashboardProps {
 export default function Dashboard({ initialResorts, initialSummerSpots }: DashboardProps) {
     const [spots, setSpots] = useState<SpotWithWeather[]>([]);
     const [isLoading, setIsLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
     const [filter, setFilter] = useState<string>('all');
     const [searchQuery, setSearchQuery] = useState('');
     const [selectedArea, setSelectedArea] = useState<string>('all');
@@ -56,6 +57,7 @@ export default function Dashboard({ initialResorts, initialSummerSpots }: Dashbo
 
         async function loadWeatherData() {
             setIsLoading(true);
+            setError(null);
             const BATCH_SIZE = 5; // バッチサイズを縮小してAPI制限を回避
             const allResults: SpotWithWeather[] = [];
             const sourceData = isSummer ? initialSummerSpots : initialResorts;
@@ -86,9 +88,14 @@ export default function Dashboard({ initialResorts, initialSummerSpots }: Dashbo
                         await new Promise(resolve => setTimeout(resolve, 200));
                     }
                 }
-            } catch (error) {
-                console.error("天気データの取得に失敗:", error);
-                if (!isCancelled) setIsLoading(false);
+            } catch (err) {
+                console.error("天気データの取得に失敗:", err);
+                if (!isCancelled) {
+                    setIsLoading(false);
+                    setError(isSummer
+                        ? 'てんきの じょうほうが よみとれなかった！\nしばし まってから やりなおしてくれ。'
+                        : 'ふぶきで まえが みえない！\nしばし まってから やりなおしてくれ。');
+                }
             }
         }
 
@@ -290,6 +297,27 @@ export default function Dashboard({ initialResorts, initialSummerSpots }: Dashbo
                     onRemove={removeFromCompare}
                     onClose={() => setShowCompare(false)}
                 />
+            )}
+
+            {/* ===== エラー表示 ===== */}
+            {error && (
+                <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-[3000] p-4 dq-fade-in w-full max-w-[320px]">
+                    <div className="dq-window" style={{ padding: '16px', textAlign: 'center', boxShadow: '0 8px 32px rgba(0,0,0,0.8)' }}>
+                        <div style={{ color: 'var(--dq-text-red)', fontWeight: 'bold', marginBottom: '12px' }}>
+                            ⚠️ つうしんエラー
+                        </div>
+                        <div style={{ fontSize: '13px', color: 'var(--dq-text)', whiteSpace: 'pre-wrap', lineHeight: '1.6' }}>
+                            {error}
+                        </div>
+                        <button
+                            onClick={() => setError(null)}
+                            className="dq-command"
+                            style={{ width: '100%', marginTop: '16px', padding: '8px 16px', fontSize: '13px', textAlign: 'center' }}
+                        >
+                            ▼ とじる
+                        </button>
+                    </div>
+                </div>
             )}
         </div>
     );
