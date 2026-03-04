@@ -7,7 +7,6 @@ import ResortDetailModal from '@/components/ResortDetailModal';
 import ComparePanel from '@/components/ComparePanel';
 import { Resort } from '@/lib/resorts_data';
 import { SummerSpot } from '@/lib/summer_spots_data';
-import { WeatherData } from '@/lib/scoring';
 import { fetchResortWeather } from '@/lib/weather';
 import { useSeason } from '@/lib/season';
 import { SpotWithWeather, resortToSpot, summerSpotToSpot } from '@/lib/spot_types';
@@ -57,7 +56,7 @@ export default function Dashboard({ initialResorts, initialSummerSpots }: Dashbo
 
         async function loadWeatherData() {
             setIsLoading(true);
-            const BATCH_SIZE = 10;
+            const BATCH_SIZE = 5; // バッチサイズを縮小してAPI制限を回避
             const allResults: SpotWithWeather[] = [];
             const sourceData = isSummer ? initialSummerSpots : initialResorts;
             try {
@@ -80,7 +79,12 @@ export default function Dashboard({ initialResorts, initialSummerSpots }: Dashbo
 
                     allResults.push(...batchResults);
                     setSpots([...allResults]);
-                    if (i === 0) setIsLoading(false);
+                    if (i === 0) setIsLoading(false); // 最初のバッチ表示で即座にローディングを解除
+
+                    // APIのレート制限を回避するためのディレイ
+                    if (i + BATCH_SIZE < sourceData.length) {
+                        await new Promise(resolve => setTimeout(resolve, 200));
+                    }
                 }
             } catch (error) {
                 console.error("天気データの取得に失敗:", error);
@@ -229,7 +233,7 @@ export default function Dashboard({ initialResorts, initialSummerSpots }: Dashbo
                 ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}`}
                 style={{ background: 'var(--dq-bg-dark)' }}>
                 <Advisor
-                    resorts={filteredSpots as any}
+                    resorts={filteredSpots}
                     searchQuery={searchQuery}
                     onSearchChange={setSearchQuery}
                     currentFilter={filter}
@@ -237,7 +241,7 @@ export default function Dashboard({ initialResorts, initialSummerSpots }: Dashbo
                     selectedArea={selectedArea}
                     onAreaChange={setSelectedArea}
                     uniqueAreas={uniqueAreas}
-                    onResortClick={handleSpotClick as any}
+                    onResortClick={handleSpotClick}
                     favorites={favorites}
                     onToggleFavorite={toggleFavorite}
                 />
@@ -245,11 +249,11 @@ export default function Dashboard({ initialResorts, initialSummerSpots }: Dashbo
 
             <div className="flex-1 h-full relative z-[1000]">
                 <Map
-                    resorts={filteredSpots as any}
-                    selectedResort={selectedSpot as any}
+                    resorts={filteredSpots}
+                    selectedResort={selectedSpot}
                     favorites={favorites}
                     onToggleFavorite={toggleFavorite}
-                    onResortClick={handleSpotClick as any}
+                    onResortClick={handleSpotClick}
                 />
                 <div className="absolute top-16 md:top-3 right-3 z-[1000] dq-window"
                     style={{ padding: '8px 16px', fontSize: '13px' }}>
@@ -272,17 +276,17 @@ export default function Dashboard({ initialResorts, initialSummerSpots }: Dashbo
 
             {detailSpot && (
                 <ResortDetailModal
-                    resort={detailSpot as any}
+                    resort={detailSpot}
                     isFavorite={favorites.has(detailSpot.id)}
                     isInCompare={compareList.some(r => r.id === detailSpot.id)}
                     onClose={() => setDetailSpot(null)}
                     onToggleFavorite={toggleFavorite}
-                    onToggleCompare={toggleCompare as any}
+                    onToggleCompare={toggleCompare}
                 />
             )}
             {showCompare && compareList.length > 0 && (
                 <ComparePanel
-                    resorts={compareList as any}
+                    resorts={compareList}
                     onRemove={removeFromCompare}
                     onClose={() => setShowCompare(false)}
                 />

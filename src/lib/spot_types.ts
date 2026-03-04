@@ -37,6 +37,8 @@ export type SpotWithWeather = SpotBase & {
     water?: string;
     summer_url?: string;
     summer_activities?: string[];
+    // 登山スタイル（バリエーション・アルパイン等）
+    climbingStyle?: 'trekking' | 'scrambling' | 'variation' | 'alpine';
 };
 
 // --- Resort → SpotWithWeather 変換 ---
@@ -61,5 +63,6 @@ export function summerSpotToSpot(spot: SummerSpot & { weather: WeatherData }): S
         hut: spot.hut,
         tent: spot.tent,
         water: spot.water,
+        climbingStyle: spot.climbingStyle,
     };
 }

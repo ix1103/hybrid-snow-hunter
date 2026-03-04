@@ -52,8 +52,8 @@ export function SeasonProvider({ children }: { children: ReactNode }) {
         const next = season === 'winter' ? 'summer' : 'winter';
         localStorage.setItem(SEASON_STORAGE_KEY, next);
         setIsManualOverride(true);
-        // ページリロードでデータソースを切り替え
-        window.location.reload();
+        // SPAとしてStateを更新して切り替え
+        setSeason(next);
     };
 
     // body にクラスを付与してCSSテーマを切り替え

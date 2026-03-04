@@ -38,7 +38,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ja">
-      <body className={`${dotGothic.variable} antialiased season-winter`} style={{ fontFamily: "var(--font-pixel)" }}>
+      <body className={`${dotGothic.variable} antialiased`} style={{ fontFamily: "var(--font-pixel)" }}>
         <Providers>
           {children}
         </Providers>

@@ -3,22 +3,23 @@
 import { MapContainer, TileLayer, Marker, useMap } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
-import { Resort } from '@/lib/resorts_data';
 import { WeatherData, calculateConditionScore } from '@/lib/scoring';
 import { calculateSummerScore } from '@/lib/scoring_summer';
 import { useSeason } from '@/lib/season';
+import { SpotWithWeather } from '@/lib/spot_types';
 import { useEffect } from 'react';
 
+// --- Map コンポーネントの Props 型（SpotWithWeather ベース） ---
 export interface MapProps {
-    resorts: (Resort & { weather: WeatherData })[];
-    selectedResort: (Resort & { weather: WeatherData }) | null;
+    resorts: SpotWithWeather[];
+    selectedResort: SpotWithWeather | null;
     favorites: Set<string>;
     onToggleFavorite: (id: string) => void;
-    onResortClick?: (resort: Resort & { weather: WeatherData }) => void;
+    onResortClick?: (resort: SpotWithWeather) => void;
 }
 
 // 地図の移動を制御するサブコンポーネント
-function MapController({ selectedResort }: { selectedResort: (Resort & { weather: WeatherData }) | null }) {
+function MapController({ selectedResort }: { selectedResort: SpotWithWeather | null }) {
     const map = useMap();
 
     useEffect(() => {
@@ -52,7 +53,7 @@ const getSummerColor = (score: number) => {
 };
 
 // ▼マーカー + ラベルのアイコン生成（季節対応・難易度対応）
-const createDQMarkerIcon = (score: number, resort: any, isSummer: boolean) => {
+const createDQMarkerIcon = (score: number, resort: SpotWithWeather, isSummer: boolean) => {
     let color = isSummer ? getSummerColor(score) : getWinterColor(score);
     let levelLabel = isSummer ? `避${score}℃` : `Lv${score}`;
     let iconSymbol = '▼';
@@ -132,13 +133,13 @@ const createDQMarkerIcon = (score: number, resort: any, isSummer: boolean) => {
 };
 
 function ResortMarker({ resort, onResortClick, isSummer }: {
-    resort: Resort & { weather: WeatherData },
-    onResortClick?: (resort: Resort & { weather: WeatherData }) => void,
+    resort: SpotWithWeather,
+    onResortClick?: (resort: SpotWithWeather) => void,
     isSummer: boolean,
 }) {
     // 季節に応じてスコア計算を切り替え
     const condition = isSummer
-        ? calculateSummerScore(resort.weather, (resort as any).bestMonths, resort.elevation)
+        ? calculateSummerScore(resort.weather, resort.bestMonths, resort.elevation)
         : calculateConditionScore(resort.weather);
     const markerIcon = createDQMarkerIcon(condition.score, resort, isSummer);
 

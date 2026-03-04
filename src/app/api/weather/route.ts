@@ -34,7 +34,9 @@ export async function GET(request: NextRequest) {
         }
 
         const data = await res.json();
-        return NextResponse.json(data);
+        const response = NextResponse.json(data);
+        response.headers.set('Cache-Control', 'public, s-maxage=600, stale-while-revalidate=3600');
+        return response;
     } catch (error) {
         console.error('Weather API proxy error:', error);
         return NextResponse.json({ error: 'Internal server error' }, { status: 500 });

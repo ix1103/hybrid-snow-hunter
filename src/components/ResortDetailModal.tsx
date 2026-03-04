@@ -1,55 +1,34 @@
 'use client';
 
-import { Resort } from '@/lib/resorts_data';
-import { WeatherData, calculateConditionScore, getWeatherLabel, getSnowQuality, calculateWindChill, getClothingAdvice, generateAIAnalysis, generateWeekSummary } from '@/lib/scoring';
-import { calculateSummerScore, generateSummerAnalysis, generateSummerWeekSummary } from '@/lib/scoring_summer';
 import { useSeason } from '@/lib/season';
+import { SpotWithWeather } from '@/lib/spot_types';
+import {
+    calculateConditionScore,
+    getWeatherLabel,
+    getSnowQuality,
+    calculateWindChill,
+    getClothingAdvice,
+    generateAIAnalysis
+} from '@/lib/scoring';
+import {
+    calculateSummerScore,
+    generateSummerAnalysis
+} from '@/lib/scoring_summer';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-type AnySpot = any;
+// サブコンポーネント群
+import { ModalHeader } from './detail/ModalHeader';
+import SummerStatus from './detail/SummerStatus';
+import WinterStatus from './detail/WinterStatus';
+import WeeklyForecast from './detail/WeeklyForecast';
+import ModalActions from './detail/ModalActions';
 
-interface ResortDetailModalProps {
-    resort: AnySpot;
+export interface ResortDetailModalProps {
+    resort: SpotWithWeather;
     isFavorite: boolean;
     isInCompare: boolean;
     onClose: () => void;
     onToggleFavorite: (id: string) => void;
-    onToggleCompare: (resort: AnySpot) => void;
-}
-
-const dayNames = ['日', '月', '火', '水', '木', '金', '土'];
-
-function getWeatherEmoji(code: number): string {
-    if (code === 0) return '☀️';
-    if (code >= 1 && code <= 3) return '☁️';
-    if (code === 45 || code === 48) return '🌫️';
-    if (code >= 51 && code <= 55) return '🌦️';
-    if (code >= 61 && code <= 65) return '☔';
-    if (code >= 71 && code <= 77) return '❄️';
-    if (code >= 80 && code <= 82) return '🌂';
-    if (code >= 85 && code <= 86) return '🌨️';
-    if (code >= 95 && code <= 99) return '⚡';
-    return '❓';
-}
-
-// スコアからDQ3風のランク名を返す（冬・夏共用）
-function getDQRank(score: number, isSummer: boolean): string {
-    if (isSummer) {
-        if (score >= 90) return 'ひしょのせいち';
-        if (score >= 80) return 'おすすめきゅう';
-        if (score >= 70) return 'かいてきど たかい';
-        if (score >= 60) return 'まあまあ';
-        if (score >= 40) return 'ふつう';
-        return 'きょうははやめに';
-    }
-    if (score >= 90) return 'けんじゃ';
-    if (score >= 80) return 'ゆうしゃ';
-    if (score >= 70) return 'まほうつかい';
-    if (score >= 60) return 'せんし';
-    if (score >= 50) return 'ぶとうか';
-    if (score >= 40) return 'そうりょ';
-    if (score >= 30) return 'あそびにん';
-    return 'しょにん';
+    onToggleCompare: (resort: SpotWithWeather) => void;
 }
 
 export default function ResortDetailModal({
@@ -58,806 +37,89 @@ export default function ResortDetailModal({
     isInCompare,
     onClose,
     onToggleFavorite,
-    onToggleCompare,
+    onToggleCompare
 }: ResortDetailModalProps) {
     const { season } = useSeason();
     const isSummer = season === 'summer';
 
-    // 季節に応じてスコア・コメントを切り替え
+    // --- 各種計算 ---
     const condition = isSummer
         ? calculateSummerScore(resort.weather, resort.bestMonths, resort.elevation)
         : calculateConditionScore(resort.weather);
+
     const weatherLabel = getWeatherLabel(resort.weather.weather_code);
     const snowQuality = isSummer ? null : getSnowQuality(resort.weather);
-    const windChill = calculateWindChill(resort.weather.temp, resort.weather.wind);
-    const clothingAdvice = getClothingAdvice(windChill);
+    const windChill = isSummer ? 0 : calculateWindChill(resort.weather.temp, resort.weather.wind);
+    const clothingAdvice = isSummer ? '' : getClothingAdvice(windChill);
+
     const aiComment = isSummer
         ? generateSummerAnalysis(resort.name, resort.area, resort.weather)
         : generateAIAnalysis(resort.name, resort.area, resort.weather);
 
-    // 公式サイトURL（季節対応）
-    const officialUrl = isSummer
-        ? (resort.summer_url || resort.url)
-        : resort.url;
-    const officialUrlLabel = isSummer ? '🌿 なつのこうしきサイトへ' : '⛷ こうしきサイトへ';
-
-    // tenki.jp検索リンク
-    const tenkiUrl = `https://www.google.com/search?q=${encodeURIComponent(resort.name + ' tenki.jp スキー場')}`;
-
-    const getLevelColor = (score: number) => {
-        if (score >= 80) return 'var(--dq-text-gold)';
-        if (score >= 60) return 'var(--dq-text-green)';
-        if (score >= 40) return 'var(--dq-text-blue)';
-        return 'var(--dq-text-dim)';
-    };
-
     return (
         <div
-            className="fixed inset-0 z-[3000] flex items-end sm:items-center justify-center dq-fade-in"
-            style={{ background: 'rgba(0, 0, 0, 0.8)', padding: '0' }}
+            className="fixed inset-0 z-[2000] flex items-center justify-center p-4 dq-fade-in"
+            style={{ background: 'rgba(0, 0, 0, 0.75)' }}
             onClick={onClose}
         >
             <div
-                className="dq-window dq-fade-in"
+                className="dq-window relative flex flex-col"
                 style={{
                     width: '100%',
-                    maxWidth: '480px',
-                    maxHeight: '92dvh',
-                    display: 'flex',
-                    flexDirection: 'column',
+                    maxWidth: '400px',
+                    maxHeight: '90vh',
+                    padding: '16px',
                     overflow: 'hidden',
-                    margin: '0 auto',
-                    borderRadius: '12px 12px 0 0',
                 }}
                 onClick={e => e.stopPropagation()}
             >
-                {/* ===== ヘッダー（DQ3「つよさ」画面風） ===== */}
+                {/* ヘッダー情報（名前、お気に入り、レベル表示） */}
+                <ModalHeader
+                    resort={resort}
+                    condition={condition}
+                    isSummer={isSummer}
+                    isFavorite={isFavorite}
+                    onToggleFavorite={onToggleFavorite}
+                    onClose={onClose}
+                />
+
+                {/* スクロール可能なコンテンツ領域 */}
                 <div style={{
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    alignItems: 'flex-start',
-                    paddingBottom: '12px',
-                    borderBottom: '1px dashed var(--dq-window-border-inner)',
-                    flexShrink: 0,
-                }}>
-                    <div style={{ flex: 1 }}>
-                        <div style={{
-                            fontSize: '10px',
-                            color: 'var(--dq-text-dim)',
-                            letterSpacing: '0.15em',
-                            textTransform: 'uppercase',
-                        }}>
-                            {resort.area}
-                        </div>
-                        <div style={{
-                            fontSize: '20px',
-                            color: 'var(--dq-text)',
-                            fontWeight: 'bold',
-                            marginTop: '2px',
-                        }}>
-                            {resort.name}
-                        </div>
-                    </div>
-                    <div style={{ display: 'flex', gap: '8px' }}>
-                        <button
-                            onClick={() => onToggleFavorite(resort.id)}
-                            style={{
-                                background: 'none',
-                                border: 'none',
-                                cursor: 'pointer',
-                                fontSize: '20px',
-                            }}
-                        >
-                            {isFavorite ? '⭐' : '☆'}
-                        </button>
-                        <button
-                            onClick={onClose}
-                            style={{
-                                background: 'none',
-                                border: 'none',
-                                color: 'var(--dq-text-dim)',
-                                cursor: 'pointer',
-                                fontSize: '18px',
-                            }}
-                        >
-                            ✕
-                        </button>
-                    </div>
-                </div>
+                    flex: 1,
+                    overflowY: 'auto',
+                    paddingRight: '4px',
+                    marginTop: '16px',
+                }} className="dq-scrollbar">
 
-                {/* ===== レベル＋ランク表示 ===== */}
-                <div style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '16px',
-                    padding: '12px 0',
-                    borderBottom: '1px dashed var(--dq-window-border-inner)',
-                    flexShrink: 0,
-                }}>
-                    {/* レベル */}
-                    <div style={{
-                        background: 'rgba(0, 0, 0, 0.3)',
-                        borderRadius: '8px',
-                        padding: '8px 16px',
-                        textAlign: 'center',
-                        border: '1px solid var(--dq-window-border-inner)',
-                    }}>
-                        <div style={{
-                            fontSize: '28px',
-                            fontWeight: 'bold',
-                            color: getLevelColor(condition.score),
-                        }} className="dq-glow">
-                            {isSummer ? `☀️${condition.score}` : `Lv.${condition.score}`}
-                        </div>
-                        <div style={{ fontSize: '10px', color: 'var(--dq-text-dim)' }}>/ 100</div>
-                    </div>
-                    {/* ランク名＋ひとこと */}
-                    <div>
-                        <div style={{
-                            fontSize: '16px',
-                            fontWeight: 'bold',
-                            color: getLevelColor(condition.score),
-                        }}>
-                            {getDQRank(condition.score, isSummer)}
-                        </div>
-                        <div style={{ fontSize: '12px', color: 'var(--dq-text-dim)', marginTop: '2px' }}>
-                            {condition.details}
-                        </div>
-                    </div>
-                </div>
-
-                {/* ===== スクロール可能コンテンツ ===== */}
-                <div style={{ overflowY: 'auto', flex: 1, paddingTop: '12px' }}>
-
-
-
-                    {/* 夏モード: アクティビティバッジ（activitiesから読み取り） */}
-                    {isSummer && resort.activities && resort.activities.length > 0 && (
-                        <div style={{ marginBottom: '12px' }}>
-                            <div style={{
-                                fontSize: '11px',
-                                color: 'var(--dq-text-green)',
-                                marginBottom: '6px',
-                                letterSpacing: '0.1em',
-                            }}>
-                                🌿 ここで できること
-                            </div>
-                            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px' }}>
-                                {resort.activities.map((activity: string) => {
-                                    const badges: Record<string, { emoji: string; label: string }> = {
-                                        mtb: { emoji: '🚵', label: 'MTB' },
-                                        trekking: { emoji: '🥾', label: 'トレッキング' },
-                                        camp: { emoji: '🏕️', label: 'キャンプ' },
-                                        nature: { emoji: '🌸', label: '自然観察' },
-                                        gondola: { emoji: '🚡', label: 'ゴンドラ' },
-                                        river: { emoji: '🌊', label: '川遊び・SUP' },
-                                        onsen: { emoji: '♨️', label: '温泉' },
-                                    };
-                                    const badge = badges[activity];
-                                    if (!badge) return null;
-                                    return (
-                                        <span key={activity} style={{
-                                            padding: '3px 8px',
-                                            borderRadius: '12px',
-                                            fontSize: '11px',
-                                            background: 'rgba(68, 255, 136, 0.1)',
-                                            border: '1px solid rgba(68, 255, 136, 0.3)',
-                                            color: 'var(--dq-text-green)',
-                                        }}>
-                                            {badge.emoji} {badge.label}
-                                        </span>
-                                    );
-                                })}
-                            </div>
-                        </div>
-                    )}
-
-                    {/* ===== ステータス一覧 ===== */}
                     {isSummer ? (
-                        /* ===== 夏モード専用ステータス ===== */
-                        <>
-                            {/* ========================================== */}
-                            {/* 1. 難易度 + コースタイム（最上部・最優先） */}
-                            {/* ========================================== */}
-                            {resort.category === 'trekking' && resort.difficulty && (
-                                <div style={{
-                                    background: 'rgba(0,0,0,0.4)',
-                                    borderRadius: '8px',
-                                    border: '1px solid var(--dq-window-border-inner)',
-                                    padding: '12px',
-                                    marginBottom: '12px',
-                                }}>
-                                    {/* 難易度ヘッダー: DQランク名 + ★表示 */}
-                                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
-                                        <div>
-                                            <div style={{ fontSize: '10px', color: 'var(--dq-text-dim)', marginBottom: '2px' }}>
-                                                ⚔️ なんいど
-                                                {/* バリエーション・アルパインの場合は💀バッジ */}
-                                                {(resort.climbingStyle === 'variation' || resort.climbingStyle === 'alpine') && (
-                                                    <span style={{
-                                                        marginLeft: '8px', padding: '2px 6px',
-                                                        background: 'rgba(255, 0, 0, 0.2)', border: '1px solid #ff4444',
-                                                        borderRadius: '4px', color: '#ff4444', fontSize: '10px',
-                                                        animation: 'dq-blink 1.5s infinite'
-                                                    }}>
-                                                        💀 {resort.climbingStyle === 'alpine' ? 'アルパイン' : 'バリエーション'}
-                                                    </span>
-                                                )}
-                                            </div>
-                                            <div style={{
-                                                fontSize: '16px', fontWeight: 'bold',
-                                                color: resort.climbingStyle === 'alpine' ? '#cc0000' :
-                                                    resort.climbingStyle === 'variation' ? '#ff4444' :
-                                                        resort.difficulty >= 5 ? '#ff4444' :
-                                                            resort.difficulty >= 4 ? 'var(--dq-text-gold)' :
-                                                                resort.difficulty >= 3 ? 'var(--dq-text-green)' :
-                                                                    'var(--dq-text-blue)',
-                                            }}>
-                                                {resort.climbingStyle === 'alpine' ? 'しんわきゅう' :
-                                                    resort.climbingStyle === 'variation' ? 'まおうきゅう' :
-                                                        resort.difficulty >= 5 ? 'でんせつきゅう' :
-                                                            resort.difficulty >= 4 ? 'ベテランきゅう' :
-                                                                resort.difficulty >= 3 ? 'ちゅうきゅうしゃ' :
-                                                                    resort.difficulty >= 2 ? 'しょしん＋' :
-                                                                        'スライムきゅう'}
-                                            </div>
-                                        </div>
-                                        <div style={{ textAlign: 'right' }}>
-                                            <div style={{ fontSize: '16px', color: 'var(--dq-text-gold)', letterSpacing: '2px' }}>
-                                                {'★'.repeat(resort.difficulty)}{'☆'.repeat(5 - resort.difficulty)}
-                                            </div>
-                                            <div style={{ fontSize: '10px', color: 'var(--dq-text-dim)' }}>
-                                                {resort.climbingStyle === 'alpine' ? 'Lv.∞' :
-                                                    resort.climbingStyle === 'variation' ? 'Lv.6' :
-                                                        `Lv.${resort.difficulty}`}
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    {/* 高難度ルート警告バナー */}
-                                    {(resort.climbingStyle === 'variation' || resort.climbingStyle === 'alpine') && (
-                                        <div style={{
-                                            background: 'rgba(255, 0, 0, 0.1)',
-                                            borderLeft: '4px solid #ff4444',
-                                            padding: '8px',
-                                            marginBottom: '12px',
-                                            fontSize: '11px',
-                                            color: '#ffdddd',
-                                            lineHeight: '1.4'
-                                        }}>
-                                            ⚠️ <b>けいこく</b><br />
-                                            このルートは いっぱんの やまのぼりでは ありません。<br />
-                                            読図（どくず）、ロープワーク、岩壁登攀（がんぺきとうはん）などの <b>せんもんてきな クライミング ぎじゅつ</b> が ひつようです。
-                                        </div>
-                                    )}
-
-                                    {/* コースタイム + スタミナゲージ */}
-                                    {resort.courseTime && (
-                                        <div style={{ marginTop: '4px' }}>
-                                            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px', marginBottom: '4px' }}>
-                                                <span style={{ color: 'var(--dq-text-dim)' }}>🕐 コースタイム</span>
-                                                <span style={{ color: 'var(--dq-text)', fontWeight: 'bold' }}>{resort.courseTime}</span>
-                                            </div>
-                                            {/* スタミナゲージ（HPバー風） */}
-                                            <div style={{ position: 'relative', height: '12px', background: 'rgba(0,0,0,0.6)', borderRadius: '6px', overflow: 'hidden', border: '1px solid rgba(255,255,255,0.1)' }}>
-                                                <div style={{
-                                                    height: '100%',
-                                                    width: `${Math.min(100, (resort.difficulty / 5) * 100)}%`,
-                                                    background: resort.difficulty >= 5 ? 'linear-gradient(90deg, #ff4444, #ff8800)' :
-                                                        resort.difficulty >= 4 ? 'linear-gradient(90deg, #ffd700, #ff8800)' :
-                                                            resort.difficulty >= 3 ? 'linear-gradient(90deg, #44ff88, #ffd700)' :
-                                                                'linear-gradient(90deg, #44aaff, #44ff88)',
-                                                    borderRadius: '6px',
-                                                    transition: 'width 0.5s ease',
-                                                }} />
-                                                <div style={{ position: 'absolute', top: 0, left: '6px', fontSize: '9px', color: '#fff', lineHeight: '12px', textShadow: '0 0 2px rgba(0,0,0,0.8)' }}>
-                                                    ST（スタミナ）
-                                                </div>
-                                            </div>
-                                        </div>
-                                    )}
-
-                                    {/* 特徴タグ */}
-                                    {resort.features && resort.features.length > 0 && (
-                                        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px', marginTop: '8px' }}>
-                                            {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
-                                            {resort.features.map((f: any) => (
-                                                <span key={f} style={{
-                                                    fontSize: '10px', padding: '2px 8px',
-                                                    background: 'rgba(255, 215, 0, 0.1)',
-                                                    border: '1px solid rgba(255, 215, 0, 0.3)',
-                                                    borderRadius: '10px', color: 'var(--dq-text-gold)',
-                                                }}>
-                                                    {f}
-                                                </span>
-                                            ))}
-                                        </div>
-                                    )}
-                                </div>
-                            )}
-
-                            {/* ========================================== */}
-                            {/* 2. 標高 + 山頂気温 + 凍結リスク            */}
-                            {/* ========================================== */}
-                            <div style={{
-                                display: 'grid',
-                                gridTemplateColumns: resort.category === 'trekking' ? '1fr 1fr' : '1fr 1fr 1fr',
-                                gap: '8px',
-                                marginBottom: '12px',
-                            }}>
-                                {/* 標高 */}
-                                <div style={{
-                                    background: 'rgba(0, 0, 0, 0.3)',
-                                    borderRadius: '6px', padding: '10px', textAlign: 'center',
-                                    border: '1px solid var(--dq-window-border-inner)',
-                                }}>
-                                    <div style={{ fontSize: '18px', marginBottom: '4px' }}>⛰️</div>
-                                    <div style={{ fontSize: '18px', fontWeight: 'bold', color: 'var(--dq-text)' }}>
-                                        {resort.elevation ?? '--'}<span style={{ fontSize: '10px', fontWeight: 'normal' }}>m</span>
-                                    </div>
-                                    <div style={{ fontSize: '10px', color: 'var(--dq-text-dim)' }}>ひょうこう</div>
-                                </div>
-                                {resort.category === 'trekking' && resort.elevation ? (
-                                    /* やまのぼり: 山頂気温を表示 */
-                                    <div style={{
-                                        background: 'rgba(0, 0, 0, 0.3)',
-                                        borderRadius: '6px', padding: '10px', textAlign: 'center',
-                                        border: '1px solid var(--dq-window-border-inner)',
-                                    }}>
-                                        <div style={{ fontSize: '18px', marginBottom: '4px' }}>🏔️</div>
-                                        <div style={{
-                                            fontSize: '18px', fontWeight: 'bold',
-                                            color: (resort.weather.temp - (resort.elevation / 100 * 0.6)) < 0 ? 'var(--dq-text-blue)' : 'var(--dq-text)',
-                                        }}>
-                                            {Math.round(resort.weather.temp - (resort.elevation / 100 * 0.6))}<span style={{ fontSize: '10px', fontWeight: 'normal' }}>℃</span>
-                                        </div>
-                                        <div style={{ fontSize: '10px', color: 'var(--dq-text-dim)' }}>さんちょう きおん</div>
-                                    </div>
-                                ) : (
-                                    /* その他カテゴリ用 */
-                                    <>
-                                        <div style={{
-                                            background: 'rgba(0, 0, 0, 0.3)',
-                                            borderRadius: '6px', padding: '10px', textAlign: 'center',
-                                            border: '1px solid var(--dq-window-border-inner)',
-                                        }}>
-                                            <div style={{ fontSize: '18px', marginBottom: '4px' }}>
-                                                {(() => {
-                                                    const catIcons: Record<string, string> = {
-                                                        highland: '🏔️', trekking: '🥾', camp: '🏕️', mtb: '🚵',
-                                                    };
-                                                    return catIcons[resort.category || ''] || '🗺️';
-                                                })()}
-                                            </div>
-                                            <div style={{ fontSize: '12px', fontWeight: 'bold', color: 'var(--dq-text-green)' }}>
-                                                {(() => {
-                                                    const catLabels: Record<string, string> = {
-                                                        highland: 'ひしょち', trekking: 'やまのぼり', camp: 'キャンプ', mtb: 'MTB',
-                                                    };
-                                                    return catLabels[resort.category || ''] || 'スポット';
-                                                })()}
-                                            </div>
-                                            <div style={{ fontSize: '10px', color: 'var(--dq-text-dim)' }}>カテゴリ</div>
-                                        </div>
-                                        <div style={{
-                                            background: 'rgba(0, 0, 0, 0.3)',
-                                            borderRadius: '6px', padding: '10px', textAlign: 'center',
-                                            border: '1px solid var(--dq-window-border-inner)',
-                                        }}>
-                                            <div style={{ fontSize: '18px', marginBottom: '4px' }}>🌡️</div>
-                                            <div style={{ fontSize: '18px', fontWeight: 'bold', color: 'var(--dq-text-blue)' }}>
-                                                -{Math.max(0, Math.round(28 - resort.weather.temp))}<span style={{ fontSize: '10px', fontWeight: 'normal' }}>℃</span>
-                                            </div>
-                                            <div style={{ fontSize: '10px', color: 'var(--dq-text-dim)' }}>とかいとのさ</div>
-                                        </div>
-                                    </>
-                                )}
-                            </div>
-
-                            {/* ========================================== */}
-                            {/* 3. ⚠️ 雷・暴風アラート（トレッキング時） */}
-                            {/* ========================================== */}
-                            {resort.category === 'trekking' && (resort.weather.weather_code >= 95 || resort.weather.wind >= 10) && (
-                                <div className="dq-glow" style={{
-                                    color: 'var(--dq-text-red)', fontWeight: 'bold', fontSize: '14px',
-                                    textAlign: 'center', padding: '10px', marginBottom: '12px',
-                                    background: 'rgba(255, 0, 0, 0.1)', border: '2px solid rgba(255, 0, 0, 0.4)',
-                                    borderRadius: '6px',
-                                }}>
-                                    ⚠️ いのちのきき！ {resort.weather.weather_code >= 95 ? '⚡ かみなり ' : ''}{resort.weather.wind >= 10 ? '🌀 ぼうふう' : ''}
-                                    <div style={{ fontSize: '11px', fontWeight: 'normal', color: 'var(--dq-text)', marginTop: '4px' }}>
-                                        にゅうざんは きけんです。てったいを けんとうしてください。
-                                    </div>
-                                </div>
-                            )}
-
-                            {/* ========================================== */}
-                            {/* 4. 高度別気温予想（2000m超のトレッキング） */}
-                            {/* ========================================== */}
-                            {resort.category === 'trekking' && resort.elevation && resort.elevation > 2000 && (
-                                <div style={{ marginBottom: '12px', padding: '8px', background: 'rgba(0,0,0,0.4)', borderRadius: '6px', border: '1px solid rgba(255,255,255,0.1)' }}>
-                                    <div style={{ fontSize: '10px', color: 'var(--dq-text-dim)', marginBottom: '6px', textAlign: 'center' }}>📉 こうどべつ きおんよそう</div>
-                                    <div style={{ display: 'flex', justifyContent: 'space-around', fontSize: '11px', color: 'var(--dq-text)', textAlign: 'center' }}>
-                                        <span>ふもと<br />{resort.weather.temp}℃</span>
-                                        <span style={{ display: 'flex', alignItems: 'center', color: 'var(--dq-text-dim)' }}>→</span>
-                                        <span>2000m<br />{Math.round(resort.weather.temp - 12)}℃</span>
-                                        <span style={{ display: 'flex', alignItems: 'center', color: 'var(--dq-text-dim)' }}>→</span>
-                                        <span style={{ color: (resort.weather.temp - (resort.elevation / 100 * 0.6)) < 0 ? 'var(--dq-text-blue)' : 'var(--dq-text-orange)', fontWeight: 'bold' }}>
-                                            さんちょう<br />{Math.round(resort.weather.temp - (resort.elevation / 100 * 0.6))}℃
-                                        </span>
-                                    </div>
-                                    {(Math.round((resort.weather.temp - (resort.elevation / 100 * 0.6)) - resort.weather.wind)) < 0 && (
-                                        <div style={{ fontSize: '11px', color: 'var(--dq-text-blue)', textAlign: 'center', marginTop: '6px', fontWeight: 'bold' }}>
-                                            ❄️ とうけつリスクあり！（たいかん {Math.round((resort.weather.temp - (resort.elevation / 100 * 0.6)) - resort.weather.wind)}℃）
-                                        </div>
-                                    )}
-                                </div>
-                            )}
-
-                            {/* ========================================== */}
-                            {/* 5. 天気 + 降水確率 + 風速                  */}
-                            {/* ========================================== */}
-                            <div style={{
-                                display: 'flex', flexDirection: 'column', gap: '4px', marginBottom: '12px',
-                            }}>
-                                {[
-                                    { label: 'げんざいきおん', value: `🌡️ ${resort.weather.temp}°C` },
-                                    { label: 'てんき', value: weatherLabel },
-                                    { label: 'ふうそく', value: `💨 ${resort.weather.wind} m/s${resort.weather.wind >= 8 ? ' ⚠️' : ''}` },
-                                    ...(resort.weather.forecast && resort.weather.forecast[0] ? [{
-                                        label: '☔ こうすいかくりつ',
-                                        value: `${resort.weather.forecast[0].precipitationProb}%${resort.weather.forecast[0].precipitationProb >= 60 ? ' ⚠️あめに ちゅうい' : ''}`
-                                    }] : []),
-                                ].map(item => (
-                                    <div key={item.label} style={{
-                                        display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-                                        padding: '6px 8px', background: 'rgba(0, 0, 0, 0.2)',
-                                        borderRadius: '4px', fontSize: '12px',
-                                    }}>
-                                        <span style={{ color: 'var(--dq-text-dim)' }}>{item.label}</span>
-                                        <span style={{
-                                            color: item.label === '☔ こうすいかくりつ' && resort.weather.forecast?.[0]?.precipitationProb >= 60
-                                                ? 'var(--dq-text-red)' : 'var(--dq-text)',
-                                            fontWeight: item.label === '☔ こうすいかくりつ' && resort.weather.forecast?.[0]?.precipitationProb >= 60
-                                                ? 'bold' : 'normal',
-                                        }}>{item.value}</span>
-                                    </div>
-                                ))}
-                            </div>
-
-                            {/* ========================================== */}
-                            {/* 6. 山小屋・テント場・水場                  */}
-                            {/* ========================================== */}
-                            {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
-                            {resort.category === 'trekking' && ((resort as any).hut || (resort as any).tent || (resort as any).water) && (
-                                <div style={{
-                                    display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '6px',
-                                    marginBottom: '12px',
-                                }}>
-                                    {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
-                                    {(resort as any).hut && (
-                                        <div style={{
-                                            background: 'rgba(0,0,0,0.3)', borderRadius: '6px', padding: '8px',
-                                            textAlign: 'center', border: '1px solid var(--dq-window-border-inner)',
-                                        }}>
-                                            <div style={{ fontSize: '16px' }}>🏠</div>
-                                            <div style={{ fontSize: '10px', color: 'var(--dq-text-dim)' }}>やまごや</div>
-                                            {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
-                                            <div style={{ fontSize: '11px', color: 'var(--dq-text)', fontWeight: 'bold', marginTop: '2px' }}>{(resort as any).hut}</div>
-                                        </div>
-                                    )}
-                                    {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
-                                    {(resort as any).tent && (
-                                        <div style={{
-                                            background: 'rgba(0,0,0,0.3)', borderRadius: '6px', padding: '8px',
-                                            textAlign: 'center', border: '1px solid var(--dq-window-border-inner)',
-                                        }}>
-                                            <div style={{ fontSize: '16px' }}>⛺</div>
-                                            <div style={{ fontSize: '10px', color: 'var(--dq-text-dim)' }}>テントば</div>
-                                            {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
-                                            <div style={{ fontSize: '11px', color: 'var(--dq-text)', fontWeight: 'bold', marginTop: '2px' }}>{(resort as any).tent}</div>
-                                        </div>
-                                    )}
-                                    {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
-                                    {(resort as any).water && (
-                                        <div style={{
-                                            background: 'rgba(0,0,0,0.3)', borderRadius: '6px', padding: '8px',
-                                            textAlign: 'center', border: '1px solid var(--dq-window-border-inner)',
-                                        }}>
-                                            <div style={{ fontSize: '16px' }}>💧</div>
-                                            <div style={{ fontSize: '10px', color: 'var(--dq-text-dim)' }}>みずば</div>
-                                            {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
-                                            <div style={{ fontSize: '11px', color: 'var(--dq-text)', fontWeight: 'bold', marginTop: '2px' }}>{(resort as any).water}</div>
-                                        </div>
-                                    )}
-                                </div>
-                            )}
-
-                            {/* ========================================== */}
-                            {/* 7. 持ち物アドバイス（登山特化版）           */}
-                            {/* ========================================== */}
-                            <div style={{
-                                padding: '8px 10px',
-                                background: 'rgba(68, 255, 136, 0.08)',
-                                border: '1px solid rgba(68, 255, 136, 0.2)',
-                                borderRadius: '6px', fontSize: '12px',
-                                color: 'var(--dq-text-green)',
-                                marginBottom: '12px',
-                            }}>
-                                <div style={{ fontWeight: 'bold', marginBottom: '4px' }}>🎒 もちものリスト</div>
-                                <div style={{ lineHeight: '1.8', fontSize: '11px' }}>
-                                    {resort.category === 'trekking' ? (
-                                        <>
-                                            {/* 必須装備 */}
-                                            ✅ レインウェア・ヘッドライト・ちず<br />
-                                            {/* 気温対応 */}
-                                            {resort.weather.temp > 25
-                                                ? '✅ たいりょうの みず(2L↑)・ぼうし・ひやけどめ'
-                                                : resort.weather.temp > 15
-                                                    ? '✅ はおりもの・ひやけどめ・みず'
-                                                    : '✅ ぼうかんぎ・ダウン・てぶくろ'}
-                                            <br />
-                                            {/* 高山対応 */}
-                                            {resort.elevation && resort.elevation > 2500 && '✅ ぼうかんぎ（さんちょうは さむい）\n'}
-                                            {/* 雪渓・岩場 */}
-                                            {resort.features?.includes('アイゼン 必要') && '✅ けいアイゼン・トレッキングポール\n'}
-                                            {resort.features?.some((f: string) => f.includes('くさり') || f.includes('いわば')) && '✅ グローブ（いわば むき）\n'}
-                                            {/* 降水確率対応 */}
-                                            {resort.weather.forecast?.[0]?.precipitationProb >= 60 && '⚠️ あめよそう！ザックカバー ひっす'}
-                                        </>
-                                    ) : (
-                                        <>
-                                            {resort.weather.temp > 25 ? '✅ ひやけどめ・ぼうし・すいぶん' :
-                                                resort.weather.temp > 15 ? '✅ うすでの うわぎ・ひやけどめ' :
-                                                    '✅ ぼうかんぎ・レインウェア・すいぶん'}
-                                        </>
-                                    )}
-                                </div>
-                            </div>
-
-                            {/* ========================================== */}
-                            {/* 8. ベストシーズン                          */}
-                            {/* ========================================== */}
-                            {resort.bestMonths && resort.bestMonths.length > 0 && (
-                                <div style={{
-                                    display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-                                    padding: '6px 8px', background: 'rgba(68, 255, 136, 0.08)',
-                                    border: '1px solid rgba(68, 255, 136, 0.2)',
-                                    borderRadius: '4px', fontSize: '12px', marginBottom: '12px',
-                                }}>
-                                    <span style={{ color: 'var(--dq-text-green)' }}>📅 ベストシーズン</span>
-                                    <span style={{ color: 'var(--dq-text)' }}>
-                                        {resort.bestMonths[0]}月〜{resort.bestMonths[resort.bestMonths.length - 1]}月
-                                    </span>
-                                </div>
-                            )}
-                        </>
+                        <SummerStatus
+                            resort={resort}
+                            weatherLabel={weatherLabel}
+                        />
                     ) : (
-                        /* ===== 冬モード（従来のまま） ===== */
-                        <>
-                            <div style={{
-                                display: 'grid',
-                                gridTemplateColumns: '1fr 1fr 1fr',
-                                gap: '8px',
-                                marginBottom: '12px',
-                            }}>
-                                {/* 24h降雪 */}
-                                <div style={{
-                                    background: 'rgba(0, 0, 0, 0.3)',
-                                    borderRadius: '6px', padding: '10px', textAlign: 'center',
-                                    border: '1px solid var(--dq-window-border-inner)',
-                                }}>
-                                    <div style={{ fontSize: '18px', marginBottom: '4px' }}>❄️</div>
-                                    <div style={{ fontSize: '18px', fontWeight: 'bold', color: 'var(--dq-text-blue)' }}>
-                                        {resort.weather.snowfall_24h}<span style={{ fontSize: '10px', fontWeight: 'normal' }}>cm</span>
-                                    </div>
-                                    <div style={{ fontSize: '10px', color: 'var(--dq-text-dim)' }}>24h こうせつ</div>
-                                </div>
-                                {/* 積雪深 */}
-                                <div style={{
-                                    background: 'rgba(0, 0, 0, 0.3)',
-                                    borderRadius: '6px', padding: '10px', textAlign: 'center',
-                                    border: '1px solid var(--dq-window-border-inner)',
-                                }}>
-                                    <div style={{ fontSize: '18px', marginBottom: '4px' }}>🏔️</div>
-                                    <div style={{ fontSize: '18px', fontWeight: 'bold', color: 'var(--dq-text)' }}>
-                                        {resort.weather.snow_depth != null ? (
-                                            <>{resort.weather.snow_depth}<span style={{ fontSize: '10px', fontWeight: 'normal' }}>cm</span></>
-                                        ) : (
-                                            <span style={{ color: 'var(--dq-text-dim)' }}>--</span>
-                                        )}
-                                    </div>
-                                    <div style={{ fontSize: '10px', color: 'var(--dq-text-dim)' }}>せきせつ</div>
-                                </div>
-                                {/* 気温 */}
-                                <div style={{
-                                    background: 'rgba(0, 0, 0, 0.3)',
-                                    borderRadius: '6px', padding: '10px', textAlign: 'center',
-                                    border: '1px solid var(--dq-window-border-inner)',
-                                }}>
-                                    <div style={{ fontSize: '18px', marginBottom: '4px' }}>🌡️</div>
-                                    <div style={{ fontSize: '18px', fontWeight: 'bold', color: 'var(--dq-text-orange)' }}>
-                                        {resort.weather.temp}<span style={{ fontSize: '10px', fontWeight: 'normal' }}>°C</span>
-                                    </div>
-                                    <div style={{ fontSize: '10px', color: 'var(--dq-text-dim)' }}>きおん</div>
-                                </div>
-                            </div>
-
-                            {/* 詳細ステータス */}
-                            <div style={{
-                                display: 'flex', flexDirection: 'column', gap: '4px', marginBottom: '12px',
-                            }}>
-                                {[
-                                    { label: 'てんき', value: weatherLabel },
-                                    { label: 'ふうそく', value: `💨 ${resort.weather.wind} m/s` },
-                                    ...(snowQuality ? [{ label: 'ゆきしつ', value: snowQuality }] : []),
-                                    { label: 'たいかんおんど', value: `${windChill}°C` },
-                                ].map(item => (
-                                    <div key={item.label} style={{
-                                        display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-                                        padding: '6px 8px', background: 'rgba(0, 0, 0, 0.2)',
-                                        borderRadius: '4px', fontSize: '12px',
-                                    }}>
-                                        <span style={{ color: 'var(--dq-text-dim)' }}>{item.label}</span>
-                                        <span style={{ color: 'var(--dq-text)' }}>{item.value}</span>
-                                    </div>
-                                ))}
-                                {/* 服装アドバイス */}
-                                <div style={{
-                                    padding: '6px 8px',
-                                    background: 'rgba(255, 170, 51, 0.1)',
-                                    border: '1px solid rgba(255, 170, 51, 0.2)',
-                                    borderRadius: '4px', fontSize: '12px',
-                                    color: 'var(--dq-text-orange)',
-                                }}>
-                                    🛡️ そうび: {clothingAdvice}
-                                </div>
-                            </div>
-                        </>
+                        <WinterStatus
+                            resort={resort}
+                            weatherLabel={weatherLabel}
+                            snowQuality={snowQuality}
+                            windChill={windChill}
+                            clothingAdvice={clothingAdvice}
+                        />
                     )}
 
-                    {/* ===== 週間予報（DQ3ウィンドウ風） ===== */}
-                    {resort.weather.forecast && resort.weather.forecast.length > 0 && (
-                        <div style={{ marginBottom: '12px' }}>
-                            <div style={{
-                                display: 'flex',
-                                justifyContent: 'space-between',
-                                alignItems: 'center',
-                                marginBottom: '6px',
-                            }}>
-                                <div style={{
-                                    fontSize: '11px',
-                                    color: 'var(--dq-text-gold)',
-                                    letterSpacing: '0.1em',
-                                }}>
-                                    📅 しゅうかんよほう
-                                </div>
-                                <a
-                                    href={tenkiUrl}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    style={{
-                                        fontSize: '10px',
-                                        color: 'var(--dq-text-blue)',
-                                        textDecoration: 'none',
-                                        padding: '2px 6px',
-                                        border: '1px solid var(--dq-text-blue)',
-                                        borderRadius: '4px',
-                                        background: 'rgba(102, 187, 255, 0.1)',
-                                    }}
-                                >
-                                    tenki.jpでみる ↗
-                                </a>
-                            </div>
-                            <div style={{
-                                display: 'flex',
-                                gap: '6px',
-                                overflowX: 'auto',
-                                paddingBottom: '4px',
-                            }}>
-                                {resort.weather.forecast.map((day: any, i: number) => {
-                                    const d = new Date(day.date);
-                                    const label = i === 0 ? 'きょう' : i === 1 ? 'あした' : `${d.getMonth() + 1}/${d.getDate()}`;
-                                    const dow = dayNames[d.getDay()];
-                                    return (
-                                        <div key={day.date} style={{
-                                            flexShrink: 0,
-                                            background: 'rgba(0, 0, 0, 0.3)',
-                                            border: '1px solid var(--dq-window-border-inner)',
-                                            borderRadius: '6px',
-                                            padding: '6px 8px',
-                                            textAlign: 'center',
-                                            minWidth: '52px',
-                                        }}>
-                                            <div style={{ fontSize: '10px', color: 'var(--dq-text-dim)' }}>{label}</div>
-                                            <div style={{ fontSize: '10px', color: 'var(--dq-text-dim)' }}>{dow}</div>
-                                            <div style={{ fontSize: '18px', margin: '2px 0' }}>{getWeatherEmoji(day.weatherCode)}</div>
-                                            <div style={{ fontSize: '10px', color: 'var(--dq-text-red)' }}>{Math.round(day.maxTemp)}°</div>
-                                            <div style={{ fontSize: '10px', color: 'var(--dq-text-blue)' }}>{Math.round(day.minTemp)}°</div>
-                                            {day.precipitationProb > 30 && (
-                                                <div style={{ fontSize: '9px', color: 'var(--dq-text-blue)', marginTop: '2px' }}>
-                                                    {day.precipitationProb}%
-                                                </div>
-                                            )}
-                                        </div>
-                                    );
-                                })}
-                            </div>
-                        </div>
-                    )}
+                    {/* 週間予報 + AIコメント */}
+                    <WeeklyForecast
+                        resort={resort}
+                        aiComment={aiComment}
+                    />
 
-                    {/* ===== AIコメント（DQ3の宿屋風メッセージ） ===== */}
-                    {aiComment && (
-                        <div className="dq-window" style={{
-                            padding: '10px',
-                            marginBottom: '12px',
-                            fontSize: '12px',
-                            color: 'var(--dq-text)',
-                            lineHeight: '1.8',
-                            whiteSpace: 'pre-line',
-                        }}>
-                            <div style={{ color: 'var(--dq-text-gold)', marginBottom: '4px', fontSize: '11px' }}>
-                                📜 ルイーダのじょうほう
-                            </div>
-                            {aiComment}
-                        </div>
-                    )}
+                    {/* アクションボタン群 */}
+                    <ModalActions
+                        resort={resort}
+                        isSummer={isSummer}
+                    />
 
-
-                    {/* ===== アクションボタン（DQ3コマンド風） ===== */}
-                    <div style={{
-                        display: 'flex',
-                        gap: '8px',
-                        paddingBottom: '16px',
-                    }}>
-                        <a
-                            href={`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(resort.name + ' 駐車場')}&travelmode=driving`}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="dq-command"
-                            style={{
-                                flex: 1,
-                                textAlign: 'center',
-                                padding: '10px',
-                                border: '2px solid var(--dq-text-blue)',
-                                borderRadius: '6px',
-                                background: 'rgba(102, 187, 255, 0.1)',
-                                color: 'var(--dq-text-blue)',
-                                fontSize: '12px',
-                                fontFamily: 'var(--font-pixel)',
-                                textDecoration: 'none',
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                            }}
-                        >
-                            🗺️ ここにいく
-                        </a>
-                        {officialUrl && (
-                            <a
-                                href={officialUrl}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                style={{
-                                    flex: 1,
-                                    textAlign: 'center',
-                                    padding: '10px',
-                                    border: `1px solid ${isSummer ? 'var(--dq-text-green)' : 'var(--dq-window-border-inner)'}`,
-                                    borderRadius: '6px',
-                                    background: isSummer ? 'rgba(68, 255, 136, 0.1)' : 'rgba(0, 0, 0, 0.2)',
-                                    color: isSummer ? 'var(--dq-text-green)' : 'var(--dq-text-dim)',
-                                    fontSize: '11px',
-                                    textDecoration: 'none',
-                                    fontFamily: 'var(--font-pixel)',
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    justifyContent: 'center',
-                                }}
-                            >
-                                {officialUrlLabel}
-                            </a>
-                        )}
-                    </div>
+                    {/* ちょっと空白（スクロールの見た目のため） */}
+                    <div style={{ height: '8px' }} />
                 </div>
             </div>
         </div>

@@ -173,18 +173,6 @@ body {
   animation: dq-typewriter 0.3s ease-out forwards;
 }
 
-/* --- カーソル点滅 --- */
-@keyframes dq-blink {
-
-  0%,
-  100% {
-    opacity: 1;
-  }
-
-  50% {
-    opacity: 0;
-  }
-}
 
 /* --- 画面切り替えフェード --- */
 @keyframes dq-fade-in {

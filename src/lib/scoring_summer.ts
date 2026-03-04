@@ -137,7 +137,8 @@ export function calculateSummerScore(
         else reasons.push('シーズン外');
     }
     if (data.weather_code === 0) reasons.push('快晴');
-    if (data.weather_code >= 61 && data.weather_code < 95) reasons.push('雨に注意');
+    if (data.weather_code >= 95) reasons.push('雷雨警戒');
+    else if (data.weather_code >= 61) reasons.push('雨に注意');
     if (data.wind > 10) reasons.push('強風注意');
     if (reasons.length === 0) reasons.push('おだやかな日');
 

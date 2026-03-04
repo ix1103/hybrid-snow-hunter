@@ -5,8 +5,7 @@ import { SpotWithWeather } from '@/lib/spot_types';
 import { useSeason } from '@/lib/season';
 
 interface ComparePanelProps {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    resorts: any[];
+    resorts: SpotWithWeather[];
     onRemove: (id: string) => void;
     onClose: () => void;
 }
@@ -39,30 +38,29 @@ export default function ComparePanel({ resorts, onRemove, onClose }: ComparePane
         {
             label: '24hこうせつ',
             icon: '❄️',
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            getValue: (r: any) => `${r.weather.snowfall_24h}cm`,
-            getRaw: (r: any) => r.weather.snowfall_24h,
+            getValue: (r: SpotWithWeather) => `${r.weather.snowfall_24h}cm`,
+            getRaw: (r: SpotWithWeather) => r.weather.snowfall_24h,
             higherIsBetter: true,
         },
         {
             label: 'せきせつ',
             icon: '🏔️',
-            getValue: (r: any) => r.weather.snow_depth != null ? `${r.weather.snow_depth}cm` : '--',
-            getRaw: (r: any) => r.weather.snow_depth ?? 0,
+            getValue: (r: SpotWithWeather) => r.weather.snow_depth != null ? `${r.weather.snow_depth}cm` : '--',
+            getRaw: (r: SpotWithWeather) => r.weather.snow_depth ?? 0,
             higherIsBetter: true,
         },
         {
             label: 'きおん',
             icon: '🌡️',
-            getValue: (r: any) => `${r.weather.temp}°C`,
-            getRaw: (r: any) => r.weather.temp,
+            getValue: (r: SpotWithWeather) => `${r.weather.temp}°C`,
+            getRaw: (r: SpotWithWeather) => r.weather.temp,
             higherIsBetter: false,
         },
         {
             label: 'ふうそく',
             icon: '💨',
-            getValue: (r: any) => `${r.weather.wind}m/s`,
-            getRaw: (r: any) => r.weather.wind,
+            getValue: (r: SpotWithWeather) => `${r.weather.wind}m/s`,
+            getRaw: (r: SpotWithWeather) => r.weather.wind,
             higherIsBetter: false,
         },
     ];
